@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador Completo</title>
+    <style>
+        :root {
+            --bg-color: #EBEBEB;
+            --card-bg: #FFFFFF;
+            --text-main: #000000;
+            --text-muted: #666666;
+            --accent-blue: #0A55C4;
+            --accent-green: #52C43F;
+            --accent-yellow: #F4D03F;
+            --ios-transition: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+
+        .phone-container {
+            width: 100%;
+            max-width: 400px;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: transform 0.2s var(--ios-transition);
+        }
+
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .btn-back {
+            background: #e0e0e0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-back:active {
+            transform: scale(0.95);
+            background: #d0d0d0;
+        }
+
+        /* VISTAS Y TRANSICIONES */
+        .view {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.35s var(--ios-transition), transform 0.35s var(--ios-transition);
+        }
+
+        .view.hidden {
+            display: none !important;
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        /* HOME */
+        .welcome-title {
+            font-size: 32px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        
+        /* Evita desbordes en el nombre de usuario de la cabecera */
+        .welcome-title span {
+            background: #e5e5e5;
+            padding: 2px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            display: inline-block;
+            transition: background 0.2s;
+            max-width: 240px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .welcome-title span:hover { background: #dcdcdc; }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 15px 5px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s var(--ios-transition), box-shadow 0.2s;
+        }
+        .menu-item:active {
+            transform: scale(0.92);
+        }
+
+        .menu-item .icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: transform 0.2s;
+        }
+
+        .menu-item span {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* ELEMENTOS DINÁMICOS CON ANIMACIÓN */
+        .list-preview {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .list-preview li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            animation: fadeInItem 0.3s var(--ios-transition) both;
+            overflow: hidden;
+        }
+
+        /* Controla desbordes en los textos de tareas de la lista */
+        .list-preview li span:first-child {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 10px;
+            flex: 1;
+        }
+
+        .time-badge {
+            background: #1A1A1A;
+            color: white;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .task-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed #ddd;
+            animation: fadeInItem 0.3s var(--ios-transition) both;
+            transition: all 0.3s var(--ios-transition);
+            overflow: hidden;
+        }
+
+        .task-text {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            transition: color 0.2s, opacity 0.2s;
+            overflow: hidden;
+        }
+
+        .task-text span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+        
+        .task-text input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-green);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .btn-delete {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-delete:active { transform: scale(0.8); }
+
+        /* INPUTS */
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .input-flat {
+            flex: 1;
+            background: #f0f0f0;
+            border: none;
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .input-flat:focus {
+            background: #e5e5e5;
+            box-shadow: inset 0 0 0 2px rgba(0,0,0,0.05);
+        }
+
+        .btn-add {
+            background: #1A1A1A;
+            color: white;
+            border: none;
+            padding: 0 18px;
+            border-radius: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+        }
+        .btn-add:active { transform: scale(0.9); }
+
+        /* CALENDARIO */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .calendar-day {
+            background: #1A1A1A;
+            color: white;
+            aspect-ratio: 1;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.2s var(--ios-transition), background-color 0.3s, border-color 0.2s;
+        }
+        .calendar-day:active {
+            transform: scale(0.88);
+        }
+
+        .calendar-day.selected {
+            border-color: #000;
+            transform: scale(1.05);
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .color-opt {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+        .color-opt:active { transform: scale(0.85); }
+        .color-opt.active { border-color: #000; transform: scale(1.1); }
+
+        /* MODALES */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.0);
+            z-index: 99;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal {
+            display: block;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: white;
+            border-radius: 28px 28px 0 0;
+            padding: 24px;
+            z-index: 100;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.08);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            visibility: hidden;
+        }
+
+        .modal.active {
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        /* BOTONES DE NOTAS */
+        .note-item-btn {
+            text-align: left; 
+            font-weight: bold; 
+            cursor: pointer;
+            animation: fadeInItem 0.3s var(--ios-transition) both;
+            transition: background 0.2s, transform 0.15s var(--ios-transition);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .note-item-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* DETALLES DEL CALENDARIO */
+        #calendar-detail-box {
+            transition: all 0.3s var(--ios-transition);
+            animation: slideUpDetail 0.35s var(--ios-transition) both;
+            overflow: hidden;
+        }
+        #cal-detail-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @keyframes fadeInItem {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUpDetail {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon svg { width: 32px; height: 32px; fill: currentColor; }
+    </style>
+</head>
+<body>
+
+    <div class="phone-container">
+        
+        <div id="view-home" class="view">
+            <div class="card">
+                <div class="welcome-title">Hola, <span id="username-display" onclick="openModal('username-modal')">Mamá</span></div>
+            </div>
+
+            <div class="grid-menu">
+                <div class="menu-item" onclick="changeView('view-calendar')">
+                    <div class="icon" style="background-color: var(--accent-blue);"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg></div>
+                    <span>Calendario</span>
+                </div>
+                <div class="menu-item" onclick="changeView('view-tasks')">
+                    <div class="icon" style="background-color: var(--accent-green);"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
+                    <span>Tareas</span>
+                </div>
+                <div class="menu-item" onclick="changeView('view-notes')">
+                    <div class="icon" style="background-color: var(--accent-yellow);"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div>
+                    <span>Notas</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 10px;">Tareas de Hoy</h3>
+                <ul id="home-tasks-list" class="list-preview"></ul>
+            </div>
+        </div>
+
+        <div id="view-calendar" class="view hidden">
+            <div class="card header-box">
+                <span>Calendario</span>
+                <button class="btn-back" onclick="changeView('view-home')">Volver</button>
+            </div>
+            <div class="card">
+                <h2>Junio</h2>
+                <div class="calendar-grid" id="calendar-grid-box"></div>
+            </div>
+            <div class="card" id="calendar-detail-box" style="display:none;">
+                <h3 id="cal-detail-title">Día seleccionado</h3>
+                <p id="cal-detail-text" style="margin: 8px 0; font-weight: 500;"></p>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="btn-back" id="btn-edit-cal">Editar / Registrar</button>
+                    <button class="btn-delete" id="btn-delete-cal" style="width:auto; padding:0 15px; border-radius:12px;">Borrar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-tasks" class="view hidden">
+            <div class="card header-box">
+                <span>Tareas</span>
+                <button class="btn-back" onclick="changeView('view-home')">Volver</button>
+            </div>
+            <div class="card">
+                <div id="tasks-container" style="display:flex; flex-direction:column;"></div>
+                <div class="input-group">
+                    <input type="text" id="task-input" class="input-flat" maxlength="50" placeholder="Nueva tarea...">
+                    <input type="text" id="task-time" class="input-flat" style="max-width:80px;" maxlength="5" placeholder="15:30">
+                    <button class="btn-add" onclick="addTask()">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-notes" class="view hidden">
+            <div class="card header-box">
+                <span>Notas</span>
+                <button class="btn-back" onclick="changeView('view-home')">Volver</button>
+            </div>
+            <div class="card">
+                <div id="notes-container" style="display:flex; flex-direction:column; gap:10px; margin-bottom:15px;"></div>
+                <div class="input-group">
+                    <input type="text" id="note-title-input" class="input-flat" maxlength="30" placeholder="Título de nueva nota...">
+                    <button class="btn-add" onclick="addNote()">+</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="overlay" onclick="closeModals()"></div>
+
+    <div class="modal" id="username-modal">
+        <h3 style="margin-bottom:10px;">Cambiar Nombre</h3>
+        <input type="text" id="username-input" class="input-flat" style="width:100%; margin-bottom:15px;" maxlength="14">
+        <button class="btn-add" style="width:100%; padding:15px;" onclick="saveUsername()">Guardar</button>
+    </div>
+
+    <div class="modal" id="note-modal">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h3 id="modal-note-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%;"></h3>
+            <button class="btn-delete" style="width:auto; padding:5px 10px; border-radius:8px; font-size:12px;" id="btn-delete-note-trigger">Borrar Nota</button>
+        </div>
+        <textarea id="modal-note-body" class="input-flat" style="width:100%; height:120px; resize:none; margin-bottom:15px;" maxlength="500" placeholder="Escribe el contenido aquí..."></textarea>
+        <button class="btn-add" style="width:100%; padding:15px;" onclick="saveNoteBody()">Guardar Nota</button>
+    </div>
+
+    <div class="modal" id="calendar-modal">
+        <h3 style="margin-bottom:10px;">Registro Día <span id="modal-day-num"></span></h3>
+        <input type="text" id="cal-input-title" class="input-flat" style="width:100%; margin-bottom:15px;" maxlength="40" placeholder="Nombre del evento o recordatorio">
+        
+        <label style="font-size:14px; font-weight:bold;">Color de Fondo:</label>
+        <div class="color-picker">
+            <div class="color-opt" style="background:#FF9F54;" data-color="#FF9F54"></div>
+            <div class="color-opt" style="background:#0A55C4;" data-color="#0A55C4"></div>
+            <div class="color-opt" style="background:#52C43F;" data-color="#52C43F"></div>
+            <div class="color-opt" style="background:#F4D03F;" data-color="#F4D03F"></div>
+            <div class="color-opt" style="background:#E63946;" data-color="#E63946"></div>
+        </div>
+
+        <button class="btn-add" style="width:100%; padding:15px; margin-top:10px;" onclick="saveCalendarEvent()">Guardar Registro</button>
+    </div>
+
+    <script>
+        let data = JSON.parse(localStorage.getItem('mama_app_data_v3')) || {
+            username: 'Mamá',
+            tasks: [],
+            notes: {},
+            calendar: {}
+        };
+
+        let activeDay = null;
+        let activeNoteTitle = '';
+        let selectedColor = '#FF9F54';
+
+        function saveData() {
+            localStorage.setItem('mama_app_data_v3', JSON.stringify(data));
+            renderEverything();
+        }
+
+        function changeView(viewId) {
+            const currentActive = document.querySelector('.view:not(.hidden)');
+            if(currentActive && currentActive.id !== viewId) {
+                currentActive.style.opacity = '0';
+                currentActive.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    currentActive.classList.add('hidden');
+                    currentActive.style.transform = '';
+                    
+                    const nextView = document.getElementById(viewId);
+                    nextView.style.opacity = '0';
+                    nextView.style.transform = 'translateX(20px)';
+                    nextView.classList.remove('hidden');
+                    
+                    nextView.offsetHeight; 
+                    nextView.style.opacity = '1';
+                    nextView.style.transform = 'translateX(0)';
+                }, 150);
+            } else {
+                document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+                document.getElementById(viewId).classList.remove('hidden');
+            }
+            
+            document.getElementById('calendar-detail-box').style.display = 'none';
+            activeDay = null;
+            renderEverything();
+        }
+
+        function openModal(id) {
+            const overlay = document.getElementById('overlay');
+            const modal = document.getElementById(id);
+            
+            overlay.style.display = 'block';
+            setTimeout(() => overlay.style.backgroundColor = 'rgba(0,0,0,0.4)', 10);
+            
+            modal.classList.add('active');
+        }
+
+        function closeModals() {
+            const overlay = document.getElementById('overlay');
+            overlay.style.backgroundColor = 'rgba(0,0,0,0.0)';
+            
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            setTimeout(() => overlay.style.display = 'none', 300);
+        }
+
+        function saveUsername() {
+            const name = document.getElementById('username-input').value.trim();
+            if(name) data.username = name;
+            saveData(); closeModals();
+        }
+
+        function addTask() {
+            const text = document.getElementById('task-input').value.trim();
+            const time = document.getElementById('task-time').value.trim() || '--:--';
+            if(!text) return;
+            data.tasks.push({ text, time, completed: false });
+            document.getElementById('task-input').value = '';
+            document.getElementById('task-time').value = '';
+            saveData();
+        }
+
+        function toggleTask(idx) {
+            data.tasks[idx].completed = !data.tasks[idx].completed;
+            saveData();
+        }
+
+        function deleteTask(idx, element) {
+            if(element) {
+                element.style.transform = 'scale(0.8)';
+                element.style.opacity = '0';
+                setTimeout(() => {
+                    data.tasks.splice(idx, 1);
+                    saveData();
+                }, 200);
+            } else {
+                data.tasks.splice(idx, 1);
+                saveData();
+            }
+        }
+
+        function addNote() {
+            const title = document.getElementById('note-title-input').value.trim();
+            if(!title) return;
+            if(!data.notes[title]) data.notes[title] = '';
+            document.getElementById('note-title-input').value = '';
+            saveData();
+            openNoteDetails(title);
+        }
+
+        function openNoteDetails(title) {
+            activeNoteTitle = title;
+            document.getElementById('modal-note-title').innerText = title;
+            document.getElementById('modal-note-body').value = data.notes[title] || '';
+            
+            document.getElementById('btn-delete-note-trigger').onclick = function() {
+                delete data.notes[title];
+                saveData(); closeModals();
+            };
+            openModal('note-modal');
+        }
+
+        function saveNoteBody() {
+            data.notes[activeNoteTitle] = document.getElementById('modal-note-body').value;
+            saveData(); closeModals();
+        }
+
+        function initCalendarGrid() {
+            const container = document.getElementById('calendar-grid-box');
+            container.innerHTML = '';
+            for(let i = 1; i <= 30; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'calendar-day';
+                btn.id = `day-${i}`;
+                btn.innerText = i;
+                btn.onclick = () => selectDay(i);
+                container.appendChild(btn);
+            }
+        }
+
+        function selectDay(day) {
+            activeDay = day;
+            document.querySelectorAll('.calendar-day').forEach(b => b.classList.remove('selected'));
+            document.getElementById(`day-${day}`).classList.add('selected');
+
+            const detailBox = document.getElementById('calendar-detail-box');
+            const detailText = document.getElementById('cal-detail-text');
+
+            detailBox.style.opacity = '0';
+            detailBox.style.transform = 'translateY(5px)';
+
+            setTimeout(() => {
+                if(data.calendar[day]) {
+                    detailText.innerText = `Evento: ${data.calendar[day].title}`;
+                    detailBox.style.borderLeft = `8px solid ${data.calendar[day].color}`;
+                    detailBox.style.display = 'block';
+                } else {
+                    detailText.innerText = 'Sin registros para este día.';
+                    detailBox.style.borderLeft = 'none';
+                    detailBox.style.display = 'block';
+                }
+                detailBox.style.opacity = '1';
+                detailBox.style.transform = 'translateY(0)';
+            }, 50);
+
+            document.getElementById('btn-edit-cal').onclick = () => {
+                document.getElementById('modal-day-num').innerText = day;
+                document.getElementById('cal-input-title').value = data.calendar[day] ? data.calendar[day].title : '';
+                setModalColor(data.calendar[day] ? data.calendar[day].color : '#FF9F54');
+                openModal('calendar-modal');
+            };
+
+            document.getElementById('btn-delete-cal').onclick = () => {
+                if(data.calendar[day]) {
+                    delete data.calendar[day];
+                    detailBox.style.display = 'none';
+                    saveData();
+                }
+            };
+        }
+
+        function setModalColor(color) {
+            selectedColor = color;
+            document.querySelectorAll('.color-opt').forEach(opt => {
+                if(opt.getAttribute('data-color') === color) opt.classList.add('active');
+                else opt.classList.remove('active');
+            });
+        }
+
+        document.querySelectorAll('.color-opt').forEach(opt => {
+            opt.onclick = function() {
+                setModalColor(this.getAttribute('data-color'));
+            }
+        });
+
+        function saveCalendarEvent() {
+            const title = document.getElementById('cal-input-title').value.trim();
+            if(title) {
+                data.calendar[activeDay] = { title: title, color: selectedColor };
+                saveData();
+                selectDay(activeDay);
+            }
+            closeModals();
+        }
+
+        function renderEverything() {
+            document.getElementById('username-display').innerText = data.username;
+            document.getElementById('username-input').value = data.username;
+
+            const homeList = document.getElementById('home-tasks-list');
+            const tasksContainer = document.getElementById('tasks-container');
+            homeList.innerHTML = '';
+            tasksContainer.innerHTML = '';
+
+            if(data.tasks.length === 0) {
+                homeList.innerHTML = '<li style="color:var(--text-muted)">Todo libre por hoy.</li>';
+                tasksContainer.innerHTML = '<p style="color:var(--text-muted)">No hay tareas guardadas.</p>';
+            }
+
+            data.tasks.forEach((t, idx) => {
+                const itemHome = document.createElement('li');
+                itemHome.style.animationDelay = `${idx * 0.04}s`;
+                itemHome.innerHTML = `
+                    <span style="${t.completed ? 'text-decoration:line-through; color:gray;' : ''}">${idx+1}. ${t.text}</span>
+                    <span class="time-badge">${t.time}</span>
+                `;
+                homeList.appendChild(itemHome);
+
+                const itemRow = document.createElement('div');
+                itemRow.className = 'task-row';
+                itemRow.style.animationDelay = `${idx * 0.04}s`;
+                itemRow.innerHTML = `
+                    <div class="task-text ${t.completed ? 'completed' : ''}" onclick="toggleTask(${idx})">
+                        <input type="checkbox" ${t.completed ? 'checked' : ''}>
+                        <span>${idx+1}. ${t.text} <small>(${t.time})</small></span>
+                    </div>
+                    <button class="btn-delete" onclick="deleteTask(${idx}, this.parentNode)">-</button>
+                `;
+                tasksContainer.appendChild(itemRow);
+            });
+
+            const notesContainer = document.getElementById('notes-container');
+            notesContainer.innerHTML = '';
+            const keys = Object.keys(data.notes);
+            if(keys.length === 0) notesContainer.innerHTML = '<p style="color:var(--text-muted)">No tienes notas creadas.</p>';
+            
+            keys.forEach((k, idx) => {
+                const btnNota = document.createElement('button');
+                btnNota.className = 'input-flat note-item-btn';
+                btnNota.style.animationDelay = `${idx * 0.04}s`;
+                btnNota.onclick = () => openNoteDetails(k);
+                btnNota.innerText = `🗒️ ${k}`;
+                notesContainer.appendChild(btnNota);
+            });
+
+            for(let i = 1; i <= 30; i++) {
+                const dayBtn = document.getElementById(`day-${i}`);
+                if(dayBtn) {
+                    if(data.calendar[i]) {
+                        dayBtn.style.background = data.calendar[i].color;
+                    } else {
+                        dayBtn.style.background = '#1A1A1A';
+                    }
+                }
+            }
+        }
+
+        initCalendarGrid();
+        renderEverything();
+    </script>
+</body>
+</html>
