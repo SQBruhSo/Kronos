@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Organizador Completo</title>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/B2t7cb3W/Red-Bold-Fashion-Studio-Logo.png">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/jP56fW2C/Red-Bold-Fashion-Studio-Logo.png">
     <style>
         :root {
             --bg-color: #EBEBEB;
@@ -206,6 +206,7 @@
             padding: 14px 0;
             border-bottom: 1px dashed #ddd;
             animation: fadeInItem 0.3s var(--ios-transition) both;
+            gap: 8px;
         }
 
         .task-text {
@@ -249,7 +250,19 @@
             flex-shrink: 0;
         }
 
-        /* INPUTS */
+        /* ESTRUCTURA DE INPUTS CORREGIDA PARA ESCALADO */
+        .task-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .input-row-bottom {
+            display: flex;
+            gap: 10px;
+        }
+
         .input-group {
             display: flex;
             gap: 8px;
@@ -265,6 +278,7 @@
             font-size: 16px;
             outline: none;
             -webkit-appearance: none;
+            width: 100%;
         }
 
         .btn-add {
@@ -457,7 +471,7 @@
                     <button class="btn-back" onclick="changeMonth(-1)">◀</button>
                     <div class="calendar-title-container">
                         <div class="calendar-title" id="calendar-month-year"></div>
-                        <button class="btn-today" onclick="goToCurrentMonth()">Volver</button>
+                        <button class="btn-today" onclick="goToCurrentMonth()">VOLVER</button>
                     </div>
                     <button class="btn-back" onclick="changeMonth(1)">▶</button>
                 </div>
@@ -483,10 +497,13 @@
             </div>
             <div class="card">
                 <div id="tasks-container" style="display:flex; flex-direction:column;"></div>
-                <div class="input-group">
+                
+                <div class="task-input-container">
                     <input type="text" id="task-input" class="input-flat" maxlength="50" placeholder="Nueva tarea...">
-                    <input type="text" id="task-time" class="input-flat" style="max-width:110px; text-align:center;" maxlength="5" placeholder="Hora (opc)">
-                    <button class="btn-add" onclick="addTask()">+</button>
+                    <div class="input-row-bottom">
+                        <input type="text" id="task-time" class="input-flat" style="text-align:center;" maxlength="5" placeholder="Hora (opcional)">
+                        <button class="btn-add" style="flex: 1;" onclick="addTask()">Añadir</button>
+                    </div>
                 </div>
             </div>
         </div>
