@@ -766,6 +766,77 @@
         }
 
         renderEverything();
+
+        // 1. Vincular en el HTML (Asegúrate de poner esto en el <head> de tu HTML)
+// <link rel="manifest" href="manifest.json">
+
+// 2. Registrar el Service Worker automáticamente al cargar
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker registrado con éxito', reg))
+            .catch(err => console.error('Error al registrar el Service Worker', err));
+    });
+}
+
+// 3. Función para solicitar permisos de notificación de forma elegante (Estilo iOS)
+function solicitarPermisoNotificaciones() {
+    if (!('Notification' in window)) {
+        alert('Este navegador no soporta notificaciones de escritorio.');
+        return;
+    }
+
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            // Enviar una notificación de prueba con sonido
+            enviarNotificacion("¡Permiso Concedido!", "Ahora recibirás alertas de tus tareas importantes.");
+        }
+    });
+}
+
+// 4. Función global para enviar notificaciones con sonido
+function enviarNotificacion(titulo, cuerpo) {
+    if (Notification.permission === 'granted') {
+        // Crear la notificación nativa
+        const opciones = {
+            body: cuerpo,
+            icon: 'https://cdn-icons-png.flaticon.com/512/5968/5968756.png', // Mismo icono de la app
+            vibrate: [200, 100, 200], // Vibración en celulares Android
+            badge: 'https://cdn-icons-png.flaticon.com/512/5968/5968756.png'
+        };
+
+        // Si la app está en segundo plano, la envía el Service Worker
+        if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.showNotification(titulo, opciones);
+            });
+        } else {
+            new Notification(titulo, opciones);
+        }
+
+        // --- SISTEMA DE SONIDO ---
+        // Los navegadores bloquean el sonido automático a menos que el usuario interactúe.
+        // Al estar la app instalada o tras un click, reproducirá este ping limpio estilo iOS:
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Generamos un tono electrónico limpio de 0.15 segundos (Frecuencia de 880Hz -> Nota La)
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioContext.currentTime); // Tono agudo y agradable
+        
+        // Desvanecimiento suave del sonido para que no suene "roto"
+        gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.start();
+        osc.stop(audioContext.currentTime + 0.15);
+    }
+}
     </script>
 </body>
 </html>
