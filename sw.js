@@ -1,11 +1,11 @@
-const CACHE_NAME = 'workspace-v1';
+const CACHE_NAME = 'workspace-v4'; // Subimos la versión para limpiar rastros de caché viejos
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './manifest-mobile.json'
 ];
 
-// Instalar el Service Worker y almacenar en caché los activos base
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -14,7 +14,6 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// Reclamar el control y limpiar viejas cachés
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -27,7 +26,6 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Estrategia de respuesta del caché local
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((res) => {
@@ -36,7 +34,6 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
-// Escuchar pulsaciones sobre las burbujas de notificación del sistema
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
   e.waitUntil(
