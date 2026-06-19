@@ -7,6 +7,7 @@
     <!-- Favicon -->
     <link class="fav-icon-tag" rel="icon" type="image/png" href="https://i.ibb.co/jP56fW2C/Red-Bold-Fashion-Studio-Logo.png">
 
+    <!-- Conexión del Manifiesto PWA -->
     <link rel="manifest" href="./manifest.json">
     
     <style>
@@ -117,17 +118,10 @@
             transform: scale(0.97);
         }
 
-        /* CORRECCIÓN IDENTIDAD: SOLO TU LOGO NUEVO */
         .brand-header {
             display: flex;
             align-items: center;
             gap: 14px;
-        }
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-            object-fit: cover;
-            border-radius: 50%;
         }
 
         .welcome-title {
@@ -258,7 +252,6 @@
         .btn-add:hover { background: var(--accent-brand); transform: translateY(-1px); }
         .btn-add:active { transform: translateY(1px); }
 
-        /* BARRA DE EDICIÓN ENRIQUECIDA ACTUALIZADA */
         .format-bar {
             display: flex;
             flex-wrap: wrap;
@@ -281,7 +274,6 @@
         }
         .format-btn:hover { background: var(--accent-brand); color: #FFFFFF; border-color: var(--accent-brand); }
 
-        /* CONTENEDOR DE NOTAS VISUAL REAL (CONTENTEDITABLE) */
         .rich-editor {
             width: 100%;
             height: 220px;
@@ -302,14 +294,12 @@
             box-shadow: 0 4px 12px rgba(107,29,47,0.04);
         }
         
-        /* Reglas estéticas internas del editor */
         .rich-editor h1 { font-size: 22px; font-weight: 700; margin: 8px 0 4px 0; color: var(--accent-brand); }
         .rich-editor h2 { font-size: 18px; font-weight: 600; margin: 6px 0 4px 0; color: var(--text-main); }
         .rich-editor p { font-size: 15px; font-weight: 400; margin-bottom: 4px; color: var(--text-main); display: block; }
         .rich-editor b, .rich-editor strong { font-weight: 700; }
         .rich-editor i, .rich-editor em { font-style: italic; }
 
-        /* CALENDARIO */
         .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
         .calendar-title-container { display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .calendar-title { font-size: 17px; font-weight: 600; text-transform: capitalize; }
@@ -326,7 +316,6 @@
         .calendar-day.selected { border-color: var(--accent-brand) !important; color: var(--accent-brand) !important; font-weight: 700; transform: scale(1.05); }
         .calendar-day.current-today { background: var(--accent-brand) !important; color: white !important; font-weight: 700; }
 
-        /* MODALES */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(17, 18, 20, 0.4); backdrop-filter: blur(4px); z-index: 99;
@@ -352,6 +341,24 @@
         #calendar-detail-box { border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: 14px; animation: itemFadeIn 0.3s var(--fade-bezier); }
         .icon svg { width: 22px; height: 22px; fill: currentColor; }
         h3 { font-size: 17px; font-weight: 600; color: var(--text-main); }
+
+        /* WIDGET APPLE DE NOTIFICACIONES */
+        .pwa-widget {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(107,29,47,0.06) 0%, rgba(107,29,47,0.01) 100%);
+            border: 1px dashed rgba(107, 29, 47, 0.2);
+            padding: 16px 20px;
+            border-radius: 20px;
+        }
+        .pwa-widget-text h4 { font-size: 14px; font-weight: 600; color: var(--accent-brand); margin-bottom: 2px; }
+        .pwa-widget-text p { font-size: 12px; color: var(--text-muted); }
+        .btn-pwa-toggle {
+            background: var(--accent-brand); color: white; border: none; padding: 8px 16px; border-radius: 100px;
+            font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s var(--fade-bezier);
+        }
+        .btn-pwa-toggle:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -360,7 +367,6 @@
         
         <!-- HOME -->
         <div id="view-home" class="view">
-            <!-- HEADER REDISEÑADO SIGUIENDO EXACTAMENTE image_8eb291.png -->
             <div class="card brand-header">
                 <div class="welcome-title">Estudio de <span id="username-display" onclick="openModal('username-modal')">Usuario</span></div>
             </div>
@@ -378,6 +384,15 @@
                     <div class="icon" style="background-color: var(--accent-yellow);"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div>
                     <span>Bocetos</span>
                 </div>
+            </div>
+
+            <!-- WIDGET NOTIFICACIONES SISTEMA -->
+            <div class="pwa-widget">
+                <div class="pwa-widget-text">
+                    <h4>Alertas de Entorno</h4>
+                    <p id="pwa-status-text">Permisos de sonido inactivos.</p>
+                </div>
+                <button class="btn-pwa-toggle" onclick="solicitarPermisoNotificaciones()">Vincular</button>
             </div>
 
             <div class="card">
@@ -460,14 +475,13 @@
         <button class="btn-add" style="width:100%; padding:14px;" onclick="saveUsername()">Actualizar</button>
     </div>
 
-    <!-- MODAL BOCETOS CORREGIDO - EDITOR ENRIQUECIDO NATIVO -->
+    <!-- MODAL BOCETOS -->
     <div class="modal" id="note-modal">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
             <h3 id="modal-note-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%;"></h3>
             <button class="btn-back" style="color:red; padding:6px 12px; border-color: rgba(255,0,0,0.1);" id="btn-delete-note-trigger">Eliminar</button>
         </div>
 
-        <!-- Barra de Herramientas de Edición Visual -->
         <div class="format-bar">
             <button class="format-btn" onclick="applyFormat('formatBlock', '<h1>')">Título</button>
             <button class="format-btn" onclick="applyFormat('formatBlock', '<h2>')">Subtítulo</button>
@@ -476,9 +490,7 @@
             <button class="format-btn" onclick="applyFormat('italic')"><i>I</i></button>
         </div>
 
-        <!-- Área Editable Nativa en vez de un Textarea plano -->
         <div id="modal-note-body" class="rich-editor" contenteditable="true"></div>
-        
         <button class="btn-add" style="width:100%; padding:14px; margin-top:16px;" onclick="saveNoteBody()">Guardar Boceto</button>
     </div>
 
@@ -497,16 +509,13 @@
     </div>
 
     <script>
-        // Corrección estricta: Limpieza inicial forzada de "Mamá" a "Usuario"
         let rawData = localStorage.getItem('aura_studio_data');
         let data = { username: 'Usuario', tasks: [], notes: {}, calendar: {} };
         
         if (rawData) {
             try {
                 data = JSON.parse(rawData);
-                if (data.username === 'Mamá') {
-                    data.username = 'Usuario';
-                }
+                if (data.username === 'Mamá') data.username = 'Usuario';
             } catch(e) { console.error(e); }
         }
 
@@ -514,6 +523,7 @@
         let selectedDayKey = null; 
         let activeNoteTitle = '';
         let selectedColor = '#6B1D2F';
+        let tareasNotificadas = new Set(); // Evita duplicar alertas en el mismo minuto
 
         const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
@@ -522,7 +532,6 @@
             renderEverything();
         }
 
-        // Ejecutor nativo del Formato Enriquecido Visual
         function applyFormat(command, value = null) {
             document.execCommand(command, false, value);
             document.getElementById('modal-note-body').focus();
@@ -570,8 +579,17 @@
 
         function addTask() {
             const text = document.getElementById('task-input').value.trim();
-            const time = document.getElementById('task-time').value.trim();
+            let time = document.getElementById('task-time').value.trim();
             if(!text) return;
+            
+            // Forzar formato HH:MM limpio
+            if(time && time.includes(':')) {
+                let parts = time.split(':');
+                let hrs = parts[0].padStart(2, '0');
+                let mins = parts[1].padStart(2, '0');
+                time = `${hrs}:${mins}`;
+            }
+
             data.tasks.push({ text, time: time || null, completed: false });
             document.getElementById('task-input').value = '';
             document.getElementById('task-time').value = '';
@@ -764,81 +782,103 @@
                 notesContainer.appendChild(btnNota);
             });
 
+            // Actualizar texto del Widget de Notificaciones según estado real
+            const statusText = document.getElementById('pwa-status-text');
+            if (Notification.permission === 'granted') {
+                statusText.innerText = "Alertas activivas y vinculadas.";
+            } else if (Notification.permission === 'denied') {
+                statusText.innerText = "Bloqueadas desde el navegador.";
+            }
+
             renderCalendar();
         }
 
-        renderEverything();
+        // ================= SISTEMA NATIVO PWA & ALERTAS DE RELOJ =================
 
-        // 1. Vincular en el HTML (Asegúrate de poner esto en el <head> de tu HTML)
-// <link rel="manifest" href="manifest.json">
-
-// 2. Registrar el Service Worker automáticamente al cargar
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('Service Worker registrado con éxito', reg))
-            .catch(err => console.error('Error al registrar el Service Worker', err));
-    });
-}
-
-// 3. Función para solicitar permisos de notificación de forma elegante (Estilo iOS)
-function solicitarPermisoNotificaciones() {
-    if (!('Notification' in window)) {
-        alert('Este navegador no soporta notificaciones de escritorio.');
-        return;
-    }
-
-    Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-            // Enviar una notificación de prueba con sonido
-            enviarNotificacion("¡Permiso Concedido!", "Ahora recibirás alertas de tus tareas importantes.");
-        }
-    });
-}
-
-// 4. Función global para enviar notificaciones con sonido
-function enviarNotificacion(titulo, cuerpo) {
-    if (Notification.permission === 'granted') {
-        // Crear la notificación nativa
-        const opciones = {
-            body: cuerpo,
-            icon: 'https://cdn-icons-png.flaticon.com/512/5968/5968756.png', // Mismo icono de la app
-            vibrate: [200, 100, 200], // Vibración en celulares Android
-            badge: 'https://cdn-icons-png.flaticon.com/512/5968/5968756.png'
-        };
-
-        // Si la app está en segundo plano, la envía el Service Worker
-        if (navigator.serviceWorker.controller) {
-            navigator.serviceWorker.ready.then(registration => {
-                registration.showNotification(titulo, opciones);
+        // Registro de Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito', reg))
+                    .catch(err => console.error('Error al registrar el Service Worker', err));
             });
-        } else {
-            new Notification(titulo, opciones);
         }
 
-        // --- SISTEMA DE SONIDO ---
-        // Los navegadores bloquean el sonido automático a menos que el usuario interactúe.
-        // Al estar la app instalada o tras un click, reproducirá este ping limpio estilo iOS:
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Generamos un tono electrónico limpio de 0.15 segundos (Frecuencia de 880Hz -> Nota La)
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, audioContext.currentTime); // Tono agudo y agradable
-        
-        // Desvanecimiento suave del sonido para que no suene "roto"
-        gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
-        
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        
-        osc.start();
-        osc.stop(audioContext.currentTime + 0.15);
-    }
-}
+        function solicitarPermisoNotificaciones() {
+            if (!('Notification' in window)) {
+                alert('Este navegador no soporta notificaciones de escritorio.');
+                return;
+            }
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    enviarNotificacion("¡Entorno Enlazado!", "Recibirás pings acústicos y visuales al expirar plazos.");
+                    renderEverything();
+                }
+            });
+        }
+
+        function enviarNotificacion(titulo, cuerpo) {
+            if (Notification.permission === 'granted') {
+                const opciones = {
+                    body: cuerpo,
+                    icon: 'https://cdn-icons-png.flaticon.com/512/5968/5968756.png',
+                    vibrate: [200, 100, 200],
+                    badge: 'https://cdn-icons-png.flaticon.com/512/5968/5968756.png'
+                };
+
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.ready.then(registration => {
+                        registration.showNotification(titulo, opciones);
+                    });
+                } else {
+                    new Notification(titulo, opciones);
+                }
+
+                // Generación de Audio Sintético sin archivos externos (Ping Estilo iOS)
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, audioContext.currentTime); 
+                    
+                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 0.15);
+                } catch(e) { console.log("Audio bloqueado temporalmente por interacción"); }
+            }
+        }
+
+        // Reloj Checker de Tareas (Ejecución cada 30 segundos para precisión perfecta)
+        setInterval(() => {
+            const ahora = new Date();
+            const hrs = String(ahora.getHours()).padStart(2, '0');
+            const mins = String(ahora.getMinutes()).padStart(2, '0');
+            const horaActualStr = `${hrs}:${mins}`;
+
+            data.tasks.forEach(t => {
+                if(t.time && !t.completed) {
+                    // Forzar formato a comparar
+                    let taskTimeClean = t.time.trim();
+                    if(taskTimeClean === horaActualStr && !tareasNotificadas.has(t.text + horaActualStr)) {
+                        enviarNotificacion("Plazo Expirado", `Es momento de procesar: ${t.text}`);
+                        tareasNotificadas.add(t.text + horaActualStr);
+                    }
+                }
+            });
+
+            // Limpieza diaria de caché de alertas ejecutadas
+            if(horaActualStr === "00:00") tareasNotificadas.clear();
+
+        }, 30000);
+
+        renderEverything();
     </script>
 </body>
 </html>
