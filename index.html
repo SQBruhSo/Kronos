@@ -1,30 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Organizador Personal</title>
-    
-    <!-- Icono para las pestañas de la PC -->
-    <link class="fav-icon-tag" rel="icon" type="image/png" href="https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png">
+<link class="fav-icon-tag" rel="icon" type="image/png" href="https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png">
     <link rel="apple-touch-icon" href="https://i.ibb.co/5h1j0fr3/Dise-o-sin-t-tulo.png">
 
-    <!-- 1. MANIFIESTO PARA CELULARES: Al ponerle media="only screen and (max-width: 768px)", la PC lo ignora por completo -->
-    <link rel="manifest" href="./manifest.json" media="only screen and (max-width: 768px)">
-
-    <!-- 2. MANIFIESTO PARA PC: Al ponerle media="only screen and (min-width: 769px)", los celulares lo ignoran por completo -->
-    <link rel="manifest" href="./manifest-pc.json" media="only screen and (min-width: 769px)">
-    <!-- Inyección dinámica del Manifiesto según dispositivo (PC vs Celular) -->
     <script>
-        const manifestLink = document.createElement('link');
-        manifestLink.rel = 'manifest';
-        // Si detecta móvil o tablet, inyecta el manifiesto con icono de celular, sino el de PC
-        if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            manifestLink.href = './manifest-mobile.json';
-        } else {
-            manifestLink.href = './manifest.json';
-        }
-        document.head.appendChild(manifestLink);
+        (function() {
+            const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            const manifestLink = document.createElement('link');
+            manifestLink.rel = 'manifest';
+            
+            if (isMobile) {
+                // El celular carga el manifiesto con su icono redondo
+                manifestLink.href = './manifest.json';
+            } else {
+                // La PC carga estrictamente el manifiesto con su icono cuadrado
+                manifestLink.href = './manifest-pc.json';
+            }
+            document.head.appendChild(manifestLink);
+        })();
     </script>
     
     <style>
