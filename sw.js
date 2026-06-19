@@ -1,9 +1,8 @@
-const CACHE_NAME = 'workspace-v4'; // Subimos la versión para limpiar rastros de caché viejos
+const CACHE_NAME = 'workspace-v5'; // Subimos a v5 para forzar la actualización limpia
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json',
-  './manifest-mobile.json'
+  './manifest.json'
 ];
 
 self.addEventListener('install', (e) => {
