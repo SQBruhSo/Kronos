@@ -1,4 +1,4 @@
-const CACHE_NAME = 'workspace-v6'; // Subimos a v6 para aplicar el cambio de manifiestos
+const CACHE_NAME = 'workspace-v7'; 
 const ASSETS = [
   './',
   './index.html',
