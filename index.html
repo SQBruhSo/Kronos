@@ -1,507 +1,507 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="system">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Productivity OS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Organizador Personal Pro</title>
     
-    <!-- White Flash Protection -->
+    <!-- Favicons y Apple Touch Icon -->
+    <link class="fav-icon-tag" rel="icon" type="image/png" href="https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png">
+    <link class="apple-touch-icon" href="https://i.ibb.co/5h1j0fr3/Dise-o-sin-t-tulo.png">
+
     <script>
+        // Selección e inyección dinámica del Manifiesto según el dispositivo del usuario
         (function() {
-            const savedTheme = localStorage.getItem('theme') || 'system';
-            let actualTheme = savedTheme;
-            if (savedTheme === 'system') {
-                actualTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-            document.documentElement.setAttribute('data-theme', actualTheme);
-            
-            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 768;
             const manifestLink = document.createElement('link');
             manifestLink.rel = 'manifest';
-            manifestLink.href = isMobile ? 'manifest.json' : 'manifest-pc.json';
+            manifestLink.href = isMobile ? './manifest.json' : './manifest-pc.json';
             document.head.appendChild(manifestLink);
+
+            // Prevenir destellos en blanco (White Flash Protection) inyectando el tema guardado instantáneamente
+            let rawData = localStorage.getItem('aura_studio_data');
+            if (rawData) {
+                try {
+                    let d = JSON.parse(rawData);
+                    let theme = d.theme || 'light';
+                    if (theme === 'system') {
+                        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                    }
+                    document.documentElement.setAttribute('data-theme', theme);
+                } catch(e){}
+            }
         })();
     </script>
-
+    
     <style>
+        /* Arquitectura de Diseño: iOS Glassmorphic Modern & Minimalist */
         :root {
-            --bg-color: #f5f5f7;
-            --card-bg: rgba(255, 255, 255, 0.7);
-            --text-color: #1d1d1f;
-            --text-secondary: #86868b;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --accent-color: #0071e3;
-            --accent-bg: rgba(0, 113, 227, 0.1);
-            --danger-color: #ff3b30;
-            --safe-blur: blur(20px);
+            --bg-color: #F4F5F6;
+            --card-bg: #FFFFFF;
+            --text-main: #111214;
+            --text-muted: #626469;
+            --accent-brand: #6B1D2F; 
+            --accent-green: #2E7D32;
+            --accent-yellow: #C67B00;
+            --border-color: #E2E4E7;
+            --input-bg: #F4F5F6;
+            --blur-bg: rgba(255, 255, 255, 0.75);
             
-            --aura-bezier: cubic-bezier(0.16, 1, 0.3, 1);
+            /* Curvas de Transición Avanzadas (Bézier Pro) */
+            --aura-bezier: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --fade-bezier: cubic-bezier(0.25, 1, 0.5, 1);
             --drawer-bezier: cubic-bezier(0.32, 0.94, 0.6, 1);
-            
-            --color-red: #ff3b30;
-            --color-green: #34c759;
-            --color-yellow: #ffcc00;
-            --color-blue: #0071e3;
         }
 
         [data-theme="dark"] {
-            --bg-color: #000000;
-            --card-bg: rgba(28, 28, 30, 0.7);
-            --text-color: #f5f5f7;
-            --text-secondary: #86868b;
-            --border-color: rgba(255, 255, 255, 0.15);
-            --accent-color: #2997ff;
-            --accent-bg: rgba(41, 151, 255, 0.15);
+            --bg-color: #0B0C0E;
+            --card-bg: #16181B;
+            --text-main: #ECEEDF;
+            --text-muted: #9AA0A6;
+            --border-color: #2D3135;
+            --input-bg: #212327;
+            --blur-bg: rgba(22, 24, 27, 0.75);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.5s var(--aura-bezier);
-            overflow-x: hidden;
-            padding-bottom: 80px;
-        }
-
-        /* Glassmorphism General */
-        .glass {
-            background: var(--card-bg);
-            backdrop-filter: var(--safe-blur);
-            -webkit-backdrop-filter: var(--safe-blur);
-            border: 1px solid var(--border-color);
-        }
-
-        /* Navigation Bar */
-        .navbar {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 500px;
-            height: 64px;
-            border-radius: 32px;
+            color: var(--text-main);
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-        }
-
-        .nav-item {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 20px;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            transition: all 0.3s var(--aura-bezier);
+            padding: 24px 16px;
+            overflow-x: hidden;
+            min-height: 100vh;
+            transition: background-color 0.4s var(--fade-bezier), color 0.4s var(--fade-bezier);
         }
 
-        .nav-item.active {
-            color: var(--accent-color);
-            background: var(--accent-bg);
-            transform: scale(1.1);
+        .phone-container {
+            width: 100%;
+            max-width: 460px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
         }
 
-        /* Views Layout */
-        .view {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
+        /* Componentes de Interfaz con Animaciones Suaves */
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
             padding: 24px;
-            animation: fadeIn 0.4s var(--aura-bezier) forwards;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border-color);
+            animation: cardEntrance 0.6s var(--fade-bezier) backwards;
+            transition: background-color 0.4s var(--fade-bezier), border-color 0.4s var(--fade-bezier), box-shadow 0.3s ease;
         }
 
-        .view.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Typography & Structure */
-        h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 20px; }
-        h2 { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
-
-        .editable-title {
-            outline: none;
-            border-bottom: 2px solid transparent;
-            transition: border-0.3s;
-            display: inline-block;
-        }
-        .editable-title:focus { border-bottom-color: var(--accent-color); }
-
-        /* Grid Home Dashboard */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.4px;
         }
 
-        .dash-card {
-            border-radius: 20px;
-            padding: 16px;
+        .btn-back {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s var(--fade-bezier);
+        }
+        .btn-back:hover { background: rgba(0,0,0,0.04); transform: translateY(-1px); }
+        .btn-back:active { transform: translateY(1px) scale(0.98); }
+        [data-theme="dark"] .btn-back:hover { background: rgba(255,255,255,0.04); }
+
+        .btn-today {
+            background: transparent;
+            color: var(--accent-brand);
+            border: 1px solid var(--accent-brand);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 4px;
+        }
+        .btn-today:hover { background: rgba(107, 29, 47, 0.05); transform: translateY(-0.5px); }
+        .btn-today:active { transform: translateY(0.5px); }
+
+        /* Vistas e Intercalación con Transiciones de Deslizamiento y Fundido */
+        .view {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 20px;
+            width: 100%;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s var(--fade-bezier), transform 0.3s var(--fade-bezier);
         }
 
-        .dash-card .count { font-size: 32px; font-weight: 700; color: var(--accent-color); }
-
-        /* Day Schedule / Cronograma */
-        .schedule-box {
-            border-radius: 24px;
-            padding: 20px;
-            margin-top: 20px;
+        .view.hidden {
+            display: none !important;
+            opacity: 0;
+            transform: translateY(8px);
         }
-        .schedule-item {
+
+        .brand-header {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .welcome-title {
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+        
+        /* Modificación basada en image_84dfaf.png: Se removió la línea cortada/punteada */
+        .welcome-title span {
+            color: var(--accent-brand);
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .welcome-title span:hover {
+            opacity: 0.8;
+        }
+
+        /* Menú Principal */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 22px 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .schedule-item:last-child { border: none; }
-        .schedule-time { font-weight: 600; color: var(--accent-color); font-size: 14px; }
-
-        /* Calendar Matrix */
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .calendar-nav-btn {
-            background: var(--accent-bg);
-            border: none;
-            color: var(--accent-color);
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            text-align: center;
-        }
-        .weekday-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); padding-bottom: 8px; }
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 500;
-            position: relative;
-            transition: background 0.2s;
-        }
-        .calendar-day:hover { background: var(--border-color); }
-        .calendar-day.today { background: var(--accent-color) !important; color: white; }
-        .day-dots {
-            display: flex;
-            gap: 2px;
-            position: absolute;
-            bottom: 4px;
-        }
-        .dot { width: 4px; height: 4px; border-radius: 50%; }
-
-        /* Inputs & Buttons Unified */
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        input[type="text"], input[type="time"], select {
-            flex: 1;
-            padding: 12px 16px;
-            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
             border: 1px solid var(--border-color);
-            background: var(--card-bg);
-            color: var(--text-color);
-            font-size: 16px;
-            outline: none;
+            transition: all 0.3s var(--aura-bezier);
         }
-        .btn-action {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 14px;
-            font-weight: 600;
-            cursor: pointer;
+        .menu-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            border-color: var(--accent-brand);
         }
+        .menu-item:active { transform: scale(0.96); }
 
-        /* Task & Note Nodes */
-        .item-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 16px;
-            border-radius: 16px;
-            margin-bottom: 10px;
-            transition: opacity 0.3s, transform 0.3s;
-        }
-        .item-row.completed { opacity: 0.5; }
-        .item-row.completed .item-text { text-decoration: line-through; }
-        
-        .item-left { display: flex; align-items: center; gap: 12px; }
-        .checkbox-custom {
-            width: 22px;
-            height: 22px;
+        .menu-item .icon {
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            border: 2px solid var(--text-secondary);
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
-        }
-        .checkbox-custom.checked {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-        .checkbox-custom.checked::after {
-            content: "✓";
             color: white;
-            font-size: 12px;
-            font-weight: bold;
+            transition: transform 0.35s var(--aura-bezier);
         }
+        .menu-item:hover .icon { transform: scale(1.1) rotate(3deg); }
+        .menu-item span { font-size: 13px; font-weight: 600; color: var(--text-main); text-align: center; }
 
-        /* Color Matrix tags */
-        .color-picker { display: flex; gap: 8px; margin: 10px 0; }
-        .color-opt { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
-        .color-opt.selected { border-color: var(--text-color); transform: scale(1.1); }
-
-        /* Bottom Drawers and Modals */
-        .drawer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-height: 85vh;
-            border-radius: 24px 24px 0 0;
-            transform: translateY(100%);
-            transition: transform 0.4s var(--drawer-bezier);
-            z-index: 1100;
-            padding: 24px;
-            overflow-y: auto;
-            box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
-        }
-        .drawer.open { transform: translateY(0); }
-        
-        .overlay {
-            position: fixed;
-            top:0; left:0; right:0; bottom:0;
-            background: rgba(0,0,0,0.4);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1050;
-            backdrop-filter: blur(4px);
-        }
-        .overlay.active { opacity: 1; pointer-events: auto; }
-
-        /* Rich Text Editor Modal */
-        .editor-toolbar {
+        /* Listas y Filas de Tareas */
+        .list-preview { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+        .list-preview li {
             display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        .editor-btn {
-            background: var(--border-color);
-            border: none;
-            color: var(--text-color);
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-        }
-        .rich-box {
-            min-height: 200px;
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 14px;
-            outline: none;
-            background: rgba(0,0,0,0.02);
-        }
-
-        /* Update Log Layout (upd.txt parser) */
-        .changelog-box {
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 14px;
-            background: rgba(0,0,0,0.02);
-            max-height: 250px;
-            overflow-y: auto;
-        }
-        .log-version {
-            font-weight: 700;
-            color: var(--accent-color);
-            margin-top: 10px;
+            justify-content: space-between;
+            align-items: center;
             font-size: 15px;
-        }
-        .log-item {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-left: 8px;
-            margin-top: 4px;
-            line-height: 1.4;
+            animation: fadeIn 0.35s var(--fade-bezier);
         }
 
-        /* Quick Utility Trigger classes */
-        .flex-row-center { display: flex; justify-content: space-between; align-items: center; }
-        .header-actions { display: flex; gap: 10px; }
-        .mini-btn { background: none; border: none; color: var(--text-color); font-size: 20px; cursor: pointer; }
+        .time-badge {
+            background: var(--bg-color);
+            color: var(--accent-brand);
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .task-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+            gap: 12px;
+            animation: rowIn 0.35s var(--fade-bezier) backwards;
+        }
+        @keyframes rowIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
+
+        .task-text { cursor: pointer; display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
+        .task-text span { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.25s ease, opacity 0.25s ease; }
+        .task-text.completed span { text-decoration: line-through; color: var(--text-muted); opacity: 0.5; }
+        .task-text input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent-brand); cursor: pointer; transition: transform 0.15s ease; }
+        .task-text:hover input[type="checkbox"] { transform: scale(1.05); }
+
+        .btn-delete {
+            background: transparent; color: var(--text-muted); border: none; font-size: 18px; cursor: pointer;
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
+        }
+        .btn-delete:hover { background: #FCE8E6; color: #C5221F; transform: scale(1.05); }
+        .btn-delete:active { transform: scale(0.95); }
+
+        .task-input-container { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+        .input-row-bottom { display: flex; gap: 10px; }
+
+        .input-flat {
+            flex: 1; background: var(--input-bg); border: 1px solid var(--border-color); padding: 14px 16px; border-radius: 14px;
+            font-size: 15px; color: var(--text-main); outline: none; transition: all 0.25s var(--fade-bezier);
+        }
+        .input-flat:focus { border-color: var(--accent-brand); background: var(--card-bg); box-shadow: 0 4px 12px rgba(107,29,47,0.04); }
+
+        .btn-add {
+            background: var(--text-main); color: var(--card-bg); border: none; padding: 0 22px; border-radius: 14px;
+            font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.25s var(--fade-bezier);
+        }
+        .btn-add:hover { background: var(--accent-brand); color: white; transform: translateY(-1px); }
+        .btn-add:active { transform: translateY(1px); }
+
+        /* Editor de Notas Avanzado */
+        .format-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; background: var(--bg-color); padding: 6px; border-radius: 14px; }
+        .format-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-main); transition: all 0.2s ease; }
+        .format-btn:hover { background: var(--accent-brand); color: #FFFFFF; border-color: var(--accent-brand); }
+
+        .rich-editor { width: 100%; height: 220px; background: var(--bg-color); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px; font-size: 15px; color: var(--text-main); outline: none; overflow-y: auto; text-align: left; transition: all 0.25s ease; }
+        .rich-editor:focus { border-color: var(--accent-brand); background: var(--card-bg); box-shadow: 0 4px 12px rgba(107,29,47,0.04); }
+
+        /* Calendario */
+        .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+        .calendar-title-container { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .calendar-title { font-size: 17px; font-weight: 600; text-transform: capitalize; }
+        .weekdays-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        
+        .calendar-day {
+            background: transparent; color: var(--text-main); aspect-ratio: 1; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500;
+            cursor: pointer; border: 1px solid transparent; transition: all 0.2s var(--fade-bezier);
+        }
+        .calendar-day:hover:not(.empty) { background: rgba(0,0,0,0.04); transform: scale(1.03); }
+        [data-theme="dark"] .calendar-day:hover:not(.empty) { background: rgba(255,255,255,0.04); }
+        .calendar-day.empty { background: transparent; cursor: default; }
+        .calendar-day.selected { border-color: var(--accent-brand) !important; color: var(--accent-brand) !important; font-weight: 700; transform: scale(1.05); }
+        .calendar-day.current-today { background: var(--accent-brand) !important; color: white !important; font-weight: 700; }
+
+        /* Modales Estándar con Micro-Animación Completa */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(17, 18, 20, 0.35); backdrop-filter: blur(4px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -46%) scale(0.97); background: var(--card-bg); border-radius: 24px; padding: 24px; z-index: 100; width: 90%; max-width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); opacity: 0; transition: transform 0.3s var(--aura-bezier), opacity 0.3s var(--fade-bezier); max-height: 90vh; overflow-y: auto; }
+        .modal.active { display: block; opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+        /* Cajones Desplegables con Curvas Pro */
+        .cajon-drawer {
+            position: fixed; left: 0; right: 0; bottom: 0; background: var(--blur-bg); backdrop-filter: blur(20px);
+            border-top-left-radius: 28px; border-top-right-radius: 28px; border-top: 1px solid var(--border-color);
+            box-shadow: 0 -8px 32px rgba(0,0,0,0.05); z-index: 110; padding: 24px;
+            transform: translateY(105%); transition: transform 0.4s var(--drawer-bezier);
+            max-height: 85vh; overflow-y: auto;
+        }
+        .cajon-drawer.active { transform: translateY(0); }
+        
+        .drawer-handle { width: 40px; height: 5px; background: var(--border-color); border-radius: 10px; margin: -10px auto 16px auto; cursor: pointer; transition: background-color 0.2s; }
+        .drawer-handle:hover { background: var(--text-muted); }
+
+        .note-item-btn { text-align: left; font-weight: 500; cursor: pointer; background: var(--card-bg); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; margin-bottom: 8px; transition: all 0.2s var(--fade-bezier); animation: fadeIn 0.3s ease; }
+        .note-item-btn:hover { border-color: var(--accent-brand); transform: translateX(3px); }
+        
+        .color-picker { display: flex; gap: 12px; margin: 14px 0; }
+        .color-opt { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .color-opt:hover { transform: scale(1.1); }
+        .color-opt.active { border-color: var(--text-main); transform: scale(1.15); }
+
+        .icon svg { width: 22px; height: 22px; fill: currentColor; color: white; }
+        h3 { font-size: 17px; font-weight: 600; color: var(--text-main); }
+        
+        .config-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; text-align: left; }
+        .config-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+        .custom-select { width: 100%; padding: 12px; border-radius: 12px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-main); font-size: 14px; outline: none; transition: border-color 0.2s ease; }
+        .custom-select:focus { border-color: var(--accent-brand); }
+        
+        /* Switch iOS */
+        .toggle-container { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; width: 100%; }
+        .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent-brand); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Estilos Novedades Parseadas */
+        .log-version-block { margin-bottom: 16px; border-left: 3px solid var(--accent-brand); padding-left: 12px; animation: rowIn 0.4s ease; }
+        .log-version-tag { font-weight: 700; color: var(--accent-brand); font-size: 14px; margin-bottom: 4px; }
+        .log-changes-list { list-style: none; padding-left: 4px; font-size: 13px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+        
+        /* Guía de Ayuda Interactiva */
+        .guide-step { display: none; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(4px); transition: opacity 0.3s ease, transform 0.3s ease; }
+        .guide-step.active { display: flex; opacity: 1; transform: translateY(0); }
+        .guide-nav { display: flex; justify-content: space-between; margin-top: 16px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Overlay Global para Modales -->
-    <div class="overlay" id="global-overlay"></div>
-
-    <!-- MAIN APP WRAPPER -->
-    <main>
+    <div class="phone-container">
         
-        <!-- VISTA: HOME -->
-        <section id="view-home" class="view active">
-            <div class="flex-row-center" style="margin-bottom: 20px;">
-                <h1>Hi, <span class="editable-title" contenteditable="true" id="user-profile-name">User</span></h1>
-                <div class="header-actions">
-                    <button class="mini-btn" id="btn-trigger-manual">📖</button>
-                    <button class="mini-btn" id="btn-trigger-settings">⚙️</button>
+        <!-- VISTA HOME -->
+        <div id="view-home" class="view">
+            <div class="card brand-header">
+                <div class="welcome-title" id="txt-home-title">Control de <span id="username-display" onclick="openModal('username-modal')">Espacio</span></div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button class="btn-back" id="btn-install-pwa" style="padding: 6px 14px; font-size: 12px; display: none;">
+                        <svg style="width:14px; height:14px;" viewBox="0 0 24 24"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+                        <span id="txt-install">Instalar app</span>
+                    </button>
+                    <!-- Botón Ayuda / Manual -->
+                    <button class="btn-back" style="padding: 8px; border-radius: 50%;" onclick="openDrawer('drawer-help')">
+                        <svg style="width:18px; height:18px;" viewBox="0 0 24 24"><path fill="currentColor" d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5c0-2.21-1.79-4-4-4z"/></svg>
+                    </button>
+                    <!-- Botón Novedades (upd.txt real) -->
+                    <button class="btn-back" style="padding: 8px; border-radius: 50%;" onclick="openDrawer('drawer-news')">
+                        <svg style="width:18px; height:18px;" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-3 11H7v-2h10v2zm3-4H7V9h13v2z"/></svg>
+                    </button>
+                    <!-- Botón Ajustes -->
+                    <button class="btn-back" style="padding: 8px; border-radius: 50%;" onclick="openModal('config-modal')">
+                        <svg style="width:18px; height:18px;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97c.04-.32.07-.65.07-.97c0-.32-.03-.65-.07-.97l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.39-1.09-.73-1.71-.98l-.37-2.65A.506.506 0 0 0 14 3h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.63c-.04.32-.07.65-.07.97c0 .32.03.65.07.97l-2.11 1.63c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.39 1.09.73 1.71.98l.37 2.65c.04.24.25.42.49.42h4c.25 0 .46-.18.49-.42l.37-2.65c.61-.25 1.17-.59 1.71-.98l2.49 1c.22.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.63Z"/></svg>
+                    </button>
                 </div>
             </div>
-            
-            <div class="dashboard-grid">
-                <div class="dash-card glass">
-                    <span class="count" id="count-events">0</span>
-                    <span data-i18n="dash_events">Eventos Mes</span>
+
+            <!-- Menú Grid -->
+            <div class="grid-menu">
+                <div class="menu-item" onclick="changeView('view-calendar')">
+                    <div class="icon" style="background-color: var(--accent-brand);"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg></div>
+                    <span id="txt-menu-events">Eventos</span>
                 </div>
-                <div class="dash-card glass">
-                    <span class="count" id="count-tasks">0</span>
-                    <span data-i18n="dash_tasks">Pendientes</span>
+                <div class="menu-item" onclick="changeView('view-tasks')">
+                    <div class="icon" style="background-color: var(--accent-green);"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
+                    <span id="txt-menu-tasks">Pendientes</span>
+                </div>
+                <div class="menu-item" onclick="changeView('view-notes')">
+                    <div class="icon" style="background-color: var(--accent-yellow);"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></div>
+                    <span id="txt-menu-notes">Notas fijas</span>
                 </div>
             </div>
 
-            <div class="schedule-box glass">
-                <h2 data-i18n="day_schedule">Cronograma del Día</h2>
-                <div id="day-schedule-render"></div>
+            <!-- Preview Agenda del Día -->
+            <div class="card">
+                <h3 id="txt-cronograma-title" style="margin-bottom: 16px;">Cronograma del Día</h3>
+                <ul id="home-tasks-list" class="list-preview"></ul>
             </div>
-        </section>
-
-        <!-- VISTA: CALENDARIO -->
-        <section id="view-calendar" class="view">
-            <div class="calendar-header">
-                <button class="calendar-nav-btn" id="cal-prev">◀</button>
-                <h2 id="calendar-month-year">Month Year</h2>
-                <button class="calendar-nav-btn" id="cal-next">▶</button>
-            </div>
-            <div style="text-align: right; margin-bottom: 10px;">
-                <button class="calendar-nav-btn" id="cal-today" data-i18n="btn_today">Hoy</button>
-            </div>
-            <div class="calendar-grid glass" style="padding: 16px; border-radius: 24px;" id="calendar-matrix">
-                <!-- Se inyecta dinámicamente -->
-            </div>
-        </section>
-
-        <!-- VISTA: TAREAS -->
-        <section id="view-tasks" class="view">
-            <h1 data-i18n="tasks_title">Actividades</h1>
-            <div class="input-group">
-                <input type="text" id="task-input-name" placeholder="Nueva tarea..." data-i18n-holder="placeholder_task">
-                <input type="time" id="task-input-time" style="max-width: 110px;">
-                <button class="btn-action" id="btn-add-task">┼</button>
-            </div>
-            <div id="tasks-list-render"></div>
-        </section>
-
-        <!-- VISTA: NOTAS -->
-        <section id="view-notes" class="view">
-            <div class="flex-row-center" style="margin-bottom: 20px;">
-                <h1 data-i18n="notes_title">Notas Conceptuales</h1>
-                <button class="btn-action" id="btn-new-note">┼</button>
-            </div>
-            <div id="notes-grid-render"></div>
-        </section>
-
-    </main>
-
-    <!-- NAVIGATION BAR -->
-    <nav class="navbar glass">
-        <button class="nav-item active" data-target="view-home">🏠</button>
-        <button class="nav-item" data-target="view-calendar">📅</button>
-        <button class="nav-item" data-target="view-tasks">✅</button>
-        <button class="nav-item" data-target="view-notes">📝</button>
-    </nav>
-
-    <!-- DRAWER: CALENDAR CELL DETAILS -->
-    <div class="drawer glass" id="drawer-calendar-cell">
-        <h2 id="drawer-cell-title">Detalles del Día</h2>
-        <div class="input-group" style="margin-top: 14px;">
-            <input type="text" id="evt-input-title" placeholder="Evento..." data-i18n-holder="placeholder_event">
-            <button class="btn-action" id="btn-add-event">┼</button>
         </div>
-        <div class="color-picker">
-            <div class="color-opt selected" style="background: var(--color-red);" data-color="red"></div>
-            <div class="color-opt" style="background: var(--color-green);" data-color="green"></div>
-            <div class="color-opt" style="background: var(--color-yellow);" data-color="yellow"></div>
-            <div class="color-opt" style="background: var(--color-blue);" data-color="blue"></div>
+
+        <!-- VISTA CALENDARIO -->
+        <div id="view-calendar" class="view hidden">
+            <div class="card header-box">
+                <span id="txt-cal-header">Agenda Mensual</span>
+                <button class="btn-back btn-lbl-back" onclick="changeView('view-home')">Volver</button>
+            </div>
+            <div class="card">
+                <div class="calendar-controls">
+                    <button class="btn-back" style="padding: 6px 12px;" onclick="changeMonth(-1)">◀</button>
+                    <div class="calendar-title-container">
+                        <div class="calendar-title" id="calendar-month-year"></div>
+                        <button class="btn-today" id="txt-cal-today" onclick="goToCurrentMonth()">Hoy</button>
+                    </div>
+                    <button class="btn-back" style="padding: 6px 12px;" onclick="changeMonth(1)">▶</button>
+                </div>
+                <div class="weekdays-grid" id="calendar-weekdays"></div>
+                <div class="calendar-grid" id="calendar-grid-box"></div>
+                
+                <div id="calendar-detail-box" style="display:none; border-top:1px solid var(--border-color); padding-top:16px; margin-top:14px;">
+                    <h3 id="txt-cal-detail" style="color:var(--accent-brand); font-size:15px; margin-bottom: 4px;">Detalles del día</h3>
+                    <p id="cal-detail-text" style="margin-bottom: 14px; font-size:14px; color:var(--text-muted);"></p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-back" id="btn-edit-cal" style="background:var(--accent-brand); color:white; border:none; flex: 1;">Asignar</button>
+                        <button class="btn-back" id="btn-delete-cal" style="color:red; border-color:rgba(255,0,0,0.2);">Remover</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="drawer-cell-events-list" style="margin-top: 16px;"></div>
+
+        <!-- VISTA PENDIENTES -->
+        <div id="view-tasks" class="view hidden">
+            <div class="card header-box">
+                <span id="txt-tasks-header">Lista de Actividades</span>
+                <button class="btn-back btn-lbl-back" onclick="changeView('view-home')">Volver</button>
+            </div>
+            <div class="card">
+                <div id="tasks-container" style="display:flex; flex-direction:column;"></div>
+                <div class="task-input-container">
+                    <input type="text" id="task-input" class="input-flat" maxlength="50" placeholder="Nombre de la actividad...">
+                    <div class="input-row-bottom">
+                        <input type="text" id="task-time" class="input-flat" style="text-align:center;" maxlength="5" placeholder="Hora (ej. 17:30)">
+                        <button class="btn-add" id="btn-task-add" style="flex: 1;" onclick="addTask()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA NOTAS FIJAS -->
+        <div id="view-notes" class="view hidden">
+            <div class="card header-box">
+                <span id="txt-notes-header">Bloque de Notas</span>
+                <button class="btn-back btn-lbl-back" onclick="changeView('view-home')">Volver</button>
+            </div>
+            <div class="card">
+                <div id="notes-container" style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;"></div>
+                <div class="input-group" style="display:flex; gap:10px;">
+                    <input type="text" id="note-title-input" class="input-flat" maxlength="30" placeholder="Título de la nota...">
+                    <button class="btn-add" id="btn-note-create" onclick="addNote()">Crear</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- DRAWER: RICH TEXT EDITOR -->
-    <div class="drawer glass" id="drawer-note-editor">
-        <h2 data-i18n="editor_title">Editor de Nota</h2>
-        <div class="editor-toolbar" style="margin-top: 10px;">
-            <button class="editor-btn" data-cmd="formatBlock" data-val="H1">H1</button>
-            <button class="editor-btn" data-cmd="formatBlock" data-val="H2">H2</button>
-            <button class="editor-btn" data-cmd="formatBlock" data-val="P">P</button>
-            <button class="editor-btn" data-cmd="bold">B</button>
-            <button class="editor-btn" data-cmd="italic">I</button>
-            <button class="editor-btn" id="btn-save-note" style="background: var(--accent-color); color: white;" data-i18n="btn_save">Guardar</button>
-        </div>
-        <div class="rich-box" contenteditable="true" id="note-rich-body"></div>
-    </div>
+    <!-- OVERLAY DE MODALES -->
+    <div class="modal-overlay" id="overlay" onclick="closeModals()"></div>
 
-    <!-- DRAWER: SETTINGS -->
-    <div class="drawer glass" id="drawer-settings">
-        <h2 data-i18n="settings_title">Configuración</h2>
+    <!-- MODAL AJUSTES -->
+    <div class="modal" id="config-modal">
+        <h3 id="txt-modal-config-title" style="margin-bottom:20px;">Configuración</h3>
         
-        <div style="margin-top: 16px;">
-            <label style="font-size: 14px; font-weight: 600;" data-i18n="setting_theme">Tema de Interfaz</label>
-            <select id="setting-theme-select" style="margin-top: 6px; width: 100%;">
-                <option value="light" data-i18n="theme_light">Claro</option>
-                <option value="dark" data-i18n="theme_dark">Oscuro</option>
-                <option value="system" data-i18n="theme_system">Sistema</option>
-            </select>
-        </div>
-
-        <div style="margin-top: 16px;">
-            <label style="font-size: 14px; font-weight: 600;" data-i18n="setting_lang">Idioma / Language</label>
-            <select id="setting-lang-select" style="margin-top: 6px; width: 100%;">
+        <div class="config-group">
+            <label id="lbl-lang" for="lang-select">Idioma / Language</label>
+            <select id="lang-select" class="custom-select" onchange="changeLanguage(this.value)">
                 <option value="es">Español</option>
                 <option value="en">English</option>
                 <option value="pt">Português</option>
@@ -515,662 +515,923 @@
             </select>
         </div>
 
-        <!-- Componente Asíncrono de Historial de Novedades (upd.txt) -->
-        <div style="margin-top: 24px;">
-            <label style="font-size: 14px; font-weight: 600;" data-i18n="changelog_title">Historial de Novedades (upd.txt)</label>
-            <div class="changelog-box" id="changelog-render-target">
-                <span style="font-size: 12px; color: var(--text-secondary);" data-i18n="loading_updates">Cargando actualizaciones...</span>
+        <div class="config-group">
+            <label id="lbl-theme" for="theme-select">Tema de la interfaz</label>
+            <select id="theme-select" class="custom-select" onchange="changeTheme(this.value)">
+                <option value="light" id="opt-theme-light">Claro</option>
+                <option value="dark" id="opt-theme-dark">Oscuro</option>
+                <option value="system" id="opt-theme-system">Predeterminado del sistema</option>
+            </select>
+        </div>
+
+        <div class="config-group">
+            <label id="lbl-notify-title">Alertas del Sistema</label>
+            <div class="toggle-container">
+                <span id="lbl-notify-desc" style="font-size: 13px; color: var(--text-muted);">Activar notificaciones nativas</span>
+                <label class="switch">
+                    <input type="checkbox" id="notify-toggle" onchange="toggleNotifications(this.checked)">
+                    <span class="slider"></span>
+                </label>
             </div>
         </div>
+
+        <button class="btn-add btn-lbl-close" style="width:100%; padding:14px; margin-top:14px;" onclick="closeModals()">Cerrar</button>
     </div>
 
-    <!-- DRAWER: MANUAL DE USO -->
-    <div class="drawer glass" id="cajon-drawer">
-        <h2 data-i18n="manual_title">Manual de Uso Colectivo</h2>
-        <div style="margin-top: 12px; font-size: 14px; line-height: 1.6; color: var(--text-color);" id="manual-content-body">
-            <!-- Inyectado por el diccionario de idiomas -->
+    <!-- MODAL DE IDENTIDAD (Username) -->
+    <div class="modal" id="username-modal">
+        <h3 id="txt-modal-id-title" style="margin-bottom:14px;">Identidad del Espacio</h3>
+        <input type="text" id="username-input" class="input-flat" style="width:100%; margin-bottom:18px;" maxlength="14">
+        <button class="btn-add btn-lbl-save" style="width:100%; padding:14px;" onclick="saveUsername()">Guardar</button>
+    </div>
+
+    <!-- MODAL DETALLE/EDICIÓN NOTA -->
+    <div class="modal" id="note-modal">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h3 id="modal-note-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%;"></h3>
+            <button class="btn-back btn-lbl-delete" style="color:red; padding:6px 12px; border-color: rgba(255,0,0,0.1); font-weight: 600;" id="btn-delete-note-trigger">Eliminar</button>
+        </div>
+        <div class="format-bar">
+            <button class="format-btn" onclick="applyFormat('formatBlock', '<h1>')">H1</button>
+            <button class="format-btn" onclick="applyFormat('formatBlock', '<h2>')">H2</button>
+            <button class="format-btn" onclick="applyFormat('formatBlock', '<p>')">P</button>
+            <button class="format-btn" onclick="applyFormat('bold')"><b>B</b></button>
+            <button class="format-btn" onclick="applyFormat('italic')"><i>I</i></button>
+        </div>
+        <div id="modal-note-body" class="rich-editor" contenteditable="true"></div>
+        <p style="font-size:11px; color:var(--text-muted); font-style:italic; margin-top:6px;">Entorno de Edición Enriquecida</p>
+        <button class="btn-add btn-lbl-save" style="width:100%; padding:14px; margin-top:16px;" onclick="saveNoteBody()">Guardar Nota</button>
+    </div>
+
+    <!-- MODAL PLANIFICAR EVENTO CALENDARIO -->
+    <div class="modal" id="calendar-modal">
+        <h3 id="txt-modal-plan-title" style="margin-bottom:14px;">Planificar: <span id="modal-day-num"></span></h3>
+        <input type="text" id="cal-input-title" class="input-flat" style="width:100%; margin-bottom:18px;" placeholder="¿Qué hay planeado para hoy?">
+        <label id="lbl-cal-color" style="font-size:12px; font-weight:600; color:var(--text-muted)">Color identificador:</label>
+        <div class="color-picker">
+            <div class="color-opt active" style="background:var(--accent-brand);" data-color="#6B1D2F"></div>
+            <div class="color-opt" style="background:var(--accent-green);" data-color="#2E7D32"></div>
+            <div class="color-opt" style="background:var(--accent-yellow);" data-color="#C67B00"></div>
+            <div class="color-opt" style="background:#1A73E8;" data-color="#1A73E8"></div>
+        </div>
+        <button class="btn-add" id="btn-cal-save-evt" style="width:100%; padding:14px;" onclick="saveCalendarEvent()">Fijar Evento</button>
+    </div>
+
+    <!-- CAJÓN DE GUÍA DE AYUDA INTERACTIVA -->
+    <div class="cajon-drawer" id="drawer-help">
+        <div class="drawer-handle" onclick="closeDrawer('drawer-help')"></div>
+        <h3 style="margin-bottom: 16px; font-size: 18px; text-align: center;" id="txt-help-title">Manual de Uso del Espacio</h3>
+        
+        <div id="help-steps-container">
+            <div class="guide-step active" data-step="1">
+                <h4 style="color: var(--accent-brand);">1. Centro de Control Doméstico</h4>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">Desde la pantalla de inicio puedes ver un resumen ejecutivo en tiempo real de tu agenda diaria ("Cronograma del Día") y acceder rápidamente a los tres bloques de la grilla minimalista.</p>
+            </div>
+            <div class="guide-step" data-step="2">
+                <h4 style="color: var(--accent-green);">2. Agenda de Eventos Mensuales</h4>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">Accede al calendario, navega usando las flechas y presiona cualquier día para planificar eventos. Podrás asignarles colores de categorización personalizados para un rápido impacto visual.</p>
+            </div>
+            <div class="guide-step" data-step="3">
+                <h4 style="color: var(--accent-yellow);">3. Actividades con Horarios</h4>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">Al añadir pendientes en la sección de Actividades, puedes incluir una hora fija (formato 24h). El sistema realizará un seguimiento en segundo plano para alertarte en el minuto exacto.</p>
+            </div>
+            <div class="guide-step" data-step="4">
+                <h4 style="color: #1A73E8;">4. Notas Estilo iOS Enriquecidas</h4>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">Crea bloques de notas fijas y ábrelas para editarlas con comandos WYSIWYG interactivos (Títulos H1/H2, negritas, itálicas) guardando el formato de manera interna.</p>
+            </div>
+        </div>
+
+        <div class="guide-nav">
+            <button class="btn-back" id="btn-guide-prev" onclick="moveGuideStep(-1)" disabled>Anterior</button>
+            <button class="btn-add" id="btn-guide-next" onclick="moveGuideStep(1)" style="padding: 10px 20px;">Siguiente</button>
         </div>
     </div>
 
-    <!-- CORE APPLICATION LOGIC -->
+    <!-- CAJÓN DE NOVEDADES Y REGISTROS (Carga Real de upd.txt) -->
+    <div class="cajon-drawer" id="drawer-news">
+        <div class="drawer-handle" onclick="closeDrawer('drawer-news')"></div>
+        <h3 style="margin-bottom: 16px; font-size: 18px; text-align: center;" id="txt-news-title">Historial de Actualizaciones</h3>
+        <div id="parsed-logs-box" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+            <p style="text-align: center; color: var(--text-muted); font-size: 14px; padding: 20px 0;">Cargando registro de actualizaciones...</p>
+        </div>
+        <button class="btn-add" style="width: 100%; padding: 12px;" onclick="closeDrawer('drawer-news')">Entendido</button>
+    </div>
+
     <script>
-        // --- MOTOR DE DICTIONARIO INTERNACIONAL (10 IDIOMAS) ---
-        const i18n = {
+        // DATA CENTRAL (Estructura de Persistencia Inmutable)
+        let data = {
+            username: "Espacio",
+            theme: "light",
+            lang: "es",
+            notify: false,
+            tasks: [],
+            notes: [],
+            calendar: {}
+        };
+
+        // DICCIONARIO INTERNACIONAL TOTALMENTE EXPANDIDO (10 Idiomas Completos)
+        const translations = {
             es: {
-                dash_events: "Eventos Mes", dash_tasks: "Pendientes", day_schedule: "Cronograma del Día",
-                btn_today: "Hoy", tasks_title: "Actividades", placeholder_task: "Nueva tarea...",
-                notes_title: "Notas Conceptuales", placeholder_event: "Evento...", editor_title: "Editor de Nota",
-                btn_save: "Guardar", settings_title: "Configuración", setting_theme: "Tema de Interfaz",
-                theme_light: "Claro", theme_dark: "Oscuro", theme_system: "Sistema", setting_lang: "Idioma / Language",
-                changelog_title: "Historial de Novedades", loading_updates: "Buscando archivo upd.txt...",
-                error_updates: "No se pudo cargar el archivo de actualizaciones estructurales.",
-                manual_title: "Manual de Control",
-                manual_html: "<p>Bienvenido. Esta plataforma unifica tus actividades críticas:</p><ul><li><b>Filtro de Tiempo:</b> Asigna horas (24h) a tus tareas para verlas reflejadas en tiempo real en tu Cronograma del Día de la pantalla de inicio.</li><li><b>Motor de Alertas:</b> Revisa los segundos y ejecuta pitidos contextuales de aviso.</li><li><b>Editor Enriquecido:</b> Usa comandos estructurales para dar jerarquía visual a tus ideas.</li></ul>"
+                homeTitle: "Control de ", install: "Instalar app", menuEvents: "Eventos", menuTasks: "Pendientes", menuNotes: "Notas fijas",
+                cronogramaTitle: "Cronograma del Día", calHeader: "Agenda Mensual", calToday: "Hoy", calDetail: "Detalles del día",
+                tasksHeader: "Lista de Actividades", notesHeader: "Bloque de Notas", configTitle: "Configuración", lblLang: "Idioma / Language",
+                lblTheme: "Tema de la interfaz", themeLight: "Claro", themeDark: "Oscuro", themeSystem: "Predeterminado del sistema",
+                lblNotifyTitle: "Alertas del Sistema", lblNotifyDesc: "Activar notificaciones nativas", btnClose: "Cerrar", btnSave: "Guardar",
+                btnDelete: "Eliminar", idTitle: "Identidad del Espacio", planTitle: "Planificar: ", calColor: "Color identificador:",
+                calFix: "Fijar Evento", placeholderTask: "Nombre de la actividad...", placeholderTime: "Hora (ej. 17:30)", btnAdd: "Añadir",
+                placeholderNote: "Título de la nota...", btnCreate: "Crear", placeholderCalEvt: "¿Qué hay planeado para hoy?",
+                noTasks: "Nada planificado para este ciclo.", noTasksBox: "Bandeja limpia por el momento.", noNotes: "No hay registros conceptuales aquí.",
+                noCalEvt: "Libre de compromisos.", calAsignar: "Asignar", calRemover: "Remover", btnVolver: "Volver", helpTitle: "Manual de Uso del Espacio",
+                newsTitle: "Historial de Actualizaciones",
+                weekdays: ["D", "L", "M", "M", "J", "V", "S"],
+                months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
             },
             en: {
-                dash_events: "Month Events", dash_tasks: "Pending Tasks", day_schedule: "Today's Schedule",
-                btn_today: "Today", tasks_title: "Activities", placeholder_task: "New task...",
-                notes_title: "Conceptual Notes", placeholder_event: "Event...", editor_title: "Note Editor",
-                btn_save: "Save", settings_title: "Settings", setting_theme: "Interface Theme",
-                theme_light: "Light", theme_dark: "Dark", theme_system: "System", setting_lang: "Language / Idioma",
-                changelog_title: "Update History", loading_updates: "Searching upd.txt file...",
-                error_updates: "Could not load structural update log.",
-                manual_title: "Control Manual",
-                manual_html: "<p>Welcome. This platform unifies your critical activities:</p><ul><li><b>Time Filter:</b> Assign 24h metrics to tasks to render them instantly on the home dashboard.</li><li><b>Alert Engine:</b> Checks background tasks every 25s triggering synthesis alerts.</li><li><b>Rich text:</b> Build structured layouts instantly.</li></ul>"
+                homeTitle: "Space Control: ", install: "Install app", menuEvents: "Events", menuTasks: "Tasks", menuNotes: "Sticky Notes",
+                cronogramaTitle: "Today's Schedule", calHeader: "Monthly Agenda", calToday: "Today", calDetail: "Day details",
+                tasksHeader: "Activities List", notesHeader: "Notes Block", configTitle: "Configuration", lblLang: "Language / Idioma",
+                lblTheme: "Interface theme", themeLight: "Light", themeDark: "Dark", themeSystem: "System default",
+                lblNotifyTitle: "System Alerts", lblNotifyDesc: "Activate native notifications", btnClose: "Close", btnSave: "Save",
+                btnDelete: "Delete", idTitle: "Space Identity", planTitle: "Plan Day: ", calColor: "Identifier color:",
+                calFix: "Fix Event", placeholderTask: "Activity name...", placeholderTime: "Time (e.g., 17:30)", btnAdd: "Add",
+                placeholderNote: "Note title...", btnCreate: "Create", placeholderCalEvt: "What is planned for today?",
+                noTasks: "Nothing planned for this cycle.", noTasksBox: "Clean tray for the moment.", noNotes: "No conceptual logs here.",
+                noCalEvt: "Free of commitments.", calAsignar: "Assign", calRemover: "Remove", btnVolver: "Back", helpTitle: "Space User Manual",
+                newsTitle: "Update Log History",
+                weekdays: ["S", "M", "T", "W", "T", "F", "S"],
+                months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
             },
             pt: {
-                dash_events: "Eventos do Mês", dash_tasks: "Pendentes", day_schedule: "Cronograma do Dia",
-                btn_today: "Hoje", tasks_title: "Atividades", placeholder_task: "Nova tarefa...",
-                notes_title: "Notas Conceituais", placeholder_event: "Evento...", editor_title: "Editor de Nota",
-                btn_save: "Salvar", settings_title: "Configurações", setting_theme: "Tema da Interface",
-                theme_light: "Claro", theme_dark: "Escuro", theme_system: "Sistema", setting_lang: "Idioma",
-                changelog_title: "Histórico de Novidades", loading_updates: "Carregando upd.txt...",
-                error_updates: "Erro ao ler o arquivo upd.txt.",
-                manual_title: "Manual de Operación",
-                manual_html: "<p>Gestão unificada com estética minimalista e persistência local.</p>"
+                homeTitle: "Controle de ", install: "Instalar app", menuEvents: "Eventos", menuTasks: "Pendentes", menuNotes: "Notas fixas",
+                cronogramaTitle: "Cronograma do Dia", calHeader: "Agenda Mensal", calToday: "Hoje", calDetail: "Detalhes do dia",
+                tasksHeader: "Lista de Atividades", notesHeader: "Bloco de Notas", configTitle: "Configuração", lblLang: "Idioma / Language",
+                lblTheme: "Tema da interface", themeLight: "Claro", themeDark: "Escuro", themeSystem: "Padrão do sistema",
+                lblNotifyTitle: "Alertas do Sistema", lblNotifyDesc: "Ativar notificações nativas", btnClose: "Fechar", btnSave: "Salvar",
+                btnDelete: "Excluir", idTitle: "Identidade do Espaço", planTitle: "Planejar: ", calColor: "Cor identificadora:",
+                calFix: "Fixar Evento", placeholderTask: "Nome da atividade...", placeholderTime: "Hora (ex: 17:30)", btnAdd: "Adicionar",
+                placeholderNote: "Título da nota...", btnCreate: "Criar", placeholderCalEvt: "O que está planejado para hoje?",
+                noTasks: "Nada planejado para este ciclo.", noTasksBox: "Bandeja limpa no momento.", noNotes: "Nenhum registro conceitual aqui.",
+                noCalEvt: "Livre de compromissos.", calAsignar: "Atribuir", calRemover: "Remover", btnVolver: "Voltar", helpTitle: "Manual do Usuário",
+                newsTitle: "Histórico de Atualizações",
+                weekdays: ["D", "S", "T", "Q", "Q", "S", "S"],
+                months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
             },
             fr: {
-                dash_events: "Événements Mois", dash_tasks: "En attente", day_schedule: "Planning du Jour",
-                btn_today: "Aujourd'hui", tasks_title: "Activités", placeholder_task: "Nouvelle tâche...",
-                notes_title: "Notes Conceptuelles", placeholder_event: "Événement...", editor_title: "Éditeur de Note",
-                btn_save: "Enregistrer", settings_title: "Paramètres", setting_theme: "Thème de l'interface",
-                theme_light: "Clair", theme_dark: "Sombre", theme_system: "Système", setting_lang: "Langue",
-                changelog_title: "Historique des mises à jour", loading_updates: "Chargement de upd.txt...",
-                error_updates: "Impossible de charger le journal des modifications.",
-                manual_title: "Mode d'emploi",
-                manual_html: "<p>Interface épurée pour la gestion de vos objectifs quotidiens.</p>"
+                homeTitle: "Contrôle de ", install: "Installer l'app", menuEvents: "Événements", menuTasks: "Tâches", menuNotes: "Notes Fixes",
+                cronogramaTitle: "Planning du Jour", calHeader: "Agenda Mensuel", calToday: "Aujourd'hui", calDetail: "Détails du jour",
+                tasksHeader: "Liste des Activités", notesHeader: "Bloc de Notes", configTitle: "Configuration", lblLang: "Langue / Language",
+                lblTheme: "Thème de l'interface", themeLight: "Clair", themeDark: "Sombre", themeSystem: "Système par défaut",
+                lblNotifyTitle: "Alertes Système", lblNotifyDesc: "Activer les notifications natives", btnClose: "Fermer", btnSave: "Enregistrer",
+                btnDelete: "Supprimer", idTitle: "Identité de l'Espace", planTitle: "Planifier: ", calColor: "Couleur d'identification:",
+                calFix: "Fixer l'Événement", placeholderTask: "Nom de l'activité...", placeholderTime: "Heure (ex: 17:30)", btnAdd: "Ajouter",
+                placeholderNote: "Titre de la note...", btnCreate: "Créer", placeholderCalEvt: "Qu'est-ce qui est prévu aujourd'hui?",
+                noTasks: "Rien de prévu pour ce cycle.", noTasksBox: "Plateau propre pour le moment.", noNotes: "Aucun journal conceptuel ici.",
+                noCalEvt: "Libre d'engagements.", calAsignar: "Assigner", calRemover: "Supprimer", btnVolver: "Retour", helpTitle: "Manuel d'Utilisation",
+                newsTitle: "Historique des Mises à Jour",
+                weekdays: ["D", "L", "M", "M", "J", "V", "S"],
+                months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
             },
             de: {
-                dash_events: "Monatsereignisse", dash_tasks: "Ausstehend", day_schedule: "Tagesplan",
-                btn_today: "Heute", tasks_title: "Aktivitäten", placeholder_task: "Neue Aufgabe...",
-                notes_title: "Konzeptionelle Notizen", placeholder_event: "Ereignis...", editor_title: "Notiz-Editor",
-                btn_save: "Speichern", settings_title: "Einstellungen", setting_theme: "Oberflächendesign",
-                theme_light: "Hell", theme_dark: "Dunkel", theme_system: "System", setting_lang: "Sprache",
-                changelog_title: "Änderungshistorie", loading_updates: "Lade upd.txt...",
-                error_updates: "Änderungsprotokoll konnte nicht geladen werden.",
-                manual_title: "Handbuch",
-                manual_html: "<p>Minimale Produktivitätsplattform mit lokaler Datenverwaltung.</p>"
+                homeTitle: "Raumkontrolle: ", install: "App installieren", menuEvents: "Ereignisse", menuTasks: "Aufgaben", menuNotes: "Notizen",
+                cronogramaTitle: "Tagesplan", calHeader: "Monatsagenda", calToday: "Heute", calDetail: "Tagesdetails",
+                tasksHeader: "Aktivitätenliste", notesHeader: "Notizblock", configTitle: "Konfiguration", lblLang: "Sprache / Language",
+                lblTheme: "Schnittstellen-Theme", themeLight: "Hell", themeDark: "Dunkel", themeSystem: "Systemstandard",
+                lblNotifyTitle: "Systemwarnungen", lblNotifyDesc: "Native Benachrichtigungen aktivieren", btnClose: "Schließen", btnSave: "Speichern",
+                btnDelete: "Löschen", idTitle: "Raumidentität", planTitle: "Planen: ", calColor: "Kennfarbe:",
+                calFix: "Ereignis festlegen", placeholderTask: "Name der Aktivität...", placeholderTime: "Zeit (z. B. 17:30)", btnAdd: "Hinzufügen",
+                placeholderNote: "Notiztitel...", btnCreate: "Erstellen", placeholderCalEvt: "Was ist für heute geplant?",
+                noTasks: "Für diesen Zyklus ist nichts geplant.", noTasksBox: "Sauberes Fach im Moment.", noNotes: "Keine konzeptionellen Protokolle hier.",
+                noCalEvt: "Frei von Verpflichtungen.", calAsignar: "Zuweisen", calRemover: "Entfernen", btnVolver: "Zurück", helpTitle: "Benutzerhandbuch",
+                newsTitle: "Update-Verlaufsprotokoll",
+                weekdays: ["S", "M", "D", "M", "D", "F", "S"],
+                months: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "October", "November", "Dezember"]
             },
             it: {
-                dash_events: "Eventi Mese", dash_tasks: "In sospeso", day_schedule: "Programma del Giorno",
-                btn_today: "Oggi", tasks_title: "Attività", placeholder_task: "Nuova attività...",
-                notes_title: "Note Concettuali", placeholder_event: "Evento...", editor_title: "Editor Note",
-                btn_save: "Salva", settings_title: "Impostazioni", setting_theme: "Tema Interfaccia",
-                theme_light: "Chiaro", theme_dark: "Scuro", theme_system: "Sistema", setting_lang: "Lingua",
-                changelog_title: "Cronologia aggiornamenti", loading_updates: "Caricamento upd.txt...",
-                error_updates: "Errore nel caricamento del file delle modifiche.",
-                manual_title: "Manuale Utente",
-                manual_html: "<p>Hub minimale per tracciare note, compiti ed eventi temporali.</p>"
+                homeTitle: "Controllo di ", install: "Installa app", menuEvents: "Eventi", menuTasks: "Attività", menuNotes: "Note Fisse",
+                cronogramaTitle: "Programma del Giorno", calHeader: "Agenda Mensile", calToday: "Oggi", calDetail: "Dettagli del giorno",
+                tasksHeader: "Elenco Attività", notesHeader: "Blocco Note", configTitle: "Configurazione", lblLang: "Lingua / Language",
+                lblTheme: "Tema dell'interfaccia", themeLight: "Chiaro", themeDark: "Scuro", themeSystem: "Predefinito di sistema",
+                lblNotifyTitle: "Avvisi di Sistema", lblNotifyDesc: "Attiva notifiche native", btnClose: "Chiudi", btnSave: "Salva",
+                btnDelete: "Elimina", idTitle: "Identità dello Spazio", planTitle: "Pianifica: ", calColor: "Colore identificativo:",
+                calFix: "Fissa Evento", placeholderTask: "Nome dell'attività...", placeholderTime: "Ora (es: 17:30)", btnAdd: "Aggiungi",
+                placeholderNote: "Titolo della nota...", btnCreate: "Crea", placeholderCalEvt: "Cosa c'è in programma oggi?",
+                noTasks: "Nulla di pianificato per questo ciclo.", noTasksBox: "Vassoio pulito al momento.", noNotes: "Nessun registro concettuale qui.",
+                noCalEvt: "Libero da impegni.", calAsignar: "Assegna", calRemover: "Rimuovi", btnVolver: "Volter", helpTitle: "Manuale Utente",
+                newsTitle: "Cronologia Aggiornamenti",
+                weekdays: ["D", "L", "M", "M", "G", "V", "S"],
+                months: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"]
             },
             ja: {
-                dash_events: "今月のイベント", dash_tasks: "未完了タスク", day_schedule: "本日のスケジュール",
-                btn_today: "今日", tasks_title: "タスク一覧", placeholder_task: "新しいタスク...",
-                notes_title: "概念メモ", placeholder_event: "イベント名...", editor_title: "メモ編集",
-                btn_save: "保存", settings_title: "設定", setting_theme: "テーマ設定",
-                theme_light: "ライト", theme_dark: "ダーク", theme_system: "システム同期", setting_lang: "言語選択",
-                changelog_title: "更新履歴", loading_updates: "upd.txt を読み込み中...",
-                error_updates: "更新ログの読み込みに失敗しました。",
-                manual_title: "使用説明書",
-                manual_html: "<p>ミニマリズムを追求した、ローカル完結型の生産性管理ツールです。</p>"
+                homeTitle: "空間コントロール: ", install: "アプリをインストール", menuEvents: "イベント", menuTasks: "タスク", menuNotes: "固定メモ",
+                cronogramaTitle: "本日のスケジュール", calHeader: "月間予定表", calToday: "今日", calDetail: "一日の詳細",
+                tasksHeader: "アクティビティリスト", notesHeader: "メモ帳", configTitle: "設定", lblLang: "言語 / Language",
+                lblTheme: "インターフェーステーマ", themeLight: "ライト", themeDark: "ダーク", themeSystem: "システムデフォルト",
+                lblNotifyTitle: "システムアラート", lblNotifyDesc: "ネイティブ通知を有効にする", btnClose: "閉じる", btnSave: "保存",
+                btnDelete: "削除", idTitle: "空間のアイデンティティ", planTitle: "計画する: ", calColor: "識別色:",
+                calFix: "イベントを固定", placeholderTask: "アクティビティ名...", placeholderTime: "時間 (例: 17:30)", btnAdd: "追加",
+                placeholderNote: "メモのタイトル...", btnCreate: "作成", placeholderCalEvt: "今日は何が予定されていますか？",
+                noTasks: "このサイクルには何も計画されていません。", noTasksBox: "現在、トレイは空です。", noNotes: "概念的なログはありません。",
+                noCalEvt: "予定はありません。", calAsignar: "割り当て", calRemover: "削除", btnVolver: "戻る", helpTitle: "ユーザーマニュアル",
+                newsTitle: "更新履歴のログ",
+                weekdays: ["日", "月", "火", "水", "木", "金", "土"],
+                months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
             },
             zh: {
-                dash_events: "本月事件", dash_tasks: "待办任务", day_schedule: "今日日程",
-                btn_today: "今天", tasks_title: "任务管理", placeholder_task: "添加新任务...",
-                notes_title: "概念笔记", placeholder_event: "事件名称...", editor_title: "笔记编辑器",
-                btn_save: "保存", settings_title: "系统设置", setting_theme: "界面主题",
-                theme_light: "浅色", theme_dark: "深色", theme_system: "跟随系统", setting_lang: "语言转换",
-                changelog_title: "更新日志", loading_updates: "正在读取 upd.txt 文件...",
-                error_updates: "无法加载更新日志文件。",
-                manual_title: "操作手册",
-                manual_html: "<p>极简主义的高效任务、事件与富文本笔记综合调度控制台。</p>"
+                homeTitle: "空间控制: ", install: "安装应用", menuEvents: "事件中心", menuTasks: "待办列表", menuNotes: "便签便条",
+                cronogramaTitle: "今日日程安排", calHeader: "月度日程表", calToday: "今天", calDetail: "当日详情",
+                tasksHeader: "活动任务列表", notesHeader: "便签块", configTitle: "系统配置", lblLang: "选择语言 / Language",
+                lblTheme: "界面主题样式", themeLight: "浅色模式", themeDark: "深色模式", themeSystem: "跟随系统默认",
+                lblNotifyTitle: "系统核心通知", lblNotifyDesc: "开启系统原生弹窗通知", btnClose: "关闭销毁", btnSave: "保存更改",
+                btnDelete: "彻底删除", idTitle: "空间核心归属权", planTitle: "排程日期: ", calColor: "色彩视觉标记:",
+                calFix: "确立并固定事件", placeholderTask: "输入活动任务名称...", placeholderTime: "时间点 (例如 17:30)", btnAdd: "添加进表",
+                placeholderNote: "输入便签主题...", btnCreate: "创建新项", placeholderCalEvt: "今天有什么精彩的计划安排？",
+                noTasks: "该周期内无 any 排程任务。", noTasksBox: "当下没有需要处理的任务。", noNotes: "没有任何思想归档记录。",
+                noCalEvt: "日程处于无事轻松状态。", calAsignar: "确立分配", calRemover: "移出表单", btnVolver: "返回主页", helpTitle: "空间交互操作手册",
+                newsTitle: "版本更迭日志",
+                weekdays: ["日", "一", "二", "三", "四", "五", "六"],
+                months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
             },
             ru: {
-                dash_events: "События месяца", dash_tasks: "Задачи", day_schedule: "План на день",
-                btn_today: "Сегодня", tasks_title: "Активности", placeholder_task: "Новая задача...",
-                notes_title: "Концепты", placeholder_event: "Событие...", editor_title: "Редактор заметок",
-                btn_save: "Сохранить", settings_title: "Настройки", setting_theme: "Тема интерфейса",
-                theme_light: "Светлая", theme_dark: "Темная", theme_system: "Системная", setting_lang: "Язык",
-                changelog_title: "История обновлений", loading_updates: "Чтение файла upd.txt...",
-                error_updates: "Ошибка загрузки лога обновлений.",
-                manual_title: "Руководство",
-                manual_html: "<p>Минималистичное пространство для контроля расписания и фиксации идей.</p>"
+                homeTitle: "Контроль Пространства: ", install: "Установить приложение", menuEvents: "События", menuTasks: "Задачи", menuNotes: "Заметки",
+                cronogramaTitle: "Расписание на день", calHeader: "Ежемесячная повестка", calToday: "Сегодня", calDetail: "Детали дня",
+                tasksHeader: "Список активностей", notesHeader: "Блок заметок", configTitle: "Конфигурация", lblLang: "Язык / Language",
+                lblTheme: "Тема интерфейса", themeLight: "Светлая", themeDark: "Тёмная", themeSystem: "По умолчанию",
+                lblNotifyTitle: "Системные оповещения", lblNotifyDesc: "Включить нативные уведомления", btnClose: "Закрыть", btnSave: "Сохранить",
+                btnDelete: "Удалить", idTitle: "Идентификация", planTitle: "План на: ", calColor: "Идентификационный цвет:",
+                calFix: "Закрепить событие", placeholderTask: "Название активности...", placeholderTime: "Время (например, 17:30)", btnAdd: "Добавить",
+                placeholderNote: "Заголовок заметки...", btnCreate: "Создать", placeholderCalEvt: "Что запланировано на сегодня?",
+                noTasks: "Ничего не запланировано.", noTasksBox: "Чистый лоток на данный момент.", noNotes: "Концептуальных записей нет.",
+                noCalEvt: "Свободно от обязательств.", calAsignar: "Назначить", calRemover: "Удалить", btnVolver: "Назад", helpTitle: "Руководство пользователя",
+                newsTitle: "История логов обновлений",
+                weekdays: ["В", "П", "В", "С", "Ч", "П", "С"],
+                months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
             },
             ko: {
-                dash_events: "이번 달 일정", dash_tasks: "남은 할 일", day_schedule: "오늘의 일정",
-                btn_today: "오늘", tasks_title: "할 일 목록", placeholder_task: "새로운 할 일...",
-                notes_title: "개념 노트", placeholder_event: "일정 추가...", editor_title: "노트 편집기",
-                btn_save: "저장", settings_title: "설정", setting_theme: "인터페이스 테마",
-                theme_light: "라이트", theme_dark: "다크", theme_system: "시스템 설정", setting_lang: "언어 설정",
-                changelog_title: "업데이트 기록", loading_updates: "upd.txt 불러오는 중...",
-                error_updates: "업데이트 내역을 불러올 수 없습니다.",
-                manual_title: "사용 안내서",
-                manual_html: "<p>안전한 로컬 스토리지를 활용한 미니멀 디자인 생산성 도구입니다.</p>"
+                homeTitle: "공간 제어: ", install: "앱 설치", menuEvents: "이벤트 관리", menuTasks: "할 일 목록", menuNotes: "고정 메모",
+                cronogramaTitle: "오늘의 일정표", calHeader: "월간 일정", calToday: "오늘", calDetail: "상세 정보",
+                tasksHeader: "활동 관리 목록", notesHeader: "메모 블록", configTitle: "시스템 설정", lblLang: "언어 설정 / Language",
+                lblTheme: "인터페이스 테마", themeLight: "라이트 모드", themeDark: "다크 모드", themeSystem: "시스템 기본 설정",
+                lblNotifyTitle: "시스템 알림 설정", lblNotifyDesc: "기기 자체 네이티브 알림 활성화", btnClose: "창 닫기", btnSave: "변경 저장",
+                btnDelete: "영구 삭제", idTitle: "공간 소유권 신원", planTitle: "일정 계획: ", calColor: "시각적 색상 표기:",
+                calFix: "이벤트 고정 등록", placeholderTask: "활동 내용 입력...", placeholderTime: "시간 지정 (예: 17:30)", btnAdd: "목록 추가",
+                placeholderNote: "메모 제목 입력...", btnCreate: "새로 만들기", placeholderCalEvt: "오늘 어떤 계획이 예정되어 있습니까?",
+                noTasks: "이 사이클에 예정된 일정이 없습니다.", noTasksBox: "현재 정리된 상태입니다.", noNotes: "개념적인 생각 아카이브가 비어 있습니다.",
+                noCalEvt: "일정이 비어 있는 편안한 상태입니다.", calAsignar: "할당 등록", calRemover: "목록 제거", btnVolver: "메인으로", helpTitle: "공간 조작 지침 가이드",
+                newsTitle: "버전 업데이트 로그 기록",
+                weekdays: ["일", "월", "화", "수", "목", "금", "토"],
+                months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
             }
         };
 
-        // --- ESTADO INTERNO DE LA APLICACIÓN ---
-        let state = {
-            userName: localStorage.getItem('userName') || 'Pablo',
-            currentLang: localStorage.getItem('lang') || 'es',
-            currentTheme: localStorage.getItem('theme') || 'system',
-            tasks: JSON.parse(localStorage.getItem('tasks')) || [],
-            notes: JSON.parse(localStorage.getItem('notes')) || [],
-            events: JSON.parse(localStorage.getItem('events')) || {}, // Estructura: {"YYYY-MM-DD": [{id, title, color}]}
-            selectedDateStr: null,
-            editingNoteId: null
-        };
+        // VARIABLES DE ESTADO CALENDARIO Y RECORRIDO
+        let currentYear, currentMonth;
+        let daySelectedStr = "";
+        let noteSelectedId = null;
+        let currentGuideStep = 1;
+        const totalGuideSteps = 4;
+        let tareasNotificadas = new Set();
 
-        let currentCalendarDate = new Date();
-
-        // --- MOTOR DE TRADUCCIÓN REACTIVA ---
-        function applyTranslations() {
-            const dictionary = i18n[state.currentLang] || i18n['es'];
-            
-            // Atributos textContent
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (dictionary[key]) el.textContent = dictionary[key];
-            });
-
-            // Atributos placeholders
-            document.querySelectorAll('[data-i18n-holder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-holder');
-                if (dictionary[key]) el.setAttribute('placeholder', dictionary[key]);
-            });
-
-            // Inyección del cuerpo del manual estructurado
-            const manualBox = document.getElementById('manual-content-body');
-            if(manualBox && dictionary.manual_html) {
-                manualBox.innerHTML = dictionary.manual_html;
-            }
-        }
-
-        // --- CONTROLADORES DE MODALES Y DRAWERS ---
-        function openDrawer(id) {
-            document.getElementById('global-overlay').classList.add('active');
-            document.getElementById(id).classList.add('open');
-        }
-
-        function closeAllDrawers() {
-            document.getElementById('global-overlay').classList.remove('active');
-            document.querySelectorAll('.drawer').forEach(d => d.classList.remove('open'));
-            state.editingNoteId = null;
-            state.selectedDateStr = null;
-        }
-
-        document.getElementById('global-overlay').addEventListener('click', closeAllDrawers);
-
-        // --- RENDERIZADO ASÍNCRONO DEL ARCHIVO UPD.TXT (PARSER) ---
-        async function fetchAndRenderChangelog() {
-            const container = document.getElementById('changelog-render-target');
-            const dictionary = i18n[state.currentLang] || i18n['es'];
+        // PETICIÓN ASÍNCRONA REAL Y MOTOR DE PARSEO DE ARCHIVOS TEXTO (upd.txt)
+        async function fetchAndParseUpdLogs() {
+            const container = document.getElementById('parsed-logs-box');
             
             try {
-                // Petición asíncrona hacia la raíz del dominio
-                const response = await fetch('upd.txt');
-                if(!response.ok) throw new Error("No encontrado");
+                // Petición HTTP Fetch real al archivo upd.txt del servidor local o remoto
+                const response = await fetch('./upd.txt');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const textData = await response.text();
                 
-                const rawText = await response.text();
-                const lines = rawText.split('\n');
-                
-                container.innerHTML = ''; // Limpiar el estado de carga
-                
-                let currentVersionDiv = null;
+                container.innerHTML = "";
+                const lines = textData.split('\n');
+                let currentBlock = null;
+                let currentUl = null;
+                let blocksCount = 0;
 
                 lines.forEach(line => {
-                    let cleanLine = line.trim();
-                    if(!cleanLine) return;
+                    let trimmed = line.trim();
+                    if(!trimmed) return;
 
-                    // Expresión regular para detectar versiones (Ej: V2.6.4 o v1.0)
-                    if(/^v[0-9]/i.test(cleanLine)) {
-                        currentVersionDiv = document.createElement('div');
-                        currentVersionDiv.className = 'log-version';
-                        currentVersionDiv.textContent = cleanLine;
-                        container.appendChild(currentVersionDiv);
-                    } else {
-                        // Limpieza de guiones de cambios o viñetas
-                        if(cleanLine.startsWith('-')) {
-                            cleanLine = cleanLine.substring(1).trim();
-                        }
-                        const item = document.createElement('div');
-                        item.className = 'log-item';
-                        item.textContent = `• ${cleanLine}`;
-                        
-                        if(currentVersionDiv) {
-                            container.appendChild(item);
-                        } else {
-                            // Líneas sueltas al inicio sin versión declarada
-                            const singleItem = document.createElement('div');
-                            singleItem.className = 'log-item';
-                            singleItem.style.fontWeight = '600';
-                            singleItem.textContent = cleanLine;
-                            container.appendChild(singleItem);
-                        }
+                    // Detectar tag de versión (Inicia con V o v seguido de número)
+                    if(/^V\d/i.test(trimmed)) {
+                        if(currentBlock) container.appendChild(currentBlock);
+
+                        currentBlock = document.createElement('div');
+                        currentBlock.className = 'log-version-block';
+                        currentBlock.style.animationDelay = `${blocksCount * 0.05}s`;
+
+                        let versionTag = document.createElement('div');
+                        versionTag.className = 'log-version-tag';
+                        versionTag.innerText = trimmed;
+                        currentBlock.appendChild(versionTag);
+
+                        currentUl = document.createElement('ul');
+                        currentUl.className = 'log-changes-list';
+                        currentBlock.appendChild(currentUl);
+                        blocksCount++;
+                    } 
+                    // Detectar líneas de cambios listados
+                    else if(trimmed.startsWith('-') && currentUl) {
+                        let li = document.createElement('li');
+                        li.innerText = trimmed.substring(1).trim();
+                        currentUl.appendChild(li);
                     }
                 });
 
-                if(container.children.length === 0) {
-                    container.innerHTML = `<span style="font-size:12px;color:var(--text-secondary);">upd.txt vacío</span>`;
+                if(currentBlock) container.appendChild(currentBlock);
+                
+                if(blocksCount === 0) {
+                    container.innerHTML = `<p style="text-align: center; color: var(--text-muted); font-size: 13px;">El archivo upd.txt está vacío o no tiene el formato correcto (ej: V2.6.4).</p>`;
                 }
 
-            } catch (err) {
-                container.innerHTML = `<span style="font-size: 12px; color: var(--danger-color);">${dictionary.error_updates}</span>`;
-            }
-        }
-
-        // --- SISTEMA DE ENRUTAMIENTO (VIEWS) ---
-        document.querySelectorAll('.nav-item').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                
-                button.classList.add('active');
-                const targetView = button.getAttribute('data-target');
-                document.getElementById(targetView).classList.add('active');
-
-                if(targetView === 'view-calendar') renderCalendar();
-                if(targetView === 'view-home') renderHomeSchedule();
-                
-                updateMetrics();
-            });
-        });
-
-        // --- COMPONENTE: TAREAS (ACTIVIDADES) ---
-        function renderTasks() {
-            const container = document.getElementById('tasks-list-render');
-            container.innerHTML = '';
-            
-            state.tasks.forEach(task => {
-                const row = document.createElement('div');
-                row.className = `item-row glass ${task.completed ? 'completed' : ''}`;
-                
-                row.innerHTML = `
-                    <div class="item-left">
-                        <div class="checkbox-custom ${task.completed ? 'checked' : ''}" onclick="toggleTask('${task.id}')"></div>
-                        <span class="item-text" style="font-weight:500;">${task.name}</span>
-                        ${task.time ? `<span class="schedule-time">⏰ ${task.time}</span>` : ''}
-                    </div>
-                    <button class="mini-btn" style="color:var(--danger-color);" onclick="deleteTask('${task.id}')">✕</button>
-                `;
-                container.appendChild(row);
-            });
-            updateMetrics();
-        }
-
-        document.getElementById('btn-add-task').addEventListener('click', () => {
-            const nameInput = document.getElementById('task-input-name');
-            const timeInput = document.getElementById('task-input-time');
-            if(!nameInput.value.trim()) return;
-
-            state.tasks.push({
-                id: 'task_' + Date.now(),
-                name: nameInput.value.trim(),
-                time: timeInput.value || null,
-                completed: false
-            });
-
-            nameInput.value = '';
-            timeInput.value = '';
-            localStorage.setItem('tasks', JSON.stringify(state.tasks));
-            renderTasks();
-        });
-
-        window.toggleTask = function(id) {
-            state.tasks = state.tasks.map(t => t.id === id ? {...t, completed: !t.completed} : t);
-            localStorage.setItem('tasks', JSON.stringify(state.tasks));
-            renderTasks();
-        };
-
-        window.deleteTask = function(id) {
-            state.tasks = state.tasks.filter(t => t.id !== id);
-            localStorage.setItem('tasks', JSON.stringify(state.tasks));
-            renderTasks();
-        };
-
-        // --- COMPONENTE: CALENDARIO ---
-        function renderCalendar() {
-            const matrix = document.getElementById('calendar-matrix');
-            const title = document.getElementById('calendar-month-year');
-            matrix.innerHTML = '';
-
-            const year = currentCalendarDate.getFullYear();
-            const month = currentCalendarDate.getMonth();
-
-            title.textContent = currentCalendarDate.toLocaleDateString(state.currentLang, { month: 'long', year: 'numeric' }).toUpperCase();
-
-            // Rótulos de días de la semana extendidos
-            const dummyDate = new Date(2026, 0, 5); // Un lunes de referencia
-            for(let i=0; i<7; i++) {
-                const dayLabel = document.createElement('div');
-                dayLabel.className = 'weekday-label';
-                dayLabel.textContent = dummyDate.toLocaleDateString(state.currentLang, { weekday: 'short' }).substring(0,2).toUpperCase();
-                matrix.appendChild(dayLabel);
-                dummyDate.setDate(dummyDate.getDate() + 1);
-            }
-
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const transformIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1; // Ajuste a inicio Lunes
-            const totalDays = new Date(year, month + 1, 0).getDate();
-
-            // Celdas vacías del mes anterior
-            for(let i=0; i<transformIndex; i++) {
-                const emptyCell = document.createElement('div');
-                matrix.appendChild(emptyCell);
-            }
-
-            // Días efectivos del mes
-            const today = new Date();
-            for(let day=1; day<=totalDays; day++) {
-                const cell = document.createElement('div');
-                cell.className = 'calendar-day';
-                cell.textContent = day;
-
-                const currentStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-                
-                if(day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                    cell.classList.add('today');
-                }
-
-                // Renderizado de indicadores de color internos por evento asignado
-                if(state.events[currentStr] && state.events[currentStr].length > 0) {
-                    const dotsWrap = document.createElement('div');
-                    dotsWrap.className = 'day-dots';
-                    state.events[currentStr].slice(0, 3).forEach(evt => {
-                        const dot = document.createElement('div');
-                        dot.className = 'dot';
-                        dot.style.backgroundColor = `var(--color-${evt.color})`;
-                        dotsWrap.appendChild(dot);
-                    });
-                    cell.appendChild(dotsWrap);
-                }
-
-                cell.addEventListener('click', () => openDayCellDrawer(currentStr, day));
-                matrix.appendChild(cell);
-            }
-        }
-
-        document.getElementById('cal-prev').addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderCalendar(); });
-        document.getElementById('cal-next').addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderCalendar(); });
-        document.getElementById('cal-today').addEventListener('click', () => { currentCalendarDate = new Date(); renderCalendar(); });
-
-        function openDayCellDrawer(dateStr, dayNum) {
-            state.selectedDateStr = dateStr;
-            document.getElementById('drawer-cell-title').textContent = `${dayNum} - ${currentCalendarDate.toLocaleDateString(state.currentLang, {month: 'long'})}`;
-            renderCellEvents();
-            openDrawer('drawer-calendar-cell');
-        }
-
-        function renderCellEvents() {
-            const list = document.getElementById('drawer-cell-events-list');
-            list.innerHTML = '';
-            const dayEvents = state.events[state.selectedDateStr] || [];
-
-            dayEvents.forEach(evt => {
-                const node = document.createElement('div');
-                node.className = 'item-row glass';
-                node.style.borderLeft = `5px solid var(--color-${evt.color})`;
-                node.innerHTML = `
-                    <span style="font-weight:600;">${evt.title}</span>
-                    <button class="mini-btn" style="color:var(--danger-color);" onclick="deleteEvent('${evt.id}')">✕</button>
-                `;
-                list.appendChild(node);
-            });
-        }
-
-        // Selección activa de etiquetas de color en el editor de celdas
-        document.querySelectorAll('.color-opt').forEach(opt => {
-            opt.addEventListener('click', () => {
-                document.querySelectorAll('.color-opt').forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-            });
-        });
-
-        document.getElementById('btn-add-event').addEventListener('click', () => {
-            const titleInput = document.getElementById('evt-input-title');
-            if(!titleInput.value.trim() || !state.selectedDateStr) return;
-
-            const selectedColorOpt = document.querySelector('.color-opt.selected');
-            const color = selectedColorOpt ? selectedColorOpt.getAttribute('data-color') : 'blue';
-
-            if(!state.events[state.selectedDateStr]) state.events[state.selectedDateStr] = [];
-            
-            state.events[state.selectedDateStr].push({
-                id: 'evt_' + Date.now(),
-                title: titleInput.value.trim(),
-                color: color
-            });
-
-            titleInput.value = '';
-            localStorage.setItem('events', JSON.stringify(state.events));
-            renderCellEvents();
-            renderCalendar();
-            updateMetrics();
-        });
-
-        window.deleteEvent = function(id) {
-            if(!state.selectedDateStr) return;
-            state.events[state.selectedDateStr] = state.events[state.selectedDateStr].filter(e => e.id !== id);
-            if(state.events[state.selectedDateStr].length === 0) delete state.events[state.selectedDateStr];
-            
-            localStorage.setItem('events', JSON.stringify(state.events));
-            renderCellEvents();
-            renderCalendar();
-            updateMetrics();
-        };
-
-        // --- COMPONENTE: CRONOGRAMA DE INICIO ---
-        function renderHomeSchedule() {
-            const container = document.getElementById('day-schedule-render');
-            container.innerHTML = '';
-
-            // Filtrado estricto de tareas que poseen una métrica horaria definida
-            const timedTasks = state.tasks.filter(t => t.time && !t.completed);
-            
-            // Ordenación ascendente por hora cronológica
-            timedTasks.sort((a, b) => a.time.localeCompare(b.time));
-
-            if(timedTasks.length === 0) {
-                container.innerHTML = `<span style="font-size: 13px; color: var(--text-secondary);">No hay actividades programadas para hoy.</span>`;
-                return;
-            }
-
-            timedTasks.forEach(task => {
-                const item = document.createElement('div');
-                item.className = 'schedule-item';
-                item.innerHTML = `
-                    <span class="schedule-time">${task.time}</span>
-                    <span style="font-size:14px; font-weight:500;">${task.name}</span>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        // --- COMPONENTE: NOTAS CONCEPTUALES ---
-        function renderNotes() {
-            const container = document.getElementById('notes-grid-render');
-            container.innerHTML = '';
-
-            state.notes.forEach(note => {
-                const card = document.createElement('div');
-                card.className = 'dash-card glass';
-                card.style.cursor = 'pointer';
-                card.style.minHeight = '100px';
-                
-                // Sanitización del título del nodo HTML para la visualización de la tarjeta
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = note.body;
-                const plainText = tempDiv.textContent || tempDiv.innerText || 'Nota vacía';
-                
-                card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
-                        <div style="font-size:14px; font-weight:500; line-height:1.4; color:var(--text-color); display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical; overflow:hidden;">
-                            ${plainText}
-                        </div>
-                        <button class="mini-btn" style="color:var(--danger-color); font-size:14px;" onclick="event.stopPropagation(); deleteNote('${note.id}')">✕</button>
+            } catch (error) {
+                console.error("Error cargando upd.txt de forma asíncrona:", error);
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 14px; border-radius:14px; background: rgba(255,0,0,0.05); border: 1px solid rgba(255,0,0,0.15);">
+                        <p style="color: #C5221F; font-size: 14px; font-weight: 600; margin-bottom:4px;">No se detectó el archivo 'upd.txt'</p>
+                        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.4;">Asegúrate de colocar el archivo <strong>upd.txt</strong> exactamente en la raíz de tu proyecto web al lado del index.html y levantar un servidor HTTP.</p>
                     </div>
                 `;
-                card.addEventListener('click', () => openNoteEditor(note.id));
-                container.appendChild(card);
-            });
-        }
-
-        function openNoteEditor(id = null) {
-            state.editingNoteId = id;
-            const editor = document.getElementById('note-rich-body');
-            
-            if(id) {
-                const note = state.notes.find(n => n.id === id);
-                editor.innerHTML = note ? note.body : '';
-            } else {
-                editor.innerHTML = '<h1></h1><p></p>';
             }
-            openDrawer('drawer-note-editor');
         }
 
-        document.getElementById('btn-new-note').addEventListener('click', () => openNoteEditor(null));
-
-        // Comandos nativos estructurales WYSIWYG
-        document.querySelectorAll('.editor-btn[data-cmd]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const cmd = btn.getAttribute('data-cmd');
-                const val = btn.getAttribute('data-val') || null;
-                document.execCommand(cmd, false, val);
-            });
-        });
-
-        document.getElementById('btn-save-note').addEventListener('click', () => {
-            const htmlContent = document.getElementById('note-rich-body').innerHTML;
+        // MOTOR DE TRADUCCIÓN GLOBAL
+        function changeLanguage(langCode) {
+            data.lang = langCode;
+            const t = translations[langCode] || translations.es;
             
-            if(state.editingNoteId) {
-                state.notes = state.notes.map(n => n.id === state.editingNoteId ? {...n, body: htmlContent} : n);
-            } else {
-                state.notes.push({
-                    id: 'note_' + Date.now(),
-                    body: htmlContent
-                });
+            document.getElementById('txt-home-title').innerHTML = `${t.homeTitle}<span id="username-display" onclick="openModal('username-modal')">${data.username}</span>`;
+            document.getElementById('txt-install').innerText = t.install;
+            document.getElementById('txt-menu-events').innerText = t.menuEvents;
+            document.getElementById('txt-menu-tasks').innerText = t.menuTasks;
+            document.getElementById('txt-menu-notes').innerText = t.menuNotes;
+            document.getElementById('txt-cronograma-title').innerText = t.cronogramaTitle;
+            document.getElementById('txt-cal-header').innerText = t.calHeader;
+            document.getElementById('txt-cal-today').innerText = t.calToday;
+            document.getElementById('txt-cal-detail').innerText = t.calDetail;
+            document.getElementById('txt-tasks-header').innerText = t.tasksHeader;
+            document.getElementById('txt-notes-header').innerText = t.notesHeader;
+            document.getElementById('txt-modal-config-title').innerText = t.configTitle;
+            document.getElementById('lbl-lang').innerText = t.lblLang;
+            document.getElementById('lbl-theme').innerText = t.lblTheme;
+            document.getElementById('opt-theme-light').innerText = t.themeLight;
+            document.getElementById('opt-theme-dark').innerText = t.themeDark;
+            document.getElementById('opt-theme-system').innerText = t.themeSystem;
+            document.getElementById('lbl-notify-title').innerText = t.lblNotifyTitle;
+            document.getElementById('lbl-notify-desc').innerText = t.lblNotifyDesc;
+            document.getElementById('txt-modal-id-title').innerText = t.idTitle;
+            document.getElementById('txt-modal-plan-title').innerHTML = `${t.planTitle}<span id="modal-day-num">${daySelectedStr}</span>`;
+            document.getElementById('lbl-cal-color').innerText = t.calColor;
+            document.getElementById('btn-cal-save-evt').innerText = t.calFix;
+            document.getElementById('task-input').placeholder = t.placeholderTask;
+            document.getElementById('task-time').placeholder = t.placeholderTime;
+            document.getElementById('btn-task-add').innerText = t.btnAdd;
+            document.getElementById('note-title-input').placeholder = t.placeholderNote;
+            document.getElementById('btn-note-create').innerText = t.btnCreate;
+            document.getElementById('cal-input-title').placeholder = t.placeholderCalEvt;
+            document.getElementById('btn-edit-cal').innerText = t.calAsignar;
+            document.getElementById('btn-delete-cal').innerText = t.calRemover;
+            document.getElementById('txt-help-title').innerText = t.helpTitle;
+            document.getElementById('txt-news-title').innerText = t.newsTitle;
+
+            document.querySelectorAll('.btn-lbl-back').forEach(b => b.innerText = t.btnVolver);
+            document.querySelectorAll('.btn-lbl-close').forEach(b => b.innerText = t.btnClose);
+            document.querySelectorAll('.btn-lbl-save').forEach(b => b.innerText = t.btnSave);
+            document.querySelectorAll('.btn-lbl-delete').forEach(b => b.innerText = t.btnDelete);
+
+            renderEverything();
+            saveToLocalStorage();
+        }
+
+        // CONTROL DE DRAWERS CON ANIMACIÓN SUAVE
+        function openDrawer(id) {
+            const overlay = document.getElementById('overlay');
+            overlay.style.display = 'block';
+            setTimeout(() => overlay.style.opacity = '1', 10);
+            document.getElementById(id).classList.add('active');
+            
+            // Si abren el panel de novedades, ejecutar fetch en tiempo real
+            if(id === 'drawer-news') {
+                fetchAndParseUpdLogs();
             }
-
-            localStorage.setItem('notes', JSON.stringify(state.notes));
-            closeAllDrawers();
-            renderNotes();
-        });
-
-        window.deleteNote = function(id) {
-            state.notes = state.notes.filter(n => n.id !== id);
-            localStorage.setItem('notes', JSON.stringify(state.notes));
-            renderNotes();
-        };
-
-        // --- SISTEMA DE MÉTRICAS GLOBALES ---
-        function updateMetrics() {
-            document.getElementById('count-tasks').textContent = state.tasks.filter(t => !t.completed).length;
-            
-            const currentYear = currentCalendarDate.getFullYear();
-            const currentMonth = String(currentCalendarDate.getMonth() + 1).padStart(2, '0');
-            let matchCount = 0;
-
-            Object.keys(state.events).forEach(dateKey => {
-                if(dateKey.startsWith(`${currentYear}-${currentMonth}`)) {
-                    matchCount += state.events[dateKey].length;
-                }
-            });
-            document.getElementById('count-events').textContent = matchCount;
         }
 
-        // --- MANEJADORES DE CONFIGURACIÓN Y PERFIL ---
-        document.getElementById('user-profile-name').textContent = state.userName;
-        document.getElementById('user-profile-name').addEventListener('blur', (e) => {
-            state.userName = e.target.textContent.trim() || 'User';
-            localStorage.setItem('userName', state.userName);
-        });
+        function closeDrawer(id) {
+            document.getElementById(id).classList.remove('active');
+            if(!document.querySelector('.modal.active')) {
+                const overlay = document.getElementById('overlay');
+                overlay.style.opacity = '0';
+                setTimeout(() => { if(overlay.style.opacity === '0') overlay.style.display = 'none'; }, 300);
+            }
+        }
 
-        document.getElementById('btn-trigger-settings').addEventListener('click', () => {
-            document.getElementById('setting-theme-select').value = state.currentTheme;
-            document.getElementById('setting-lang-select').value = state.currentLang;
-            fetchAndRenderChangelog(); // Consulta asíncrona del archivo upd.txt cada vez que se abren los ajustes
-            openDrawer('drawer-settings');
-        });
+        // CONTROL DE MANUAL DE AYUDA INTERACTIVO
+        function moveGuideStep(direction) {
+            currentGuideStep += direction;
+            if(currentGuideStep < 1) currentGuideStep = 1;
+            if(currentGuideStep > totalGuideSteps) currentGuideStep = totalGuideSteps;
 
-        document.getElementById('btn-trigger-manual').addEventListener('click', () => {
-            openDrawer('cajon-drawer');
-        });
-
-        document.getElementById('setting-theme-select').addEventListener('change', (e) => {
-            state.currentTheme = e.target.value;
-            localStorage.setItem('theme', state.currentTheme);
+            document.querySelectorAll('.guide-step').forEach(step => step.classList.remove('active'));
             
-            let targetTheme = state.currentTheme;
-            if(state.currentTheme === 'system') {
+            const targetStep = document.querySelector(`.guide-step[data-step="${currentGuideStep}"]`);
+            targetStep.classList.add('active');
+
+            document.getElementById('btn-guide-prev').disabled = (currentGuideStep === 1);
+            document.getElementById('btn-guide-next').innerText = (currentGuideStep === totalGuideSteps) ? "Finalizar" : "Siguiente";
+        }
+        
+        document.getElementById('btn-guide-next').addEventListener('click', function() {
+            if(currentGuideStep === totalGuideSteps) {
+                closeDrawer('drawer-help');
+                setTimeout(() => {
+                    currentGuideStep = 1;
+                    moveGuideStep(0);
+                }, 400);
+            }
+        });
+
+        // NAVEGACIÓN ENTRE VISTAS PRINCIPALES (Suave deslizamiento)
+        function changeView(viewId) {
+            const activeView = document.querySelector('.view:not(.hidden)');
+            if (activeView) {
+                activeView.style.opacity = '0';
+                activeView.style.transform = 'translateY(6px)';
+                setTimeout(() => {
+                    activeView.classList.add('hidden');
+                    const nextView = document.getElementById(viewId);
+                    nextView.classList.remove('hidden');
+                    // Forzar reflow
+                    nextView.offsetHeight;
+                    nextView.style.opacity = '1';
+                    nextView.style.transform = 'translateY(0)';
+                }, 150);
+            } else {
+                document.getElementById(viewId).classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // MANEJO DE MODALES
+        function openModal(modalId) {
+            const overlay = document.getElementById('overlay');
+            overlay.style.display = 'block';
+            setTimeout(() => overlay.style.opacity = '1', 10);
+            
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'block';
+            setTimeout(() => modal.classList.add('active'), 20);
+
+            if(modalId === 'username-modal') {
+                document.getElementById('username-input').value = data.username;
+            }
+        }
+
+        function closeModals() {
+            document.querySelectorAll('.modal').forEach(m => {
+                m.classList.remove('active');
+                setTimeout(() => m.style.display = 'none', 300);
+            });
+            document.querySelectorAll('.cajon-drawer').forEach(d => d.classList.remove('active'));
+            
+            const overlay = document.getElementById('overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => { if(overlay.style.opacity === '0') overlay.style.display = 'none'; }, 300);
+        }
+
+        // CONFIGURACIÓN DE TEMAS
+        function changeTheme(themeMode) {
+            data.theme = themeMode;
+            let targetTheme = themeMode;
+            if(themeMode === 'system') {
                 targetTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             }
             document.documentElement.setAttribute('data-theme', targetTheme);
+            saveToLocalStorage();
+        }
+
+        function saveUsername() {
+            let val = document.getElementById('username-input').value.trim();
+            if(val) {
+                data.username = val;
+                changeLanguage(data.lang);
+                closeModals();
+            }
+        }
+
+        // COMPONENTE: GESTIÓN DE ACTIVIDADES
+        function addTask() {
+            const txt = document.getElementById('task-input').value.trim();
+            const timeVal = document.getElementById('task-time').value.trim();
+            if(!txt) return;
+
+            data.tasks.push({
+                id: Date.now(),
+                text: txt,
+                time: timeVal || null,
+                completed: false
+            });
+
+            document.getElementById('task-input').value = "";
+            document.getElementById('task-time').value = "";
+            renderEverything();
+            saveToLocalStorage();
+        }
+
+        function toggleTask(id) {
+            data.tasks = data.tasks.map(t => t.id === id ? {...t, completed: !t.completed} : t);
+            renderEverything();
+            saveToLocalStorage();
+        }
+
+        function deleteTask(id) {
+            const element = document.querySelector(`[data-task-id="${id}"]`);
+            if(element) {
+                element.style.opacity = '0';
+                element.style.transform = 'translateX(15px)';
+                setTimeout(() => {
+                    data.tasks = data.tasks.filter(t => t.id !== id);
+                    renderEverything();
+                    saveToLocalStorage();
+                }, 250);
+            } else {
+                data.tasks = data.tasks.filter(t => t.id !== id);
+                renderEverything();
+                saveToLocalStorage();
+            }
+        }
+
+        // COMPONENTE: BLOQUE DE NOTAS
+        function addNote() {
+            const title = document.getElementById('note-title-input').value.trim();
+            if(!title) return;
+
+            const newNote = {
+                id: Date.now(),
+                title: title,
+                body: "<div>Comienza a escribir tu nota enriquecida...</div>"
+            };
+
+            data.notes.push(newNote);
+            document.getElementById('note-title-input').value = "";
+            renderEverything();
+            saveToLocalStorage();
+        }
+
+        function openNoteModal(id) {
+            const note = data.notes.find(n => n.id === id);
+            if(!note) return;
+            noteSelectedId = id;
+
+            document.getElementById('modal-note-title').innerText = note.title;
+            document.getElementById('modal-note-body').innerHTML = note.body;
+            
+            document.getElementById('btn-delete-note-trigger').onclick = function() {
+                data.notes = data.notes.filter(n => n.id !== noteSelectedId);
+                closeModals();
+                renderEverything();
+                saveToLocalStorage();
+            };
+
+            openModal('note-modal');
+        }
+
+        function applyFormat(command, value = null) {
+            document.execCommand(command, false, value);
+        }
+
+        function saveNoteBody() {
+            if(noteSelectedId) {
+                const bodyContent = document.getElementById('modal-note-body').innerHTML;
+                data.notes = data.notes.map(n => n.id === noteSelectedId ? {...n, body: bodyContent} : n);
+                saveToLocalStorage();
+                closeModals();
+                renderEverything();
+            }
+        }
+
+        // COMPONENTE: AGENDA MENSUAL
+        function initCalendar() {
+            const hoy = new Date();
+            currentYear = hoy.getFullYear();
+            currentMonth = hoy.getMonth();
+            renderCalendar();
+        }
+
+        function changeMonth(dir) {
+            currentMonth += dir;
+            if(currentMonth < 0) { currentMonth = 11; currentYear--; }
+            if(currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar();
+        }
+
+        function goToCurrentMonth() {
+            const hoy = new Date();
+            currentYear = hoy.getFullYear();
+            currentMonth = hoy.getMonth();
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const t = translations[data.lang] || translations.es;
+            document.getElementById('calendar-month-year').innerText = `${t.months[currentMonth]} ${currentYear}`;
+            
+            const weekdaysBox = document.getElementById('calendar-weekdays');
+            weekdaysBox.innerHTML = "";
+            t.weekdays.forEach(wd => {
+                let d = document.createElement('div');
+                d.innerText = wd;
+                weekdaysBox.appendChild(d);
+            });
+
+            const grid = document.getElementById('calendar-grid-box');
+            grid.innerHTML = "";
+
+            const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+            const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            for(let i = 0; i < firstDayIndex; i++) {
+                let cell = document.createElement('div');
+                cell.className = 'calendar-day empty';
+                grid.appendChild(cell);
+            }
+
+            const hoy = new Date();
+
+            for(let day = 1; day <= totalDays; day++) {
+                let cell = document.createElement('div');
+                cell.className = 'calendar-day';
+                cell.innerText = day;
+                cell.style.animation = `fadeIn 0.3s ease backwards`;
+                cell.style.animationDelay = `${(day % 7) * 0.01}s`;
+
+                let dateKey = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                
+                if(hoy.getFullYear() === currentYear && hoy.getMonth() === currentMonth && hoy.getDate() === day) {
+                    cell.classList.add('current-today');
+                }
+
+                if(data.calendar[dateKey]) {
+                    cell.style.boxShadow = `inset 0 -4px 0 ${data.calendar[dateKey].color || 'var(--accent-brand)'}`;
+                }
+
+                if(daySelectedStr === dateKey) {
+                    cell.classList.add('selected');
+                }
+
+                cell.onclick = function() {
+                    document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected'));
+                    cell.classList.add('selected');
+                    selectCalendarDate(dateKey);
+                };
+
+                grid.appendChild(cell);
+            }
+        }
+
+        function selectCalendarDate(dateKey) {
+            daySelectedStr = dateKey;
+            const t = translations[data.lang] || translations.es;
+            const detailBox = document.getElementById('calendar-detail-box');
+            
+            document.getElementById('modal-day-num').innerText = dateKey;
+            
+            detailBox.style.opacity = '0';
+            setTimeout(() => {
+                detailBox.style.display = 'block';
+                if(data.calendar[dateKey]) {
+                    document.getElementById('cal-detail-text').innerText = data.calendar[dateKey].title;
+                    document.getElementById('cal-detail-text').style.borderLeft = `4px solid ${data.calendar[dateKey].color}`;
+                } else {
+                    document.getElementById('cal-detail-text').innerText = t.noCalEvt;
+                    document.getElementById('cal-detail-text').style.borderLeft = `4px solid transparent`;
+                }
+                detailBox.style.transition = 'opacity 0.25s ease';
+                detailBox.style.opacity = '1';
+            }, 100);
+
+            document.getElementById('btn-edit-cal').onclick = function() {
+                document.getElementById('cal-input-title').value = data.calendar[dateKey] ? data.calendar[dateKey].title : "";
+                openModal('calendar-modal');
+            };
+
+            document.getElementById('btn-delete-cal').onclick = function() {
+                delete data.calendar[dateKey];
+                selectCalendarDate(dateKey);
+                renderCalendar();
+                saveToLocalStorage();
+            };
+        }
+
+        // Manejo de Colores en Configuración del Evento
+        document.querySelectorAll('.color-opt').forEach(opt => {
+            opt.addEventListener('click', function() {
+                document.querySelectorAll('.color-opt').forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+            });
         });
 
-        document.getElementById('setting-lang-select').addEventListener('change', (e) => {
-            state.currentLang = e.target.value;
-            localStorage.setItem('lang', state.currentLang);
-            applyTranslations();
-            if(document.getElementById('view-calendar').classList.contains('active')) renderCalendar();
+        function saveCalendarEvent() {
+            const title = document.getElementById('cal-input-title').value.trim();
+            if(!title || !daySelectedStr) return;
+
+            const activeColorOpt = document.querySelector('.color-opt.active');
+            const colorSelected = activeColorOpt ? activeColorOpt.getAttribute('data-color') : '#6B1D2F';
+
+            data.calendar[daySelectedStr] = {
+                title: title,
+                color: colorSelected
+            };
+
+            closeModals();
+            selectCalendarDate(daySelectedStr);
+            renderCalendar();
+            saveToLocalStorage();
+        }
+
+        // CORE RENDERER ENGINE: Sincronización Absoluta de Listas y UI
+        function renderEverything() {
+            const t = translations[data.lang] || translations.es;
+            
+            // 1. RENDER HOME SCHEDULE
+            const homeList = document.getElementById('home-tasks-list');
+            homeList.innerHTML = "";
+            
+            const timedTasks = data.tasks.filter(t => t.time);
+            
+            if(timedTasks.length === 0) {
+                homeList.innerHTML = `<li style="color:var(--text-muted); font-size:13px; font-style:italic; animation: fadeIn 0.3s ease;">${t.noTasks}</li>`;
+            } else {
+                timedTasks.forEach((task, index) => {
+                    let li = document.createElement('li');
+                    li.style.opacity = task.completed ? '0.5' : '1';
+                    li.style.animationDelay = `${index * 0.04}s`;
+                    li.innerHTML = `
+                        <span style="${task.completed ? 'text-decoration: line-through;' : ''}">${task.text}</span>
+                        <span class="time-badge">${task.time}</span>
+                    `;
+                    homeList.appendChild(li);
+                });
+            }
+
+            // 2. RENDER VISTA PENDIENTES
+            const tasksContainer = document.getElementById('tasks-container');
+            tasksContainer.innerHTML = "";
+            
+            if(data.tasks.length === 0) {
+                tasksContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px 0; font-size:14px; animation: fadeIn 0.3s ease;">${t.noTasksBox}</p>`;
+            } else {
+                data.tasks.forEach((task, index) => {
+                    let div = document.createElement('div');
+                    div.className = 'task-row';
+                    div.setAttribute('data-task-id', task.id);
+                    div.style.animationDelay = `${index * 0.03}s`;
+                    div.innerHTML = `
+                        <div class="task-text ${task.completed ? 'completed' : ''}" onclick="toggleTask(${task.id})">
+                            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="event.stopPropagation(); toggleTask(${task.id});">
+                            <span>${task.text} ${task.time ? `(${task.time})` : ''}</span>
+                        </div>
+                        <button class="btn-delete" onclick="deleteTask(${task.id})">×</button>
+                    `;
+                    tasksContainer.appendChild(div);
+                });
+            }
+
+            // 3. RENDER VISTA NOTAS FIJAS
+            const notesContainer = document.getElementById('notes-container');
+            notesContainer.innerHTML = "";
+            
+            if(data.notes.length === 0) {
+                notesContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px 0; font-size:14px; animation: fadeIn 0.3s ease;">${t.noNotes}</p>`;
+            } else {
+                data.notes.forEach((note, index) => {
+                    let btn = document.createElement('button');
+                    btn.className = 'note-item-btn';
+                    btn.style.animationDelay = `${index * 0.03}s`;
+                    btn.onclick = () => openNoteModal(note.id);
+                    btn.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${note.title}</span>
+                    `;
+                    notesContainer.appendChild(btn);
+                });
+            }
+        }
+
+        // MOTOR DE PERSISTENCIA LOCAL
+        function saveToLocalStorage() {
+            localStorage.setItem('aura_studio_data', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            let raw = localStorage.getItem('aura_studio_data');
+            if(raw) {
+                try {
+                    let parsed = JSON.parse(raw);
+                    if(parsed && typeof parsed === 'object') {
+                        data = Object.assign(data, parsed);
+                    }
+                } catch(e) { console.error("Error regenerando búfer de persistencia."); }
+            }
+        }
+
+        // CORE NOTIFICACIONES NATIVAS
+        function toggleNotifications(status) {
+            data.notify = status;
+            if(status && Notification.permission !== 'granted') {
+                Notification.requestPermission().then(permission => {
+                    if(permission !== 'granted') {
+                        data.notify = false;
+                        document.getElementById('notify-toggle').checked = false;
+                    }
+                });
+            }
+            saveToLocalStorage();
+        }
+
+        function enviarNotificacion(titulo, cuerpo) {
+            if(data.notify && Notification.permission === 'granted') {
+                navigator.serviceWorker.ready.then(registration => {
+                    registration.showNotification(titulo, {
+                        body: cuerpo,
+                        icon: 'https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png',
+                        vibrate: [200, 100, 200]
+                    });
+                }).catch(() => {
+                    new Notification(titulo, { body: cuerpo, icon: 'https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png' });
+                });
+            } else {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, audioContext.currentTime); 
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.12);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 0.12);
+                } catch(e) { console.log("Audio contextual listo."); }
+            }
+        }
+
+        // Bucle de Verificación Cíclica Activa (Intervalo de Precisión cada 25 segundos)
+        setInterval(() => {
+            const ahora = new Date();
+            const hrs = String(ahora.getHours()).padStart(2, '0');
+            const mins = String(ahora.getMinutes()).padStart(2, '0');
+            const horaActualStr = `${hrs}:${mins}`;
+
+            data.tasks.forEach(t => {
+                if(t.time && !t.completed) {
+                    let taskTimeClean = t.time.trim();
+                    if(taskTimeClean === horaActualStr && !tareasNotificadas.has(t.text + horaActualStr)) {
+                        enviarNotificacion("Alerta de Actividad", `${t.text}`);
+                        tareasNotificadas.add(t.text + horaActualStr);
+                    }
+                }
+            });
+
+            if(horaActualStr === "00:00") tareasNotificadas.clear();
+        }, 25000);
+
+        // INSTALACIÓN ASÍNCRONA PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const btn = document.getElementById('btn-install-pwa');
+            if(btn) btn.style.display = 'inline-flex';
         });
 
-        // Escucha de cambios de tema en el sistema operativo en tiempo real
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-            if(state.currentTheme === 'system') {
-                const targetTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', targetTheme);
+        document.getElementById('btn-install-pwa').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('btn-install-pwa').style.display = 'none';
+                }
+                deferredPrompt = null;
             }
         });
 
-        // --- MOTOR DE NOTIFICACIONES Y SÍNTESIS DE AUDIO (WEB AUDIO API) ---
-        if (Notification.permission === 'default') {
-            document.body.addEventListener('click', () => {
-                Notification.requestPermission();
-            }, { once: true });
-        }
-
-        function triggerContextualBeep() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, ctx.currentTime); // Tono de notificación limpio (A5)
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.4);
-            } catch(e){}
-        }
-
-        // Bucle en segundo plano activo (Revisión cada 25 segundos)
-        setInterval(() => {
-            const now = new Date();
-            const currentHourStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        // INITIALIZATION DE LA APLICACIÓN
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromLocalStorage();
             
-            state.tasks.forEach(task => {
-                if(task.time === currentHourStr && !task.completed && !task.notified) {
-                    task.notified = true; // Flag de prevención de bucle
-                    
-                    if (Notification.permission === 'granted') {
-                        new Notification("Productivity OS", { body: task.name });
-                    }
-                    triggerContextualBeep();
-                }
-            });
-        }, 25000);
-
-        // --- INICIALIZACIÓN GLOBAL ---
-        applyTranslations();
-        renderTasks();
-        renderNotes();
-        renderHomeSchedule();
-        updateMetrics();
+            document.getElementById('lang-select').value = data.lang;
+            document.getElementById('notify-toggle').checked = data.notify;
+            document.getElementById('theme-select').value = data.theme;
+            
+            changeTheme(data.theme);
+            initCalendar();
+            changeLanguage(data.lang);
+        });
     </script>
 </body>
 </html>
