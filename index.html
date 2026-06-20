@@ -21,7 +21,7 @@
             }
             document.head.appendChild(manifestLink);
 
-            // Cargar e inyectar el tema guardado antes de renderizar para evitar destellos blancos
+            // Evitar destello blanco aplicando tema guardado antes de renderizar
             let rawData = localStorage.getItem('aura_studio_data');
             if (rawData) {
                 try {
@@ -149,7 +149,7 @@
             width: 100%;
             opacity: 1;
             transform: scale(1);
-            transition: opacity 0.25s var(--fade-bezier), transform 0.25s var(--fade-bezier);
+            transition: opacity 0.2s var(--fade-bezier), transform 0.2s var(--fade-bezier);
         }
 
         .view.hidden {
@@ -222,7 +222,6 @@
             justify-content: space-between;
             align-items: center;
             font-size: 15px;
-            animation: itemFadeIn 0.3s var(--fade-bezier) both;
         }
 
         .time-badge {
@@ -242,11 +241,6 @@
             padding: 14px 0;
             border-bottom: 1px solid var(--border-color);
             gap: 12px;
-        }
-        
-        @keyframes itemFadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .task-text { cursor: pointer; display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
@@ -300,28 +294,28 @@
         .calendar-day.current-today { background: var(--accent-brand) !important; color: white !important; font-weight: 700; }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(17, 18, 20, 0.4); backdrop-filter: blur(4px); z-index: 99; }
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.95); background: var(--card-bg); border-radius: 24px; padding: 24px; z-index: 100; width: 90%; max-width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); opacity: 0; transition: all 0.3s var(--aura-bezier); max-height: 90vh; overflow-y: auto; }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%) scale(0.95); background: var(--card-bg); border-radius: 24px; padding: 24px; z-index: 100; width: 90%; max-width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); opacity: 0; transition: all 0.25s var(--aura-bezier); max-height: 90vh; overflow-y: auto; }
         .modal.active { display: block; opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
-        .note-item-btn { text-align: left; font-weight: 500; cursor: pointer; background: var(--card-bg); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
+        .note-item-btn { text-align: left; font-weight: 500; cursor: pointer; background: var(--card-bg); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; width: 100%; }
         .note-item-btn svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
         
         .color-picker { display: flex; gap: 12px; margin: 14px 0; }
         .color-opt { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
         .color-opt.active { border-color: var(--text-main); transform: scale(1.15); }
 
-        .icon svg { width: 22px; height: 22px; fill: currentColor; }
+        .icon svg { width: 22px; height: 22px; fill: currentColor; color: white; }
         h3 { font-size: 17px; font-weight: 600; color: var(--text-main); }
         
         .btn-back.hidden-install { display: none !important; }
 
         /* Estilos Configuración */
-        .config-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+        .config-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; text-align: left; }
         .config-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
         .custom-select { width: 100%; padding: 12px; border-radius: 12px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-main); font-size: 14px; outline: none; }
         
         /* Switch de Notificaciones Estilo iOS */
-        .toggle-container { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .toggle-container { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; width: 100%; }
         .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 34px; }
@@ -338,7 +332,7 @@
             <div class="card brand-header">
                 <div class="welcome-title" id="txt-home-title">Control de <span id="username-display" onclick="openModal('username-modal')">Espacio</span></div>
                 <div style="display: flex; gap: 8px; align-items: center;">
-                    <button class="btn-back" id="btn-install-pwa" style="padding: 6px 14px; font-size: 12px;">
+                    <button class="btn-back" id="btn-install-pwa" style="padding: 6px 14px; font-size: 12px; display: none;">
                         <svg style="width:14px; height:14px;" viewBox="0 0 24 24"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
                         <span id="txt-install">Instalar app</span>
                     </button>
@@ -511,7 +505,7 @@
     </div>
 
     <script>
-        // --- DICCIONARIO DE IDIOMAS (10 IDIOMAS) ---
+        // Diccionario completo de traducción (10 idiomas)
         const translations = {
             es: {
                 homeTitle: "Control de ", install: "Instalar app", menuEvents: "Eventos", menuTasks: "Pendientes", menuNotes: "Notas fijas", cronogramaTitle: "Cronograma del Día",
@@ -520,7 +514,7 @@
                 lblNotifyTitle: "Alertas del Sistema", lblNotifyDesc: "Activar notificaciones nativas", btnClose: "Cerrar", btnSave: "Guardar", btnDelete: "Eliminar",
                 idTitle: "Identidad del Espacio", planTitle: "Planificar: ", calColor: "Color identificador:", calFix: "Fijar Evento", placeholderTask: "Nombre de la actividad...",
                 placeholderTime: "Hora (ej. 17:30)", btnAdd: "Añadir", placeholderNote: "Título de la nota...", btnCreate: "Crear", placeholderCalEvt: "¿Qué hay planeado para hoy?",
-                noTasks: "Nada planificado para este ciclo.", noTasksBox: "Bandeja limpia por el momento.", noNotes: "No hay registros conceptuales aquí.", noCalEvt: "Libre de compromisos o eventos registrados.",
+                noTasks: "Nada planificado para este ciclo.", noTasksBox: "Bandeja limpia por el momento.", noNotes: "No hay registros conceptuales aquí.", noCalEvt: "Libre de compromisos.",
                 calAsignar: "Asignar", calRemover: "Remover", btnVolver: "Volver", weekdays: ["D", "L", "M", "M", "J", "V", "S"],
                 months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
             },
@@ -531,18 +525,18 @@
                 lblNotifyTitle: "System Alerts", lblNotifyDesc: "Enable native notifications", btnClose: "Close", btnSave: "Save", btnDelete: "Delete",
                 idTitle: "Space Identity", planTitle: "Plan: ", calColor: "Identifier Color:", calFix: "Set Event", placeholderTask: "Activity name...",
                 placeholderTime: "Time (e.g., 17:30)", btnAdd: "Add", placeholderNote: "Note title...", btnCreate: "Create", placeholderCalEvt: "What is planned for today?",
-                noTasks: "Nothing planned for this cycle.", noTasksBox: "Clean tray for now.", noNotes: "No conceptual records here.", noCalEvt: "Free of commitments or recorded events.",
+                noTasks: "Nothing planned for this cycle.", noTasksBox: "Clean tray for now.", noNotes: "No notes here.", noCalEvt: "Free of commitments.",
                 calAsignar: "Assign", calRemover: "Remove", btnVolver: "Back", weekdays: ["S", "M", "T", "W", "T", "F", "S"],
                 months: ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
             },
             pt: {
                 homeTitle: "Controle de ", install: "Instalar app", menuEvents: "Eventos", menuTasks: "Pendentes", menuNotes: "Notas fixas", cronogramaTitle: "Cronograma do Dia",
-                calHeader: "Agenda Mensal", calToday: "Hoje", calDetail: "Detalhes do dia", tasksHeader: "Lista de Atividades", notesHeader: "Bloco de Notas",
+                calHeader: "Agenda Mensual", calToday: "Hoje", calDetail: "Detalhes do dia", tasksHeader: "Lista de Atividades", notesHeader: "Bloco de Notas",
                 configTitle: "Configurações", lblLang: "Idioma / Language", lblTheme: "Tema da interface", themeLight: "Claro", themeDark: "Escuro", themeSystem: "Padrão do sistema",
                 lblNotifyTitle: "Alertas do Sistema", lblNotifyDesc: "Ativar notificações nativas", btnClose: "Fechar", btnSave: "Salvar", btnDelete: "Excluir",
                 idTitle: "Identidade do Espaço", planTitle: "Planejar: ", calColor: "Cor identificadora:", calFix: "Fixar Evento", placeholderTask: "Nome da atividade...",
                 placeholderTime: "Hora (ex: 17:30)", btnAdd: "Adicionar", placeholderNote: "Título da nota...", btnCreate: "Criar", placeholderCalEvt: "O que está planejado para hoje?",
-                noTasks: "Nada planejado para este ciclo.", noTasksBox: "Bandeja limpa no momento.", noNotes: "Nenhum registro conceitual aqui.", noCalEvt: "Livre de compromissos ou eventos registrados.",
+                noTasks: "Nada planejado para este ciclo.", noTasksBox: "Bandeja limpa no momento.", noNotes: "Nenhuma nota aqui.", noCalEvt: "Livre de compromissos.",
                 calAsignar: "Atribuir", calRemover: "Remover", btnVolver: "Voltar", weekdays: ["D", "S", "T", "Q", "Q", "S", "S"],
                 months: ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
             },
@@ -553,7 +547,7 @@
                 lblNotifyTitle: "Alertes Système", lblNotifyDesc: "Activer les notifications natives", btnClose: "Fermer", btnSave: "Enregistrer", btnDelete: "Supprimer",
                 idTitle: "Identité de l'Espace", planTitle: "Planifier: ", calColor: "Couleur d'identification:", calFix: "Fixer l'événement", placeholderTask: "Nom de l'activité...",
                 placeholderTime: "Heure (ex. 17:30)", btnAdd: "Ajouter", placeholderNote: "Titre de la note...", btnCreate: "Créer", placeholderCalEvt: "Qu'est-je prévu pour aujourd'hui?",
-                noTasks: "Rien de prévu pour ce cycle.", noTasksBox: "Plateau propre pour le moment.", noNotes: "Aucun enregistrement conceptuel ici.", noCalEvt: "Libre d'engagements ou d'événements enregistrés.",
+                noTasks: "Rien de prévu pour ce cycle.", noTasksBox: "Plateau propre pour le moment.", noNotes: "Aucune note ici.", noCalEvt: "Libre d'engagements.",
                 calAsignar: "Assigner", calRemover: "Supprimer", btnVolver: "Retour", weekdays: ["D", "L", "M", "M", "J", "V", "S"],
                 months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
             },
@@ -564,7 +558,7 @@
                 lblNotifyTitle: "Systembenachrichtigungen", lblNotifyDesc: "Native Benachrichtigungen aktivieren", btnClose: "Schließen", btnSave: "Speichern", btnDelete: "Löschen",
                 idTitle: "Raumidentität", planTitle: "Planen: ", calColor: "Kennfarbe:", calFix: "Ereignis festlegen", placeholderTask: "Aktivitätsname...",
                 placeholderTime: "Zeit (z.B. 17:30)", btnAdd: "Hinzufügen", placeholderNote: "Notiztitel...", btnCreate: "Erstellen", placeholderCalEvt: "Was ist für heute geplant?",
-                noTasks: "Für diesen Zyklus ist nichts geplant.", noTasksBox: "Fach vorerst leer.", noNotes: "Keine konzeptionellen Aufzeichnungen hier.", noCalEvt: "Frei von Verpflichtungen oder erfassten Ereignissen.",
+                noTasks: "Nichts geplant.", noTasksBox: "Fach vorerst leer.", noNotes: "Keine Notizen hier.", noCalEvt: "Frei von Verpflichtungen.",
                 calAsignar: "Zuweisen", calRemover: "Entfernen", btnVolver: "Zurück", weekdays: ["S", "M", "D", "M", "D", "F", "S"],
                 months: ["januar", "februar", "märz", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "dezember"]
             },
@@ -575,9 +569,9 @@
                 lblNotifyTitle: "Avvisi di Sistema", lblNotifyDesc: "Attiva notifiche native", btnClose: "Chiudi", btnSave: "Salva", btnDelete: "Elimina",
                 idTitle: "Identità dello Spazio", planTitle: "Pianifica: ", calColor: "Colore identificativo:", calFix: "Fissa Evento", placeholderTask: "Nome attività...",
                 placeholderTime: "Ora (es. 17:30)", btnAdd: "Aggiungi", placeholderNote: "Titolo della nota...", btnCreate: "Crea", placeholderCalEvt: "Cosa c'è in programma oggi?",
-                noTasks: "Nulla di pianificato per questo ciclo.", noTasksBox: "Vassoio pulito al momento.", noNotes: "Nessun record concettuale qui.", noCalEvt: "Libero da impegni o eventi registrati.",
+                noTasks: "Nulla di pianificato.", noTasksBox: "Vassoio pulito al momento.", noNotes: "Nessuna nota qui.", noCalEvt: "Libero da impegni.",
                 calAsignar: "Assegna", calRemover: "Rimuovi", btnVolver: "Indietro", weekdays: ["D", "L", "M", "M", "G", "V", "S"],
-                months: ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"]
+                months: ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "setembre", "ottobre", "novembre", "dicembre"]
             },
             ja: {
                 homeTitle: "空間コントロール: ", install: "アプリをインストール", menuEvents: "イベント", menuTasks: "タスク", menuNotes: "固定メモ", cronogramaTitle: "本日のスケジュール",
@@ -586,7 +580,7 @@
                 lblNotifyTitle: "システム通知", lblNotifyDesc: "ネイティブ通知を有効化", btnClose: "閉じる", btnSave: "保存", btnDelete: "削除",
                 idTitle: "空間のアイデンティティ", planTitle: "計画: ", calColor: "識別カラー:", calFix: "イベントを設定", placeholderTask: "アクティビティ名...",
                 placeholderTime: "時間 (例: 17:30)", btnAdd: "追加", placeholderNote: "メモのタイトル...", btnCreate: "作成", placeholderCalEvt: "今日の予定は？",
-                noTasks: "このサイクルに予定はありません。", noTasksBox: "現在トレイは空です。", noNotes: "ここに概念的な記録はありません。", noCalEvt: "予定や登録されたイベントはありません。",
+                noTasks: "予定はありません。", noTasksBox: "現在トレイは空です。", noNotes: "ここにメモはありません。", noCalEvt: "予定はありません。",
                 calAsignar: "割り当て", calRemover: "削除", btnVolver: "戻る", weekdays: ["日", "月", "火", "水", "木", "金", "土"],
                 months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
             },
@@ -597,7 +591,7 @@
                 lblNotifyTitle: "系统通知", lblNotifyDesc: "开启原生系统通知", btnClose: "关闭", btnSave: "保存", btnDelete: "删除",
                 idTitle: "空间标识", planTitle: "规划: ", calColor: "标识颜色:", calFix: "固定活动", placeholderTask: "活动名称...",
                 placeholderTime: "时间 (例如 17:30)", btnAdd: "添加", placeholderNote: "便签标题...", btnCreate: "创建", placeholderCalEvt: "今天有什么计划？",
-                noTasks: "此周期无任何计划。", noTasksBox: "目前无待办事项。", noNotes: "此处无概念记录。", noCalEvt: "暂无安排或登记的活动。",
+                noTasks: "无任何计划。", noTasksBox: "目前无待办事项。", noNotes: "此处无便签。", noCalEvt: "暂无安排的活动。",
                 calAsignar: "指派", calRemover: "移除", btnVolver: "返回", weekdays: ["日", "一", "二", "三", "四", "五", "六"],
                 months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
             },
@@ -607,8 +601,8 @@
                 configTitle: "Настройки", lblLang: "Idioma / Language", lblTheme: "Тема интерфейса", themeLight: "Светлая", themeDark: "Темная", themeSystem: "Системная по умолчанию",
                 lblNotifyTitle: "Системные уведомления", lblNotifyDesc: "Включить нативные уведомления", btnClose: "Закрыть", btnSave: "Сохранить", btnDelete: "Удалить",
                 idTitle: "Идентификация", planTitle: "Планировать: ", calColor: "Цвет-идентификатор:", calFix: "Закрепить событие", placeholderTask: "Название задачи...",
-                placeholderTime: "Время (напр. 17:30)", btnAdd: "Добавить", placeholderNote: "Заголовок заметки...", btnCreate: "Создать", placeholderCalEvt: Что запланировано на сегодня?",
-                noTasks: "На этот цикл ничего не запланировано.", noTasksBox: "На данный момент чисто.", noNotes: "Концептуальных записей не найдено.", noCalEvt: "Свободно от обязательств или зарегистрированных событий.",
+                placeholderTime: "Время (напр. 17:30)", btnAdd: "Добавить", placeholderNote: "Заголовок заметки...", btnCreate: "Создать", placeholderCalEvt: "Что запланировано?",
+                noTasks: "Ничего не запланировано.", noTasksBox: "На данный момент чисто.", noNotes: "Заметок не найдено.", noCalEvt: "Свободно от событий.",
                 calAsignar: "Назначить", calRemover: "Удалить", btnVolver: "Назад", weekdays: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
                 months: ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"]
             },
@@ -619,72 +613,79 @@
                 lblNotifyTitle: "시스템 알림", lblNotifyDesc: "네이티브 알림 활성화", btnClose: "닫기", btnSave: "저장", btnDelete: "삭제",
                 idTitle: "공간 식별", planTitle: "계획: ", calColor: "식별 색상:", calFix: "이벤트 고정", placeholderTask: "활동 이름...",
                 placeholderTime: "시간 (예: 17:30)", btnAdd: "추가", placeholderNote: "메모 제목...", btnCreate: "생성", placeholderCalEvt: "오늘 계획은 무엇인가요?",
-                noTasks: "이 주기에 계획된 일정이 없습니다.", noTasksBox: "현재 보관함이 비어 있습니다.", noNotes: "개념적인 기록이 없습니다.", noCalEvt: "약속이나 등록된 이벤트가 없습니다.",
+                noTasks: "계획된 일정이 없습니다.", noTasksBox: "현재 보관함이 비어 있습니다.", noNotes: "메모가 없습니다.", noCalEvt: "등록된 이벤트가 없습니다.",
                 calAsignar: "할당", calRemover: "제거", btnVolver: "돌아가기", weekdays: ["일", "월", "화", "수", "목", "금", "토"],
                 months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
             }
         };
 
-        let rawData = localStorage.getItem('aura_studio_data');
-        let data = { username: 'Personal', tasks: [], notes: {}, calendar: {}, sound: 1, theme: 'light', lang: 'es', notificationsEnabled: false };
+        // Estado inicial de datos limpios
+        let data = { username: 'Personal', tasks: [], notes: {}, calendar: {}, theme: 'light', lang: 'es', notificationsEnabled: false };
         
-        if (rawData) {
-            try {
+        // Carga desde localStorage de forma segura
+        try {
+            let rawData = localStorage.getItem('aura_studio_data');
+            if (rawData) {
                 let parsed = JSON.parse(rawData);
                 data = Object.assign(data, parsed);
-            } catch(e) { console.error(e); }
-        }
+            }
+        } catch(e) { console.error(e); }
 
         let currentCalendarDate = new Date();
         let selectedDayKey = null; 
         let activeNoteTitle = '';
         let selectedColor = '#6B1D2F';
         let tareasNotificadas = new Set(); 
-        let deferredPrompt = null; 
-
-        // --- MANEJO DE INSTALACIÓN PWA ---
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-            window.addEventListener('DOMContentLoaded', () => {
-                const installBtn = document.getElementById('btn-install-pwa');
-                if (installBtn) installBtn.classList.add('hidden-install');
-            });
-        }
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const installBtn = document.getElementById('btn-install-pwa');
-            if (installBtn) {
-                installBtn.classList.remove('hidden-install');
-                installBtn.style.background = 'rgba(107, 29, 47, 0.1)';
-                installBtn.style.borderColor = 'var(--accent-brand)';
-                installBtn.style.color = 'var(--accent-brand)';
-            }
-        });
-
-        document.getElementById('btn-install-pwa').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    document.getElementById('btn-install-pwa').classList.add('hidden-install');
-                }
-                deferredPrompt = null;
-            }
-        });
-
-        window.addEventListener('appinstalled', () => {
-            const installBtn = document.getElementById('btn-install-pwa');
-            if (installBtn) installBtn.classList.add('hidden-install');
-            deferredPrompt = null;
-        });
 
         function saveData() {
             localStorage.setItem('aura_studio_data', JSON.stringify(data));
             renderEverything();
         }
 
-        // --- ADMINISTRACIÓN DE IDIOMA Y TRADUCCIÓN ---
+        // --- SISTEMA DE NAVEGACIÓN ENTRE VISTAS ---
+        function changeView(viewId) {
+            // Ocultar todas las vistas
+            document.querySelectorAll('.view').forEach(v => {
+                v.classList.add('hidden');
+                v.style.opacity = '0';
+                v.style.transform = 'scale(0.97)';
+            });
+
+            // Mostrar la seleccionada
+            const nextView = document.getElementById(viewId);
+            if (nextView) {
+                nextView.classList.remove('hidden');
+                // Forzar reflujo de rendering
+                nextView.offsetHeight; 
+                nextView.style.opacity = '1';
+                nextView.style.transform = 'scale(1)';
+            }
+            
+            if(viewId !== 'view-calendar') {
+                document.getElementById('calendar-detail-box').style.display = 'none';
+                selectedDayKey = null;
+            }
+        }
+
+        // --- APERTURA Y CIERRE DE VENTANAS MODALES ---
+        function openModal(id) {
+            document.getElementById('overlay').style.display = 'block';
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.style.display = 'block';
+                setTimeout(() => modal.classList.add('active'), 10);
+            }
+        }
+
+        function closeModals() {
+            document.getElementById('overlay').style.display = 'none';
+            document.querySelectorAll('.modal').forEach(m => {
+                m.classList.remove('active');
+                setTimeout(() => m.style.display = 'none', 200);
+            });
+        }
+
+        // --- CONFIGURACIONES (IDIOMA, TEMA, NOTIFICACIONES) ---
         function applyLanguage() {
             const lang = data.lang || 'es';
             const t = translations[lang] || translations['es'];
@@ -702,7 +703,6 @@
             document.getElementById('txt-tasks-header').innerText = t.tasksHeader;
             document.getElementById('txt-notes-header').innerText = t.notesHeader;
 
-            // Modales
             document.getElementById('txt-modal-config-title').innerText = t.configTitle;
             document.getElementById('lbl-lang').innerText = t.lblLang;
             document.getElementById('lbl-theme').innerText = t.lblTheme;
@@ -721,7 +721,6 @@
             document.getElementById('lbl-cal-color').innerText = t.calColor;
             document.getElementById('btn-cal-save-evt').innerText = t.calFix;
 
-            // Placeholders
             document.getElementById('task-input').placeholder = t.placeholderTask;
             document.getElementById('task-time').placeholder = t.placeholderTime;
             document.getElementById('btn-task-add').innerText = t.btnAdd;
@@ -732,11 +731,8 @@
             if(document.getElementById('btn-edit-cal')) document.getElementById('btn-edit-cal').innerText = t.calAsignar;
             if(document.getElementById('btn-delete-cal')) document.getElementById('btn-delete-cal').innerText = t.calRemover;
 
-            // Días de la semana
             const weekdaysBox = document.getElementById('calendar-weekdays');
-            if(weekdaysBox) {
-                weekdaysBox.innerHTML = t.weekdays.map(d => `<div>${d}</div>`).join('');
-            }
+            if(weekdaysBox) weekdaysBox.innerHTML = t.weekdays.map(d => `<div>${d}</div>`).join('');
         }
 
         function changeLanguage(langCode) {
@@ -744,7 +740,6 @@
             saveData();
         }
 
-        // --- ADMINISTRACIÓN DEL TEMA (CLARO, OSCURO, SISTEMA) ---
         function changeTheme(themeVal) {
             data.theme = themeVal;
             let targetTheme = themeVal;
@@ -755,11 +750,10 @@
             saveData();
         }
 
-        // --- SISTEMA DE NOTIFICACIONES NATIVAS DEL SISTEMA ---
         async function toggleNotifications(enabled) {
             if (enabled) {
                 if (!('Notification' in window)) {
-                    alert('Este navegador no soporta notificaciones.');
+                    alert('Este navegador no soporta notificaciones nativas.');
                     data.notificationsEnabled = false;
                     document.getElementById('notify-toggle').checked = false;
                     return;
@@ -768,7 +762,7 @@
                 const permission = await Notification.requestPermission();
                 if (permission === 'granted') {
                     data.notificationsEnabled = true;
-                    new Notification("Espacio", { body: "Notificaciones del sistema vinculadas correctamente." });
+                    new Notification("Control de Espacio", { body: "Las alertas del sistema se han vinculado de forma nativa." });
                 } else {
                     data.notificationsEnabled = false;
                     document.getElementById('notify-toggle').checked = false;
@@ -781,60 +775,11 @@
 
         function enviarNotificacion(titulo, cuerpo) {
             if (data.notificationsEnabled && Notification.permission === 'granted') {
-                const opciones = {
+                new Notification(titulo, {
                     body: cuerpo,
-                    icon: 'https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png',
-                    badge: 'https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png'
-                };
-
-                if (navigator.serviceWorker.controller) {
-                    navigator.serviceWorker.ready.then(registration => {
-                        registration.showNotification(titulo, opciones);
-                    });
-                } else {
-                    new Notification(titulo, opciones);
-                }
+                    icon: 'https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png'
+                });
             }
-        }
-
-        // --- LOGICA GENERAL DEL ORGANIZADOR ---
-        function applyFormat(command, value = null) {
-            document.execCommand(command, false, value);
-            document.getElementById('modal-note-body').focus();
-        }
-
-        function changeView(viewId) {
-            const currentActive = document.querySelector('.view:not(.hidden)');
-            if(currentActive && currentActive.id !== viewId) {
-                currentActive.style.opacity = '0';
-                currentActive.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    currentActive.classList.add('hidden');
-                    const nextView = document.getElementById(viewId);
-                    nextView.classList.remove('hidden');
-                    nextView.offsetHeight;
-                    nextView.style.opacity = '1';
-                    nextView.style.transform = 'scale(1)';
-                }, 150);
-            }
-            document.getElementById('calendar-detail-box').style.display = 'none';
-            selectedDayKey = null;
-            renderEverything();
-        }
-
-        function openModal(id) {
-            document.getElementById('overlay').style.display = 'block';
-            const modal = document.getElementById(id);
-            modal.style.display = 'block';
-            setTimeout(() => modal.classList.add('active'), 10);
-        }
-
-        function closeModals() {
-            document.getElementById('overlay').style.display = 'none';
-            document.querySelectorAll('.modal').forEach(m => {
-                m.classList.remove('active');
-                setTimeout(() => m.style.display = 'none', 200);
-            });
         }
 
         function saveUsername() {
@@ -843,6 +788,7 @@
             saveData(); closeModals();
         }
 
+        // --- CONTROLADOR DE ACTIVIDADES (PENDIENTES) ---
         function addTask() {
             const text = document.getElementById('task-input').value.trim();
             let time = document.getElementById('task-time').value.trim();
@@ -864,10 +810,11 @@
         function toggleTask(idx) { data.tasks[idx].completed = !data.tasks[idx].completed; saveData(); }
         function deleteTask(idx) { data.tasks.splice(idx, 1); saveData(); }
 
+        // --- CONTROLADOR DE BLOC DE NOTAS ---
         function addNote() {
             const title = document.getElementById('note-title-input').value.trim();
             if(!title) return;
-            if(!data.notes[title]) data.notes[title] = '<div>Escribe aquí...</div>';
+            if(!data.notes[title]) data.notes[title] = '<div>Escribe aquí tu nota...</div>';
             document.getElementById('note-title-input').value = '';
             saveData();
             openNoteDetails(title);
@@ -883,11 +830,17 @@
             openModal('note-modal');
         }
 
+        function applyFormat(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('modal-note-body').focus();
+        }
+
         function saveNoteBody() {
             data.notes[activeNoteTitle] = document.getElementById('modal-note-body').innerHTML;
             saveData(); closeModals();
         }
 
+        // --- CONTROLADOR DE CALENDARIO ---
         function changeMonth(direction) {
             currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
             document.getElementById('calendar-detail-box').style.display = 'none';
@@ -927,9 +880,8 @@
                 btn.innerText = day;
 
                 if (data.calendar[dayKey]) {
-                    btn.style.background = `${data.calendar[dayKey].color}12`;
+                    btn.style.background = `${data.calendar[dayKey].color}15`;
                     btn.style.color = data.calendar[dayKey].color;
-                    btn.style.fontWeight = '600';
                     btn.style.borderBottom = `2px solid ${data.calendar[dayKey].color}`;
                 }
 
@@ -996,6 +948,7 @@
             closeModals();
         }
 
+        // --- REDIBUJAR TODA LA INTERFAZ ---
         function renderEverything() {
             applyLanguage();
 
@@ -1018,7 +971,6 @@
 
             data.tasks.forEach((tTask, idx) => {
                 const itemHome = document.createElement('li');
-                itemHome.style.animationDelay = `${idx * 0.04}s`;
                 const timeTag = tTask.time ? `<span class="time-badge">${tTask.time}</span>` : '';
                 itemHome.innerHTML = `
                     <span style="${tTask.completed ? 'text-decoration:line-through; color:var(--text-muted); opacity: 0.6;' : ''}">${tTask.text}</span>
@@ -1045,10 +997,9 @@
             const keys = Object.keys(data.notes);
             if(keys.length === 0) notesContainer.innerHTML = `<p style="color:var(--text-muted)">${t.noNotes}</p>`;
             
-            keys.forEach((k, idx) => {
+            keys.forEach((k) => {
                 const btnNota = document.createElement('button');
                 btnNota.className = 'input-flat note-item-btn';
-                btnNota.style.animationDelay = `${idx * 0.04}s`;
                 btnNota.onclick = () => openNoteDetails(k);
                 btnNota.innerHTML = `
                     <svg viewBox="0 0 24 24"><path fill="currentColor" d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
@@ -1060,15 +1011,7 @@
             renderCalendar();
         }
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('SW registrado', reg))
-                    .catch(err => console.error('Error SW', err));
-            });
-        }
-
-        // --- VERIFICACIÓN CADA 30 SEGUNDOS ---
+        // --- COMPROBADOR INTERNO DE RECORDATORIOS (CADA 30 SEGUNDOS) ---
         setInterval(() => {
             const ahora = new Date();
             const hrs = String(ahora.getHours()).padStart(2, '0');
@@ -1079,25 +1022,23 @@
                 if(t.time && !t.completed) {
                     let taskTimeClean = t.time.trim();
                     if(taskTimeClean === horaActualStr && !tareasNotificadas.has(t.text + horaActualStr)) {
-                        enviarNotificacion("Plazo Expirado", `${t.text}`);
+                        enviarNotificacion("Alerta de Actividad", `${t.text}`);
                         tareasNotificadas.add(t.text + horaActualStr);
                     }
                 }
             });
 
             if(horaActualStr === "00:00") tareasNotificadas.clear();
-
         }, 30000);
 
+        // Inicialización de la App
         window.addEventListener('DOMContentLoaded', () => {
-            // Inicializar tema actual
             let currentT = data.theme || 'light';
             if(currentT === 'system') {
                 currentT = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             }
             document.documentElement.setAttribute('data-theme', currentT);
             
-            // Escuchar si el sistema operativo cambia de apariencia en tiempo real
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
                 if (data.theme === 'system') {
                     const updated = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
