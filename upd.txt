@@ -1,0 +1,6 @@
+<V"2.2.0">
+<T"Mejoras en el Sistema">
+<S"v2.2.0 Estable">
+<T"Se integró un sistema automático para leer el archivo *upd.txt* de manera dinámica.">
+<T"Soporte de estilos avanzados: Ahora podés usar *negrita*, _cursiva_ o mezclar texto *importante* con partes _estilizadas_ en una misma línea.">
+<T"Optimización completa de la barra de scroll estilo *Apple Glassmorphism* sin romper la interfaz.">
