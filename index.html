@@ -1338,6 +1338,99 @@
             initCalendar();
             changeLanguage(data.lang);
         });
+
+        // --- NOTAS: funciones faltantes ---
+        let currentNoteIndex = null;
+
+        function renderNotes() {
+            const box = document.getElementById('notes-container');
+            box.innerHTML = '';
+
+            if (!data.notes || data.notes.length === 0) {
+                box.innerHTML = `<p style="font-size:14px; color:var(--text-muted); text-align:center; padding:20px 0;">No hay notas creadas.</p>`;
+                return;
+            }
+
+           data.notes.forEach((n, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'note-item-btn';
+                btn.style.display = 'flex';
+                btn.style.justifyContent = 'space-between';
+                btn.style.padding = '12px';
+                btn.style.borderRadius = '12px';
+                btn.style.background = 'var(--card-bg)';
+                btn.style.border = '1px solid var(--border-color)';
+                btn.innerHTML = `<span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; text-align:left;">${n.title || 'Sin título'}</span>
+                                 <span style="margin-left:10px; color:var(--text-muted); font-size:12px;">${n.body ? (n.body.replace(/<[^>]+>/g,'').slice(0,40) + (n.body.replace(/<[^>]+>/g,'').length>40?'…':'')) : ''}</span>`;
+                btn.onclick = () => openNote(i);
+                box.appendChild(btn);
+            });
+        }
+
+        function addNote() {
+            const input = document.getElementById('note-title-input');
+            const title = (input.value || '').trim();
+            if (!title) {
+                // opcional: mostrar feedback
+                alert('Ingresa un título para la nota.');
+                return;
+            }
+
+            if (!data.notes) data.notes = [];
+            const newNote = {
+                title,
+                body: '',
+                createdAt: Date.now()
+            };
+            data.notes.unshift(newNote); // agregar al inicio
+            saveToLocalStorage();
+            renderNotes();
+            input.value = '';
+            // abrir la nota recién creada para editarla
+            openNote(0);
+        }
+
+        function openNote(index) {
+            if (!data.notes || !data.notes[index]) return;
+            currentNoteIndex = index;
+            const note = data.notes[index];
+            document.getElementById('modal-note-title').innerText = note.title || 'Sin título';
+            document.getElementById('modal-note-body').innerHTML = note.body || '';
+            // configurar botón eliminar
+            const delBtn = document.getElementById('btn-delete-note-trigger');
+            delBtn.onclick = () => {
+                if (confirm('¿Eliminar esta nota?')) {
+                    deleteNote(index);
+                }
+           };
+            openModal('note-modal');
+        }
+
+        function saveNoteBody() {
+            if (currentNoteIndex === null || !data.notes[currentNoteIndex]) {
+                // seguridad: si no hay índice válido, solo cerrar
+                closeModals();
+                return;
+            }
+            const html = document.getElementById('modal-note-body').innerHTML;
+            data.notes[currentNoteIndex].body = html;
+            // opcional: actualizar título si se modifica H1 al inicio
+            const textOnly = html.replace(/<[^>]+>/g, '').trim();
+            if (!data.notes[currentNoteIndex].title && textOnly) {
+                data.notes[currentNoteIndex].title = textOnly.slice(0, 30);
+            }
+            saveToLocalStorage();
+            renderNotes();
+            closeModals();
+        }
+
+        function deleteNote(index) {
+            if (!data.notes || !data.notes[index]) return;
+            data.notes.splice(index, 1);
+            saveToLocalStorage();
+            renderNotes();
+            closeModals();
+        }
     </script>
 </body>
 </html>
