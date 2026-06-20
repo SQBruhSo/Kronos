@@ -1,20 +1,2 @@
 V1.0.1
-=============================================================================
-CHANGELOG / REGISTRO DE ACTUALIZACIONES
-=============================================================================
-DESCRIPCIÓN GENERAL:
-Actualización de los archivos base del sitio y service worker.
-
-🚀 NUEVAS CARACTERÍSTICAS:
-* Se agregó el archivo 'manifest-pc.json' para compatibilidad con escritorio.
-* Implementación de notificaciones push básicas.
-
-🔧 MEJORAS:
-* Se actualizó 'sw.js' para optimizar el almacenamiento en caché.
-* Limpieza de código general en 'index.html'.
-
-🐛 CORRECCIÓN DE ERRORES:
-* Corregido un error de carga de estilos en dispositivos móviles.
-
-🗑️ ELIMINADO:
-* Se eliminó el antiguo archivo 'manifest-mobile.json'.
+<H1"Titulo">
