@@ -304,6 +304,11 @@
         .tutorial-content ol { padding-left: 20px; margin-top: 8px; }
         .tutorial-content li { margin-bottom: 8px; }
         .browser-tag { background: #E2E4E7; padding: 2px 6px; border-radius: 6px; font-weight: bold; font-size: 12px; }
+
+        /* Añade esto al final de tus estilos existentes */
+        .btn-back.hidden-install {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -492,7 +497,17 @@
 
         const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
-        // --- SISTEMA INTERNO DE CAPTURA PARA INSTALACIÓN DIRECTA PWA ---
+// --- SISTEMA INTERNO DE CAPTURA PARA INSTALACIÓN DIRECTA PWA ---
+        
+        // 1. Detección inmediata: Si ya está abierta como App instalada, ocultamos el botón
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            // Esperamos a que el DOM cargue para asegurarnos de que el botón exista antes de ocultarlo
+            window.addEventListener('DOMContentLoaded', () => {
+                const installBtn = document.getElementById('btn-install-pwa');
+                if (installBtn) installBtn.classList.add('hidden-install');
+            });
+        }
+
         window.addEventListener('beforeinstallprompt', (e) => {
             // Previene que Chrome/Android lancen su banner nativo invasivo abajo
             e.preventDefault();
@@ -502,6 +517,8 @@
             // Cambia el estilo del botón para denotar que está listo para instalar directo
             const installBtn = document.getElementById('btn-install-pwa');
             if (installBtn) {
+                // Aseguramos que sea visible por si el navegador tardó en procesar el prompt
+                installBtn.classList.remove('hidden-install'); 
                 installBtn.style.background = 'rgba(107, 29, 47, 0.1)';
                 installBtn.style.borderColor = 'var(--accent-brand)';
                 installBtn.style.color = 'var(--accent-brand)';
@@ -516,6 +533,8 @@
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
                     console.log('El usuario aceptó la instalación nativa.');
+                    // Ocultamos el botón inmediatamente tras aceptar la instalación
+                    document.getElementById('btn-install-pwa').classList.add('hidden-install');
                 }
                 deferredPrompt = null; // Limpia el prompt usado
             } else {
@@ -524,9 +543,11 @@
             }
         });
 
-        // Si la app ya se instaló con éxito, limpia el estado
+        // Si la app ya se instaló con éxito desde cualquier otra vía (ej. barra del navegador)
         window.addEventListener('appinstalled', () => {
             console.log('PWA instalada de forma nativa en el sistema.');
+            const installBtn = document.getElementById('btn-install-pwa');
+            if (installBtn) installBtn.classList.add('hidden-install');
             deferredPrompt = null;
         });
 
