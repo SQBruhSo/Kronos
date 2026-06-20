@@ -989,16 +989,22 @@
 
         let editingNoteIndex = null;
         function addNote() {
-            const input = document.getElementById('note-title-input');
-            const title = input.value.trim();
-            if(!title) return;
-            
-            data.notes.push({ title: title, body: "<div>Empieza a escribir...</div>" });
-            saveToLocalStorage();
-            input.value = "";
-            renderNotes();
-        }
-
+           const input = document.getElementById('note-title-input');
+           const title = input.value.trim();
+           if(!title) return;
+           
+           // 1. Añadimos la nota al array
+           data.notes.push({ title: title, body: "<div>Empieza a escribir...</div>" });
+           
+           // 2. GUARDAMOS los cambios de forma local para que no se borren
+           saveToLocalStorage();
+           
+           // 3. Limpiamos el campo de texto
+           input.value = "";
+           
+           // 4. ACTUALIZAMOS la pantalla para que aparezca la nueva nota (Esto faltaba)
+           renderNotes();
+       }
         function openNoteEditor(index) {
             editingNoteIndex = index;
             const note = data.notes[index];
