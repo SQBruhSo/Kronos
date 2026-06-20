@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Organizador Personal Pro</title>
     
-    <!-- Favicons y Apple Touch Icon -->
     <link class="fav-icon-tag" rel="icon" type="image/png" href="https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png">
     <link class="apple-touch-icon" href="https://i.ibb.co/5h1j0fr3/Dise-o-sin-t-tulo.png">
 
@@ -43,6 +42,7 @@
             --border-color: #E2E4E7;
             --input-bg: #F4F5F6;
             --blur-bg: rgba(255, 255, 255, 0.85);
+            --icon-filter: none;
             
             --aura-bezier: cubic-bezier(0.34, 1.56, 0.64, 1);
             --fade-bezier: cubic-bezier(0.25, 1, 0.5, 1);
@@ -57,6 +57,7 @@
             --border-color: #2D3135;
             --input-bg: #212327;
             --blur-bg: rgba(22, 24, 27, 0.85);
+            --icon-filter: invert(1) brightness(0.9);
         }
 
         * {
@@ -111,7 +112,6 @@
             letter-spacing: -0.4px;
         }
 
-        /* Tipografías dinámicas para el log de novedades */
         .log-h1 { font-size: 24px; font-weight: 700; color: var(--text-main); letter-spacing: -0.6px; margin: 16px 0 10px 0; }
         .log-h2 { font-size: 19px; font-weight: 600; color: var(--text-main); letter-spacing: -0.4px; margin: 14px 0 6px 0; }
         .log-h3 { font-size: 16px; font-weight: 600; color: var(--text-main); margin: 10px 0 4px 0; }
@@ -121,23 +121,20 @@
 
         h3 { font-size: 17px; font-weight: 600; color: var(--text-main); }
 
-        /* Ajuste global de inversión para los iconos cargados según el tema */
+        /* Control de visibilidad e inversión de color de iconos premium */
         .premium-icon {
             width: 16px;
             height: 16px;
             object-fit: contain;
             display: inline-block;
             vertical-align: middle;
-            transition: filter 0.3s ease;
+            filter: var(--icon-filter);
+            transition: filter 0.3s ease, transform 0.2s ease;
         }
-        [data-theme="dark"] .premium-icon {
-            filter: brightness(0) invert(1);
-        }
-        .btn-add .premium-icon, .btn-back .premium-icon {
-            filter: brightness(0) invert(1);
-        }
-        [data-theme="dark"] .btn-back .premium-icon {
-            filter: brightness(0) invert(1);
+
+        /* Forzar que los iconos dentro de botones oscuros/negros sean blancos en ambos modos */
+        .btn-add .premium-icon, .btn-back-dark .premium-icon {
+            filter: invert(1) brightness(2);
         }
 
         .btn-back {
@@ -304,7 +301,7 @@
             width: 10px;
             height: 10px;
             opacity: 0;
-            filter: brightness(0) invert(1) !important;
+            filter: invert(1) brightness(2) !important;
             transition: opacity 0.15s ease;
         }
         .task-text.completed .task-checkbox-container img {
@@ -315,7 +312,7 @@
             background: transparent; color: var(--text-muted); border: none; font-size: 18px; cursor: pointer;
             width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
         }
-        .btn-delete:hover { background: #FCE8E6; transform: scale(1.05); }
+        .btn-delete:hover { background: rgba(255, 0, 0, 0.08); transform: scale(1.05); }
         .btn-delete:hover .premium-icon { filter: none !important; }
         .btn-delete:active { transform: scale(0.95); }
 
@@ -377,7 +374,7 @@
         }
         .btn-close-x:hover { transform: scale(1.1); }
 
-        .note-item-btn { text-align: left; font-weight: 500; cursor: pointer; background: var(--card-bg); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; margin-bottom: 8px; transition: all 0.2s var(--fade-bezier); animation: fadeIn 0.3s ease; }
+        .note-item-btn { text-align: left; font-weight: 500; cursor: pointer; background: var(--card-bg); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; margin-bottom: 8px; color: var(--text-main); transition: all 0.2s var(--fade-bezier); animation: fadeIn 0.3s ease; }
         .note-item-btn:hover { border-color: var(--accent-brand); transform: translateX(3px); }
         
         .color-picker { display: flex; gap: 12px; margin: 14px 0; }
@@ -411,7 +408,6 @@
 
     <div class="phone-container">
         
-        <!-- VISTA HOME -->
         <div id="view-home" class="view">
             <div class="card brand-header">
                 <div class="welcome-title" id="txt-home-title">Control de <span id="username-display" onclick="openModal('username-modal')">Espacio</span></div>
@@ -419,22 +415,18 @@
                     <button class="btn-back" id="btn-install-pwa" style="padding: 6px 14px; font-size: 12px; display: none;">
                         <span id="txt-install">Instalar app</span>
                     </button>
-                    <!-- Botón Guía Manual -->
-                    <button class="btn-back" style="padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent;" onclick="openDrawer('drawer-help')">
+                    <button class="btn-back" style="padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" onclick="openDrawer('drawer-help')">
                         <img src="https://cdn-icons-png.magnific.com/512/471/471715.png" class="premium-icon" style="filter: none;" alt="Guía">
                     </button>
-                    <!-- Botón Novedades -->
-                    <button class="btn-back" style="padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent;" onclick="openDrawer('drawer-news')">
+                    <button class="btn-back" style="padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" onclick="openDrawer('drawer-news')">
                         <img src="https://cdn-icons-png.magnific.com/512/5962/5962661.png" class="premium-icon" style="filter: none;" alt="Novedades">
                     </button>
-                    <!-- Botón Ajustes -->
-                    <button class="btn-back" style="padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent;" onclick="openModal('config-modal')">
+                    <button class="btn-back" style="padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" onclick="openModal('config-modal')">
                         <svg style="width:18px; height:18px;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97c.04-.32.07-.65.07-.97c0-.32-.03-.65-.07-.97l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.39-1.09-.73-1.71-.98l-.37-2.65A.506.506 0 0 0 14 3h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.63c-.04.32-.07.65-.07.97c0 .32.03.65.07.97l-2.11 1.63c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.39 1.09.73 1.71.98l.37 2.65c.04.24.25.42.49.42h4c.25 0 .46-.18.49-.42l.37-2.65c.61-.25 1.17-.59 1.71-.98l2.49 1c.22.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.63Z"/></svg>
                     </button>
                 </div>
             </div>
 
-            <!-- Menú Grid -->
             <div class="grid-menu">
                 <div class="menu-item" onclick="changeView('view-calendar')">
                     <div class="icon" style="background-color: var(--accent-brand);"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg></div>
@@ -450,14 +442,12 @@
                 </div>
             </div>
 
-            <!-- Preview Agenda del Día -->
             <div class="card">
                 <h3 id="txt-cronograma-title" style="margin-bottom: 16px;">Cronograma del Día</h3>
                 <ul id="home-tasks-list" class="list-preview"></ul>
             </div>
         </div>
 
-        <!-- VISTA CALENDARIO -->
         <div id="view-calendar" class="view hidden">
             <div class="card header-box">
                 <span id="txt-cal-header">Agenda Mensual</span>
@@ -485,14 +475,13 @@
                     <div style="display: flex; gap: 10px;">
                         <button class="btn-back" id="btn-edit-cal" style="background:var(--accent-brand); color:white; border:none; flex: 1;">Asignar</button>
                         <button class="btn-back" id="btn-delete-cal" style="color:red; border-color:rgba(255,0,0,0.2); display: inline-flex; align-items: center; gap: 6px;">
-                            <img src="https://cdn-icons-png.magnific.com/512/11209/11209955.png" class="premium-icon" style="filter:none;" alt="Remover"> Remover
+                            <img src="https://cdn-icons-png.magnific.com/512/11209/11209955.png" class="premium-icon" alt="Remover"> Remover
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- VISTA PENDIENTES -->
         <div id="view-tasks" class="view hidden">
             <div class="card header-box">
                 <span id="txt-tasks-header">Lista de Actividades</span>
@@ -512,29 +501,28 @@
             </div>
         </div>
 
-        <!-- VISTA NOTAS FIJAS -->
         <div id="view-notes" class="view hidden">
             <div class="card header-box">
                 <span id="txt-notes-header">Bloque de Notas</span>
                 <button class="btn-back btn-lbl-back" onclick="changeView('view-home')">Volver</button>
             </div>
             <div class="card">
-                <div id="notes-container" style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;"></div>
-                <div class="input-group" style="display:flex; gap:10px;">
-                    <input type="text" id="note-title-input" class="input-flat" maxlength="30" placeholder="Título de la nota...">
-                    <button class="btn-add" id="btn-note-create" onclick="addNote()">
-                        <img src="https://cdn-icons-png.magnific.com/512/11210/11210000.png" class="premium-icon" alt="Crear"> Crear
-                    </button>
+                <div id="note-list-box" style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;"></div>
+                <div class="task-input-container" style="margin-top:0;">
+                    <div class="input-row-bottom">
+                        <input type="text" id="note-title-input" class="input-flat" maxlength="30" placeholder="Título de la nota..." onkeydown="if(event.key === 'Enter') addNote()">
+                        <button class="btn-add" id="btn-note-create" style="padding: 0 20px;" onclick="addNote()">
+                            <img src="https://cdn-icons-png.magnific.com/512/11210/11210000.png" class="premium-icon" alt="Crear"> Crear
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- OVERLAY DE MODALES -->
     <div class="modal-overlay" id="overlay" onclick="closeModals()"></div>
 
-    <!-- MODAL AJUSTES -->
     <div class="modal" id="config-modal">
         <h3 id="txt-modal-config-title" style="margin-bottom:20px;">Configuración</h3>
         
@@ -543,14 +531,6 @@
             <select id="lang-select" class="custom-select" onchange="changeLanguage(this.value)">
                 <option value="es">Español</option>
                 <option value="en">English</option>
-                <option value="pt">Português</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
-                <option value="it">Italiano</option>
-                <option value="ja">日本語</option>
-                <option value="zh">中文</option>
-                <option value="ru">Русский</option>
-                <option value="ko">한국어</option>
             </select>
         </div>
 
@@ -577,19 +557,17 @@
         <button class="btn-add btn-lbl-close" style="width:100%; padding:14px; margin-top:14px;" onclick="closeModals()">Cerrar</button>
     </div>
 
-    <!-- MODAL DE IDENTIDAD (Username) -->
     <div class="modal" id="username-modal">
         <h3 id="txt-modal-id-title" style="margin-bottom:14px;">Identidad del Espacio</h3>
         <input type="text" id="username-input" class="input-flat" style="width:100%; margin-bottom:18px;" maxlength="14">
         <button class="btn-add btn-lbl-save" style="width:100%; padding:14px;" onclick="saveUsername()">Guardar</button>
     </div>
 
-    <!-- MODAL DETALLE/EDICIÓN NOTA -->
     <div class="modal" id="note-modal">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
             <h3 id="modal-note-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%;"></h3>
-            <button class="btn-back btn-lbl-delete" style="color:red; padding:6px 12px; border-color: rgba(255,0,0,0.1); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;" id="btn-delete-note-trigger">
-                <img src="https://cdn-icons-png.magnific.com/512/11209/11209955.png" class="premium-icon" style="filter:none;" alt="Eliminar"> Eliminar
+            <button class="btn-back" style="color:red; padding:6px 12px; border-color: rgba(255,0,0,0.1); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;" id="btn-delete-note-trigger">
+                <img src="https://cdn-icons-png.magnific.com/512/11209/11209955.png" class="premium-icon" alt="Eliminar"> Eliminar
             </button>
         </div>
         <div class="format-bar">
@@ -604,7 +582,6 @@
         <button class="btn-add btn-lbl-save" style="width:100%; padding:14px; margin-top:16px;" onclick="saveNoteBody()">Guardar Nota</button>
     </div>
 
-    <!-- MODAL PLANIFICAR EVENTO CALENDARIO -->
     <div class="modal" id="calendar-modal">
         <h3 id="txt-modal-plan-title" style="margin-bottom:14px;">Planificar: <span id="modal-day-num"></span></h3>
         <input type="text" id="cal-input-title" class="input-flat" style="width:100%; margin-bottom:18px;" placeholder="¿Qué hay planeado para hoy?">
@@ -618,7 +595,6 @@
         <button class="btn-add" id="btn-cal-save-evt" style="width:100%; padding:14px;" onclick="saveCalendarEvent()">Fijar Evento</button>
     </div>
 
-    <!-- CAJÓN DE GUÍA DE AYUDA INTERACTIVA (MODAL BLINDADO) -->
     <div class="cajon-drawer" id="drawer-help">
         <div style="display: flex; justify-content: flex-end; margin-bottom: 2px;">
             <button onclick="closeDrawer('drawer-help')" class="btn-close-x">
@@ -629,19 +605,19 @@
         <div id="help-steps-container">
             <div class="guide-step active" data-step="1">
                 <h4 style="color: var(--accent-brand); margin-bottom: 6px;">1. Centro de Control Doméstico</h4>
-                <p>Desde la pantalla de inicio puedes ver un resumen ejecutivo en tiempo real de tu agenda diaria ("Cronograma del Día") y acceder rápidamente a los tres bloques de la grilla minimalista.</p>
+                <p>Desde la pantalla de inicio puedes ver un resumen ejecutivo de tu agenda diaria ("Cronograma del Día").</p>
             </div>
             <div class="guide-step" data-step="2">
                 <h4 style="color: var(--accent-green); margin-bottom: 6px;">2. Agenda de Eventos Mensuales</h4>
-                <p>Accede al calendario, navega usando las flechas y presiona cualquier día para planificar eventos. Podrás asignarles colores de categorización personalizados para un rápido impacto visual.</p>
+                <p>Navega usando las flechas y presiona cualquier día para planificar eventos con colores.</p>
             </div>
             <div class="guide-step" data-step="3">
                 <h4 style="color: var(--accent-yellow); margin-bottom: 6px;">3. Actividades con Horarios</h4>
-                <p>Al añadir pendientes en la sección de Actividades, puedes include una hora fija (formato 24h). El sistema realizará un seguimiento en segundo plano para alertarte en el minuto exacto.</p>
+                <p>Al añadir pendientes en Actividades, puedes incluir una hora fija (formato 24h).</p>
             </div>
             <div class="guide-step" data-step="4">
                 <h4 style="color: #1A73E8; margin-bottom: 6px;">4. Notas Estilo iOS Enriquecidas</h4>
-                <p>Crea bloques de notas fijas y ábrelas para editarlas con comandos WYSIWYG interactivos (Títulos H1/H2, negritas, itálicas) guardando el formato de manera interna.</p>
+                <p>Crea bloques de notas fijas y ábrelas para editarlas con comandos WYSIWYG interactivos.</p>
             </div>
         </div>
         <div class="guide-nav">
@@ -650,7 +626,6 @@
         </div>
     </div>
 
-    <!-- CAJÓN DE NOVEDADES Y ACTUALIZACIONES (MODAL BLINDADO) -->
     <div class="cajon-drawer" id="drawer-news">
         <div style="display: flex; justify-content: flex-end; margin-bottom: 2px;">
             <button onclick="closeDrawer('drawer-news')" class="btn-close-x">
@@ -658,13 +633,10 @@
             </button>
         </div>
         <h3 style="margin-bottom: 18px; font-size: 19px; text-align: center;" id="txt-news-title">Historial de Actualizaciones</h3>
-        <div id="news-content-box" style="display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: 55vh; padding-right: 4px;">
-            <!-- Render dinámico mediante JS -->
-        </div>
+        <div id="news-content-box" style="display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: 55vh; padding-right: 4px;"></div>
     </div>
 
     <script>
-        // CORE DATA STRUCTURE
         let data = {
             username: "Espacio",
             lang: "es",
@@ -687,8 +659,8 @@
                 newsTitle: "Historial de Actualizaciones", menuEvents: "Eventos", menuTasks: "Pendientes", menuNotes: "Notas fijas",
                 calToday: "Hoy", calDetail: "Detalles del día", calNoEvt: "No hay eventos planificados para este día.",
                 placeholderTask: "Nombre de la actividad...", placeholderTime: "Hora (ej. 17:30)", placeholderNote: "Título de la nota...",
-                msgEmptyCronograma: "Sin actividades pendientes para hoy.", alertNotifyBlock: "Por favor habilita los permisos de notificación en tu navegador.",
-                alertNotifySuccess: "¡Alertas nativas configuradas con éxito!"
+                msgEmptyCronograma: "Sin actividades pendientes para hoy.", alertNotifyBlock: "Habilita los permisos de notificación.",
+                alertNotifySuccess: "¡Alertas nativas configuradas!"
             },
             en: {
                 homeTitle: "Space Control: ", calHeader: "Monthly Agenda", tasksHeader: "Activity Checklist",
@@ -701,7 +673,7 @@
                 newsTitle: "Update History", menuEvents: "Events", menuTasks: "Tasks", menuNotes: "Sticky Notes",
                 calToday: "Today", calDetail: "Day Details", calNoEvt: "No events planned for this day.",
                 placeholderTask: "Activity name...", placeholderTime: "Time (e.g. 17:30)", placeholderNote: "Note title...",
-                msgEmptyCronograma: "No pending tasks for today.", alertNotifyBlock: "Please enable notification permissions in your browser.",
+                msgEmptyCronograma: "No pending tasks for today.", alertNotifyBlock: "Please enable notification permissions.",
                 alertNotifySuccess: "Native alerts configured successfully!"
             }
         };
@@ -711,7 +683,6 @@
         let currentGuideStep = 1;
         let selectedColor = "#85243A";
 
-        // LOCALSTORAGE MANAGMENT
         function saveToLocalStorage() {
             localStorage.setItem('aura_studio_data', JSON.stringify(data));
         }
@@ -733,7 +704,6 @@
             document.getElementById('username-input').value = data.username;
         }
 
-        // VIEW CONTROLLER
         function changeView(viewId) {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.getElementById(viewId).classList.remove('hidden');
@@ -742,13 +712,11 @@
             if(viewId === 'view-notes') renderNotes();
         }
 
-        // DRAWER CONTROLLER
         function openDrawer(id) {
             const overlay = document.getElementById('overlay');
             overlay.style.display = 'block';
             setTimeout(() => overlay.style.opacity = '1', 10);
             overlay.onclick = null;
-
             document.getElementById(id).classList.add('active');
             if(id === 'drawer-news') loadUpdatesLog();
         }
@@ -763,7 +731,6 @@
             }, 300);
         }
 
-        // MODALES ESTÁNDAR
         function openModal(id) {
             const overlay = document.getElementById('overlay');
             overlay.style.display = 'block';
@@ -783,7 +750,6 @@
             }, 300);
         }
 
-        // CONFIGURACIONES: TEMA E IDIOMA
         function changeTheme(themeValue) {
             data.theme = themeValue;
             saveToLocalStorage();
@@ -853,7 +819,6 @@
             }
         }
 
-        // MANUAL INTERACTIVO
         function moveGuideStep(dir) {
             currentGuideStep += dir;
             if(currentGuideStep < 1) currentGuideStep = 1;
@@ -872,7 +837,6 @@
             }
         }
 
-        // MOTOR PARSER PARA UPD.TXT
         async function loadUpdatesLog() {
             const container = document.getElementById('news-content-box');
             container.innerHTML = `<p style="text-align:center; padding:20px;">...</p>`;
@@ -880,14 +844,12 @@
                 const response = await fetch('./upd.txt');
                 if(!response.ok) throw new Error();
                 let text = await response.text();
-                
                 let htmlOutput = "";
                 const lines = text.split('\n');
                 
                 lines.forEach(line => {
                     let cleaned = line.trim();
                     if (!cleaned) return;
-
                     if (cleaned.startsWith('<') && cleaned.endsWith('>')) {
                         let innerContent = cleaned.substring(1, cleaned.length - 1).trim();
                         let targetClass = "log-p";
@@ -895,25 +857,13 @@
                         let tagType = "";
 
                         if (innerContent.startsWith('# ')) {
-                            targetClass = "log-h1";
-                            innerContent = innerContent.substring(2);
-                            isHeader = true;
-                            tagType = "div";
+                            targetClass = "log-h1"; innerContent = innerContent.substring(2); isHeader = true; tagType = "div";
                         } else if (innerContent.startsWith('## ')) {
-                            targetClass = "log-h2";
-                            innerContent = innerContent.substring(3);
-                            isHeader = true;
-                            tagType = "div";
+                            targetClass = "log-h2"; innerContent = innerContent.substring(3); isHeader = true; tagType = "div";
                         } else if (innerContent.startsWith('### ')) {
-                            targetClass = "log-h3";
-                            innerContent = innerContent.substring(4);
-                            isHeader = true;
-                            tagType = "div";
+                            targetClass = "log-h3"; innerContent = innerContent.substring(4); isHeader = true; tagType = "div";
                         } else if (innerContent.startsWith('-# ')) {
-                            targetClass = "log-sub";
-                            innerContent = innerContent.substring(3);
-                            isHeader = true;
-                            tagType = "p";
+                            targetClass = "log-sub"; innerContent = innerContent.substring(3); isHeader = true; tagType = "p";
                         }
 
                         innerContent = innerContent.replace(/_\*(.*?)\*_/g, '<strong><em>$1</em></strong>');
@@ -921,28 +871,24 @@
                         innerContent = innerContent.replace(/_(.*?)_/g, '<em>$1</em>');
                         innerContent = innerContent.replace(/`(.*?)`/g, '<span class="log-code">$1</span>');
 
-                        if (isHeader) {
-                            htmlOutput += `<${tagType} class="${targetClass}">${innerContent}</${tagType}>`;
-                        } else {
-                            htmlOutput += `<p class="${targetClass}">${innerContent}</p>`;
-                        }
+                        if (isHeader) htmlOutput += `<${tagType} class="${targetClass}">${innerContent}</${tagType}>`;
+                        else htmlOutput += `<p class="${targetClass}">${innerContent}</p>`;
                     } else {
                         htmlOutput += `<p class="log-p">${cleaned}</p>`;
                     }
                 });
-
-                container.innerHTML = htmlOutput || "<p>No hay registros de actualización disponibles.</p>";
+                container.innerHTML = htmlOutput || "<p>No hay registros.</p>";
             } catch(e) {
-                container.innerHTML = `<p style="text-align:center; color:red; font-size:13px; padding:20px;">Error al procesar o localizar el archivo 'upd.txt'.</p>`;
+                container.innerHTML = `<p style="text-align:center; color:red; font-size:13px; padding:20px;">No se localizó 'upd.txt'.</p>`;
             }
         }
 
-        // GESTIÓN DE CHECKLIST (PENDIENTES)
+        // ACTIVIDADES
         function renderTasks() {
             const container = document.getElementById('tasks-container');
             container.innerHTML = "";
             if(data.tasks.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding:30px 0;">${data.lang === 'en' ? 'No tasks listed.' : 'No hay actividades listadas.'}</p>`;
+                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding:30px 0;">${data.lang === 'en' ? 'No tasks listed.' : 'No hay actividades.'}</p>`;
                 return;
             }
             data.tasks.forEach((t, index) => {
@@ -955,7 +901,7 @@
                         </div>
                         <span>${t.text} ${t.time ? `<span class="time-badge">${t.time}</span>` : ''}</span>
                     </div>
-                    <button class="btn-delete" onclick="deleteTask(${index})">
+                    <button class="btn-delete" onclick="deleteTask(${index}); event.stopPropagation();">
                         <img src="https://cdn-icons-png.magnific.com/512/11209/11209955.png" class="premium-icon" alt="menos">
                     </button>
                 `;
@@ -968,11 +914,10 @@
             const timeInput = document.getElementById('task-time');
             const text = txtInput.value.trim();
             const time = timeInput.value.trim();
-            
             if(!text) return;
+
             data.tasks.push({ text: text, time: time, done: false });
             saveToLocalStorage();
-            
             txtInput.value = "";
             timeInput.value = "";
             renderTasks();
@@ -990,23 +935,23 @@
             renderTasks();
         }
 
-        // BLOQUE DE NOTAS FIJAS (SISTEMA DE EDICIÓN SEGURO REESCRITO)
+        // NOTAS FIJAS CORREGIDAS
         function renderNotes() {
-            const container = document.getElementById('notes-container');
-            container.innerHTML = "";
+            const box = document.getElementById('note-list-box');
+            box.innerHTML = "";
             if(data.notes.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding:30px 0;">${data.lang === 'en' ? 'No notes stored.' : 'No hay notas almacenadas.'}</p>`;
+                box.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding:30px 0;">${data.lang === 'en' ? 'No notes stored.' : 'No hay notas almacenadas.'}</p>`;
                 return;
             }
             data.notes.forEach((n, index) => {
                 const btn = document.createElement('button');
                 btn.className = "note-item-btn";
                 btn.innerHTML = `
-                    <div style="width:10px; height:10px; border-radius:50%; background:var(--accent-yellow);"></div>
+                    <div style="width:10px; height:10px; border-radius:50%; background:var(--accent-yellow); flex-shrink:0;"></div>
                     <div style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${n.title}</div>
                 `;
                 btn.onclick = () => openNoteEditor(index);
-                container.appendChild(btn);
+                box.appendChild(btn);
             });
         }
 
@@ -1016,7 +961,7 @@
             const title = input.value.trim();
             if(!title) return;
             
-            data.notes.push({ title: title, body: "<div>Empieza a escribir...</div>" });
+            data.notes.push({ title: title, body: "<div>Empieza a escribir aquí...</div>" });
             saveToLocalStorage();
             input.value = "";
             renderNotes();
@@ -1037,37 +982,27 @@
             openModal('note-modal');
         }
 
-        // NUEVO MOTOR DE ENVOLTURA NATIVA WYSIWYG SEGURO PARA LAS NOTAS
         function applyNoteFormat(tag) {
             const editor = document.getElementById('modal-note-body');
             const selection = window.getSelection();
             if (!selection.rangeCount) return;
-
             const range = selection.getRangeAt(0);
-            
-            // Si el usuario no ha seleccionado texto, no hace nada
             if (range.toString().trim() === "") return;
 
             const newElement = document.createElement(tag);
-
             if (tag === 'h1' || tag === 'h2' || tag === 'p') {
-                // Para elementos de bloque, extraemos el contenido y reemplazamos el nodo padre directo
                 newElement.innerHTML = range.toString();
                 range.deleteContents();
                 range.insertNode(newElement);
             } else {
-                // Para estilos de línea (B e I), envolvemos el fragmento seleccionado limpiamente
                 try {
                     range.surroundContents(newElement);
                 } catch (e) {
-                    // Fallback si la selección toca múltiples nodos complejos
                     newElement.innerHTML = range.toString();
                     range.deleteContents();
                     range.insertNode(newElement);
                 }
             }
-
-            // Forzar actualización del foco en el editor
             editor.focus();
         }
 
@@ -1080,7 +1015,7 @@
             }
         }
 
-        // CALENDARIO MENSUAL
+        // CALENDARIO
         function initCalendar() {
             const today = new Date();
             if (currentYear === undefined) currentYear = today.getFullYear();
@@ -1112,26 +1047,21 @@
             }
             
             const realToday = new Date();
-            
             for(let day=1; day<=totalDays; day++) {
                 const dayCell = document.createElement('div');
                 dayCell.className = "calendar-day";
                 dayCell.innerText = day;
                 
                 const loopDateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-                
                 if(data.events[loopDateStr]) {
                     dayCell.style.border = `2px solid ${data.events[loopDateStr].color || 'var(--accent-brand)'}`;
                 }
-                
                 if(day === realToday.getDate() && currentMonth === realToday.getMonth() && currentYear === realToday.getFullYear()) {
                     dayCell.classList.add('current-today');
                 }
-                
                 if(loopDateStr === selectedDayStr) {
                     dayCell.classList.add('selected');
                 }
-                
                 dayCell.onclick = () => selectCalendarDay(day, loopDateStr);
                 gridBox.appendChild(dayCell);
             }
@@ -1155,11 +1085,10 @@
         function selectCalendarDay(dayNum, dateStr) {
             selectedDayStr = dateStr;
             renderCalendarMesh();
-            
             document.getElementById('modal-day-num').innerText = dateStr;
+            
             const detailBox = document.getElementById('calendar-detail-box');
             const txtDetail = document.getElementById('cal-detail-text');
-            
             detailBox.style.display = "block";
             
             if(data.events[dateStr]) {
@@ -1187,16 +1116,13 @@
         function saveCalendarEvent() {
             const title = document.getElementById('cal-input-title').value.trim();
             if(!title) return;
-            
             data.events[selectedDayStr] = { title: title, color: selectedColor };
             saveToLocalStorage();
             closeModals();
-            
             const parts = selectedDayStr.split('-');
             selectCalendarDay(parseInt(parts[2]), selectedDayStr);
         }
 
-        // COLOR PICKER INTERFACE
         document.querySelectorAll('.color-picker .color-opt').forEach(opt => {
             opt.onclick = (e) => {
                 document.querySelectorAll('.color-picker .color-opt').forEach(o => o.classList.remove('active'));
@@ -1205,17 +1131,14 @@
             };
         });
 
-        // PREVIEW CRONOGRAMA HOME
         function renderHomePreview() {
             const list = document.getElementById('home-tasks-list');
             list.innerHTML = "";
             const activeTasks = data.tasks.filter(t => !t.done);
-            
             if(activeTasks.length === 0) {
-                list.innerHTML = `<li style="color: var(--text-muted); font-size:14px; justify-content:center; padding:10px 0;">${locales[data.lang].msgEmptyCronograma}</li>`;
+                list.innerHTML = `<li style="color:var(--text-muted); font-size:14px; justify-content:center; padding:10px 0;">${locales[data.lang].msgEmptyCronograma}</li>`;
                 return;
             }
-            
             activeTasks.slice(0, 4).forEach(t => {
                 const li = document.createElement('li');
                 li.innerHTML = `
@@ -1226,29 +1149,22 @@
             });
         }
 
-        // NOTIFICACIONES
         function toggleNotifications(val) {
             if(val) {
                 if (!("Notification" in window)) {
-                    alert("Este entorno no soporta alertas nativas.");
+                    alert("No soporta alertas nativas.");
                     document.getElementById('notify-toggle').checked = false;
                     return;
                 }
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
-                        data.notify = true;
-                        saveToLocalStorage();
-                        alert(locales[data.lang].alertNotifySuccess);
+                        data.notify = true; saveToLocalStorage(); alert(locales[data.lang].alertNotifySuccess);
                     } else {
-                        data.notify = false;
-                        saveToLocalStorage();
-                        document.getElementById('notify-toggle').checked = false;
-                        alert(locales[data.lang].alertNotifyBlock);
+                        data.notify = false; saveToLocalStorage(); document.getElementById('notify-toggle').checked = false; alert(locales[data.lang].alertNotifyBlock);
                     }
                 });
             } else {
-                data.notify = false;
-                saveToLocalStorage();
+                data.notify = false; saveToLocalStorage();
             }
         }
 
@@ -1266,27 +1182,14 @@
                     }
                 }
             });
-
             if(horaActualStr === "00:00") tareasNotificadas.clear();
         }, 25000);
 
-        // INSTALACIÓN ASÍNCRONA PWA
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const btn = document.getElementById('btn-install-pwa');
-            if(btn) btn.style.display = 'inline-flex';
-        });
-
-        // INITIALIZATION
         window.addEventListener('DOMContentLoaded', () => {
             loadFromLocalStorage();
-            
             document.getElementById('lang-select').value = data.lang;
             document.getElementById('notify-toggle').checked = data.notify;
             document.getElementById('theme-select').value = data.theme;
-            
             changeTheme(data.theme);
             initCalendar();
             changeLanguage(data.lang);
