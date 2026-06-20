@@ -1,6 +1,11 @@
-<V"2.2.0">
-<T"Mejoras en el Sistema">
-<S"v2.2.0 Estable">
-<T"Se integró un sistema automático para leer el archivo *upd.txt* de manera dinámica.">
-<T"Soporte de estilos avanzados: Ahora podés usar *negrita*, _cursiva_ o mezclar texto *importante* con partes _estilizadas_ en una misma línea.">
-<T"Optimización completa de la barra de scroll estilo *Apple Glassmorphism* sin romper la interfaz.">
+<H1"Aura Studio - Historial de Cambios">
+<V"2.1.0">
+
+<H2"Notas de la Version">
+<T"Se ha restaurado por completo el ecosistema de la aplicacion tras una perdida masiva de codigo. Esta actualizacion es *critica* para el funcionamiento offline y la consistencia visual.">
+
+<H2"Cambios Implementados">
+<T"• *CSS*: Reconstruccion total del panel de ayuda lateral con transiciones suaves basadas en _--aura-bezier_.">
+<T"• *Idiomas*: Selector dinmico corregido para procesar las *10 lenguas* nativas mediante un diccionario unificado.">
+<T"• *UI/UX*: Reincorporacion del sistema de animaciones de entrada en tarjetas e items de menu.">
+<T"• *Guia*: El boton de ayuda ahora despliega el manual tecnico oficial interactivo.">
