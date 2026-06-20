@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Organizador Personal Pro</title>
     
-    <!-- Favicons y Apple Touch Icon -->
     <link class="fav-icon-tag" rel="icon" type="image/png" href="https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png">
     <link class="apple-touch-icon" href="https://i.ibb.co/5h1j0fr3/Dise-o-sin-t-tulo.png">
 
@@ -180,7 +179,6 @@
             letter-spacing: -0.5px;
         }
         
-        /* Modificación basada en image_84dfaf.png: Se removió la línea cortada/punteada */
         .welcome-title span {
             color: var(--accent-brand);
             font-weight: 700;
@@ -320,7 +318,7 @@
 
         /* Modales Estándar con Micro-Animación Completa */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(17, 18, 20, 0.35); backdrop-filter: blur(4px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -46%) scale(0.97); background: var(--card-bg); border-radius: 24px; padding: 24px; z-index: 100; width: 90%; max-width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); opacity: 0; transition: transform 0.3s var(--aura-bezier), opacity 0.3s var(--fade-bezier); max-height: 90vh; overflow-y: auto; }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -46%) scale(0.97); background: var(--card-bg); border-radius: 24px; padding: 24px; z-index: 100; width: 90%; max-width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); opacity: 0; transition: transform 0.3s var(--drawer-bezier), opacity 0.3s var(--fade-bezier); max-height: 90vh; overflow-y: auto; }
         .modal.active { display: block; opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
         /* Cajones Desplegables con Curvas Pro */
@@ -381,7 +379,6 @@
 
     <div class="phone-container">
         
-        <!-- VISTA HOME -->
         <div id="view-home" class="view">
             <div class="card brand-header">
                 <div class="welcome-title" id="txt-home-title">Control de <span id="username-display" onclick="openModal('username-modal')">Espacio</span></div>
@@ -390,22 +387,18 @@
                         <svg style="width:14px; height:14px;" viewBox="0 0 24 24"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
                         <span id="txt-install">Instalar app</span>
                     </button>
-                    <!-- Botón Ayuda / Manual -->
                     <button class="btn-back" style="padding: 8px; border-radius: 50%;" onclick="openDrawer('drawer-help')">
                         <svg style="width:18px; height:18px;" viewBox="0 0 24 24"><path fill="currentColor" d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5c0-2.21-1.79-4-4-4z"/></svg>
                     </button>
-                    <!-- Botón Novedades (upd.txt real) -->
                     <button class="btn-back" style="padding: 8px; border-radius: 50%;" onclick="openDrawer('drawer-news')">
                         <svg style="width:18px; height:18px;" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-3 11H7v-2h10v2zm3-4H7V9h13v2z"/></svg>
                     </button>
-                    <!-- Botón Ajustes -->
                     <button class="btn-back" style="padding: 8px; border-radius: 50%;" onclick="openModal('config-modal')">
                         <svg style="width:18px; height:18px;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M19.43 12.97c.04-.32.07-.65.07-.97c0-.32-.03-.65-.07-.97l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.39-1.09-.73-1.71-.98l-.37-2.65A.506.506 0 0 0 14 3h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.63c-.04.32-.07.65-.07.97c0 .32.03.65.07.97l-2.11 1.63c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.39 1.09.73 1.71.98l.37 2.65c.04.24.25.42.49.42h4c.25 0 .46-.18.49-.42l.37-2.65c.61-.25 1.17-.59 1.71-.98l2.49 1c.22.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.63Z"/></svg>
                     </button>
                 </div>
             </div>
 
-            <!-- Menú Grid -->
             <div class="grid-menu">
                 <div class="menu-item" onclick="changeView('view-calendar')">
                     <div class="icon" style="background-color: var(--accent-brand);"><svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg></div>
@@ -421,14 +414,12 @@
                 </div>
             </div>
 
-            <!-- Preview Agenda del Día -->
             <div class="card">
                 <h3 id="txt-cronograma-title" style="margin-bottom: 16px;">Cronograma del Día</h3>
                 <ul id="home-tasks-list" class="list-preview"></ul>
             </div>
         </div>
 
-        <!-- VISTA CALENDARIO -->
         <div id="view-calendar" class="view hidden">
             <div class="card header-box">
                 <span id="txt-cal-header">Agenda Mensual</span>
@@ -457,7 +448,6 @@
             </div>
         </div>
 
-        <!-- VISTA PENDIENTES -->
         <div id="view-tasks" class="view hidden">
             <div class="card header-box">
                 <span id="txt-tasks-header">Lista de Actividades</span>
@@ -475,7 +465,6 @@
             </div>
         </div>
 
-        <!-- VISTA NOTAS FIJAS -->
         <div id="view-notes" class="view hidden">
             <div class="card header-box">
                 <span id="txt-notes-header">Bloque de Notas</span>
@@ -492,10 +481,8 @@
 
     </div>
 
-    <!-- OVERLAY DE MODALES -->
     <div class="modal-overlay" id="overlay" onclick="closeModals()"></div>
 
-    <!-- MODAL AJUSTES -->
     <div class="modal" id="config-modal">
         <h3 id="txt-modal-config-title" style="margin-bottom:20px;">Configuración</h3>
         
@@ -538,14 +525,12 @@
         <button class="btn-add btn-lbl-close" style="width:100%; padding:14px; margin-top:14px;" onclick="closeModals()">Cerrar</button>
     </div>
 
-    <!-- MODAL DE IDENTIDAD (Username) -->
     <div class="modal" id="username-modal">
         <h3 id="txt-modal-id-title" style="margin-bottom:14px;">Identidad del Espacio</h3>
         <input type="text" id="username-input" class="input-flat" style="width:100%; margin-bottom:18px;" maxlength="14">
         <button class="btn-add btn-lbl-save" style="width:100%; padding:14px;" onclick="saveUsername()">Guardar</button>
     </div>
 
-    <!-- MODAL DETALLE/EDICIÓN NOTA -->
     <div class="modal" id="note-modal">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
             <h3 id="modal-note-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%;"></h3>
@@ -563,7 +548,6 @@
         <button class="btn-add btn-lbl-save" style="width:100%; padding:14px; margin-top:16px;" onclick="saveNoteBody()">Guardar Nota</button>
     </div>
 
-    <!-- MODAL PLANIFICAR EVENTO CALENDARIO -->
     <div class="modal" id="calendar-modal">
         <h3 id="txt-modal-plan-title" style="margin-bottom:14px;">Planificar: <span id="modal-day-num"></span></h3>
         <input type="text" id="cal-input-title" class="input-flat" style="width:100%; margin-bottom:18px;" placeholder="¿Qué hay planeado para hoy?">
@@ -577,11 +561,9 @@
         <button class="btn-add" id="btn-cal-save-evt" style="width:100%; padding:14px;" onclick="saveCalendarEvent()">Fijar Evento</button>
     </div>
 
-    <!-- CAJÓN DE GUÍA DE AYUDA INTERACTIVA -->
     <div class="cajon-drawer" id="drawer-help">
         <div class="drawer-handle" onclick="closeDrawer('drawer-help')"></div>
         <h3 style="margin-bottom: 16px; font-size: 18px; text-align: center;" id="txt-help-title">Manual de Uso del Espacio</h3>
-        
         <div id="help-steps-container">
             <div class="guide-step active" data-step="1">
                 <h4 style="color: var(--accent-brand);">1. Centro de Control Doméstico</h4>
@@ -593,504 +575,872 @@
             </div>
             <div class="guide-step" data-step="3">
                 <h4 style="color: var(--accent-yellow);">3. Actividades con Horarios</h4>
-                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">Al añadir pendientes en la sección de Actividades, puedes incluir una hora fija (formato 24h). El sistema realizará un seguimiento en segundo plano para alertarte en el minuto exacto.</p>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">Al añadir pendientes en la sección de Actividades, puedes include una hora fija (formato 24h). El sistema realizará un seguimiento en segundo plano para alertarte en el minuto exacto.</p>
             </div>
             <div class="guide-step" data-step="4">
                 <h4 style="color: #1A73E8;">4. Notas Estilo iOS Enriquecidas</h4>
                 <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">Crea bloques de notas fijas y ábrelas para editarlas con comandos WYSIWYG interactivos (Títulos H1/H2, negritas, itálicas) guardando el formato de manera interna.</p>
             </div>
         </div>
-
         <div class="guide-nav">
             <button class="btn-back" id="btn-guide-prev" onclick="moveGuideStep(-1)" disabled>Anterior</button>
             <button class="btn-add" id="btn-guide-next" onclick="moveGuideStep(1)" style="padding: 10px 20px;">Siguiente</button>
         </div>
     </div>
 
-    <!-- CAJÓN DE NOVEDADES Y REGISTROS (Carga Real de upd.txt) -->
     <div class="cajon-drawer" id="drawer-news">
         <div class="drawer-handle" onclick="closeDrawer('drawer-news')"></div>
         <h3 style="margin-bottom: 16px; font-size: 18px; text-align: center;" id="txt-news-title">Historial de Actualizaciones</h3>
-        <div id="parsed-logs-box" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
-            <p style="text-align: center; color: var(--text-muted); font-size: 14px; padding: 20px 0;">Cargando registro de actualizaciones...</p>
-        </div>
-        <button class="btn-add" style="width: 100%; padding: 12px;" onclick="closeDrawer('drawer-news')">Entendido</button>
+        <div id="news-content-box" style="display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: 60vh; padding-right: 4px;">
+            </div>
     </div>
 
     <script>
-        // DATA CENTRAL (Estructura de Persistencia Inmutable)
+        // ESQUEMA DE DATOS CENTRALIZADOS Y LOCALSTORAGE (Aura Studio Data)
         let data = {
             username: "Espacio",
-            theme: "light",
             lang: "es",
+            theme: "light",
             notify: false,
             tasks: [],
             notes: [],
             calendar: {}
         };
 
-        // DICCIONARIO INTERNACIONAL TOTALMENTE EXPANDIDO (10 Idiomas Completos)
-        const translations = {
+        const STORAGE_KEY = 'aura_studio_data';
+
+        function saveToLocalStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if(raw) {
+                try {
+                    data = JSON.parse(raw);
+                    // Validaciones de estructura por compatibilidad
+                    if(!data.tasks) data.tasks = [];
+                    if(!data.notes) data.notes = [];
+                    if(!data.calendar) data.calendar = {};
+                    if(!data.username) data.username = "Espacio";
+                    if(!data.lang) data.lang = "es";
+                    if(!data.theme) data.theme = "light";
+                } catch(e) {
+                    console.error("Error cargando LocalStorage, reiniciando estructura.", e);
+                }
+            }
+            document.getElementById('username-display').innerText = data.username;
+            document.getElementById('username-input').value = data.username;
+        }
+
+        // SISTEMA MULTILINGÜE INTERACTIVO (DICCIONARIOS DE IDIOMA)
+        const i18n = {
             es: {
-                homeTitle: "Control de ", install: "Instalar app", menuEvents: "Eventos", menuTasks: "Pendientes", menuNotes: "Notas fijas",
-                cronogramaTitle: "Cronograma del Día", calHeader: "Agenda Mensual", calToday: "Hoy", calDetail: "Detalles del día",
-                tasksHeader: "Lista de Actividades", notesHeader: "Bloque de Notas", configTitle: "Configuración", lblLang: "Idioma / Language",
-                lblTheme: "Tema de la interfaz", themeLight: "Claro", themeDark: "Oscuro", themeSystem: "Predeterminado del sistema",
-                lblNotifyTitle: "Alertas del Sistema", lblNotifyDesc: "Activar notificaciones nativas", btnClose: "Cerrar", btnSave: "Guardar",
-                btnDelete: "Eliminar", idTitle: "Identidad del Espacio", planTitle: "Planificar: ", calColor: "Color identificador:",
-                calFix: "Fijar Evento", placeholderTask: "Nombre de la actividad...", placeholderTime: "Hora (ej. 17:30)", btnAdd: "Añadir",
-                placeholderNote: "Título de la nota...", btnCreate: "Crear", placeholderCalEvt: "¿Qué hay planeado para hoy?",
-                noTasks: "Nada planificado para este ciclo.", noTasksBox: "Bandeja limpia por el momento.", noNotes: "No hay registros conceptuales aquí.",
-                noCalEvt: "Libre de compromisos.", calAsignar: "Asignar", calRemover: "Remover", btnVolver: "Volver", helpTitle: "Manual de Uso del Espacio",
-                newsTitle: "Historial de Actualizaciones",
-                weekdays: ["D", "L", "M", "M", "J", "V", "S"],
+                homeTitle: "Control de ",
+                install: "Instalar app",
+                menuEvents: "Eventos",
+                menuTasks: "Pendientes",
+                menuNotes: "Notas fijas",
+                cronograma: "Cronograma del Día",
+                calHeader: "Agenda Mensual",
+                calToday: "Hoy",
+                calDetail: "Detalles del día",
+                tasksHeader: "Lista de Actividades",
+                notesHeader: "Bloque de Notas",
+                lblLang: "Idioma / Language",
+                lblTheme: "Tema de la interfaz",
+                optLight: "Claro",
+                optDark: "Oscuro",
+                optSystem: "Predeterminado del sistema",
+                lblNotifyTitle: "Alertas del Sistema",
+                lblNotifyDesc: "Activar notificaciones nativas",
+                modalConfigTitle: "Configuración",
+                modalIdTitle: "Identidad del Espacio",
+                modalNoteTitle: "Entorno Enriquecido",
+                modalPlanTitle: "Planificar: ",
+                lblCalColor: "Color identificador:",
+                helpTitle: "Manual de Uso del Espacio",
+                newsTitle: "Historial de Novedades",
+                lblClose: "Cerrar",
+                lblSave: "Guardar",
+                lblDelete: "Eliminar",
+                lblBack: "Volver",
+                lblAssign: "Asignar",
+                lblRemove: "Remover",
+                lblCreate: "Crear",
+                lblAdd: "Añadir",
+                lblFijar: "Fijar Evento",
+                phTaskName: "Nombre de la actividad...",
+                phTaskTime: "Hora (ej. 17:30)",
+                phNoteTitle: "Título de la nota...",
+                phCalInput: "¿Qué hay planeado para hoy?",
+                lblPrev: "Anterior",
+                lblNext: "Siguiente",
+                weekdays: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
                 months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
             },
             en: {
-                homeTitle: "Space Control: ", install: "Install app", menuEvents: "Events", menuTasks: "Tasks", menuNotes: "Sticky Notes",
-                cronogramaTitle: "Today's Schedule", calHeader: "Monthly Agenda", calToday: "Today", calDetail: "Day details",
-                tasksHeader: "Activities List", notesHeader: "Notes Block", configTitle: "Configuration", lblLang: "Language / Idioma",
-                lblTheme: "Interface theme", themeLight: "Light", themeDark: "Dark", themeSystem: "System default",
-                lblNotifyTitle: "System Alerts", lblNotifyDesc: "Activate native notifications", btnClose: "Close", btnSave: "Save",
-                btnDelete: "Delete", idTitle: "Space Identity", planTitle: "Plan Day: ", calColor: "Identifier color:",
-                calFix: "Fix Event", placeholderTask: "Activity name...", placeholderTime: "Time (e.g., 17:30)", btnAdd: "Add",
-                placeholderNote: "Note title...", btnCreate: "Create", placeholderCalEvt: "What is planned for today?",
-                noTasks: "Nothing planned for this cycle.", noTasksBox: "Clean tray for the moment.", noNotes: "No conceptual logs here.",
-                noCalEvt: "Free of commitments.", calAsignar: "Assign", calRemover: "Remove", btnVolver: "Back", helpTitle: "Space User Manual",
-                newsTitle: "Update Log History",
-                weekdays: ["S", "M", "T", "W", "T", "F", "S"],
+                homeTitle: "Space Control: ",
+                install: "Install App",
+                menuEvents: "Events",
+                menuTasks: "To-Do List",
+                menuNotes: "Sticky Notes",
+                cronograma: "Daily Schedule",
+                calHeader: "Monthly Agenda",
+                calToday: "Today",
+                calDetail: "Day Details",
+                tasksHeader: "Activity List",
+                notesHeader: "Notes Block",
+                lblLang: "Language / Idioma",
+                lblTheme: "Interface Theme",
+                optLight: "Light",
+                optDark: "Dark",
+                optSystem: "System Default",
+                lblNotifyTitle: "System Alerts",
+                lblNotifyDesc: "Enable native notifications",
+                modalConfigTitle: "Settings",
+                modalIdTitle: "Space Identity",
+                modalNoteTitle: "Rich Environment",
+                modalPlanTitle: "Plan: ",
+                lblCalColor: "Identifier Color:",
+                helpTitle: "Space User Manual",
+                newsTitle: "Changelog History",
+                lblClose: "Close",
+                lblSave: "Save",
+                lblDelete: "Delete",
+                lblBack: "Back",
+                lblAssign: "Assign",
+                lblRemove: "Remove",
+                lblCreate: "Create",
+                lblAdd: "Add",
+                lblFijar: "Set Event",
+                phTaskName: "Activity name...",
+                phTaskTime: "Time (e.g., 17:30)",
+                phNoteTitle: "Note title...",
+                phCalInput: "What's planned for today?",
+                lblPrev: "Previous",
+                lblNext: "Next",
+                weekdays: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
                 months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
             },
             pt: {
-                homeTitle: "Controle de ", install: "Instalar app", menuEvents: "Eventos", menuTasks: "Pendentes", menuNotes: "Notas fixas",
-                cronogramaTitle: "Cronograma do Dia", calHeader: "Agenda Mensal", calToday: "Hoje", calDetail: "Detalhes do dia",
-                tasksHeader: "Lista de Atividades", notesHeader: "Bloco de Notas", configTitle: "Configuração", lblLang: "Idioma / Language",
-                lblTheme: "Tema da interface", themeLight: "Claro", themeDark: "Escuro", themeSystem: "Padrão do sistema",
-                lblNotifyTitle: "Alertas do Sistema", lblNotifyDesc: "Ativar notificações nativas", btnClose: "Fechar", btnSave: "Salvar",
-                btnDelete: "Excluir", idTitle: "Identidade do Espaço", planTitle: "Planejar: ", calColor: "Cor identificadora:",
-                calFix: "Fixar Evento", placeholderTask: "Nome da atividade...", placeholderTime: "Hora (ex: 17:30)", btnAdd: "Adicionar",
-                placeholderNote: "Título da nota...", btnCreate: "Criar", placeholderCalEvt: "O que está planejado para hoje?",
-                noTasks: "Nada planejado para este ciclo.", noTasksBox: "Bandeja limpa no momento.", noNotes: "Nenhum registro conceitual aqui.",
-                noCalEvt: "Livre de compromissos.", calAsignar: "Atribuir", calRemover: "Remover", btnVolver: "Voltar", helpTitle: "Manual do Usuário",
-                newsTitle: "Histórico de Atualizações",
-                weekdays: ["D", "S", "T", "Q", "Q", "S", "S"],
+                homeTitle: "Controle de ",
+                install: "Instalar app",
+                menuEvents: "Eventos",
+                menuTasks: "Pendentes",
+                menuNotes: "Notas fixas",
+                cronograma: "Cronograma del Día",
+                calHeader: "Agenda Mensual",
+                calToday: "Hoje",
+                calDetail: "Detalhes do dia",
+                tasksHeader: "Lista de Atividades",
+                notesHeader: "Bloco de Notas",
+                lblLang: "Idioma / Language",
+                lblTheme: "Tema da interface",
+                optLight: "Claro",
+                optDark: "Escuro",
+                optSystem: "Padrão do sistema",
+                lblNotifyTitle: "Alertas do Sistema",
+                lblNotifyDesc: "Ativar notificações nativas",
+                modalConfigTitle: "Configuração",
+                modalIdTitle: "Identidade do Espaço",
+                modalNoteTitle: "Ambiente Rico",
+                modalPlanTitle: "Planejar: ",
+                lblCalColor: "Cor do identificador:",
+                helpTitle: "Manual do Usuário",
+                newsTitle: "Histórico de Novidades",
+                lblClose: "Fechar",
+                lblSave: "Salvar",
+                lblDelete: "Excluir",
+                lblBack: "Voltar",
+                lblAssign: "Atribuir",
+                lblRemove: "Remover",
+                lblCreate: "Criar",
+                lblAdd: "Adicionar",
+                lblFijar: "Fixar Evento",
+                phTaskName: "Nome da atividade...",
+                phTaskTime: "Hora (ex: 17:30)",
+                phNoteTitle: "Título da nota...",
+                phCalInput: "O que está planejado para hoje?",
+                lblPrev: "Anterior",
+                lblNext: "Próximo",
+                weekdays: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sá"],
                 months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
             },
             fr: {
-                homeTitle: "Contrôle de ", install: "Installer l'app", menuEvents: "Événements", menuTasks: "Tâches", menuNotes: "Notes Fixes",
-                cronogramaTitle: "Planning du Jour", calHeader: "Agenda Mensuel", calToday: "Aujourd'hui", calDetail: "Détails du jour",
-                tasksHeader: "Liste des Activités", notesHeader: "Bloc de Notes", configTitle: "Configuration", lblLang: "Langue / Language",
-                lblTheme: "Thème de l'interface", themeLight: "Clair", themeDark: "Sombre", themeSystem: "Système par défaut",
-                lblNotifyTitle: "Alertes Système", lblNotifyDesc: "Activer les notifications natives", btnClose: "Fermer", btnSave: "Enregistrer",
-                btnDelete: "Supprimer", idTitle: "Identité de l'Espace", planTitle: "Planifier: ", calColor: "Couleur d'identification:",
-                calFix: "Fixer l'Événement", placeholderTask: "Nom de l'activité...", placeholderTime: "Heure (ex: 17:30)", btnAdd: "Ajouter",
-                placeholderNote: "Titre de la note...", btnCreate: "Créer", placeholderCalEvt: "Qu'est-ce qui est prévu aujourd'hui?",
-                noTasks: "Rien de prévu pour ce cycle.", noTasksBox: "Plateau propre pour le moment.", noNotes: "Aucun journal conceptuel ici.",
-                noCalEvt: "Libre d'engagements.", calAsignar: "Assigner", calRemover: "Supprimer", btnVolver: "Retour", helpTitle: "Manuel d'Utilisation",
-                newsTitle: "Historique des Mises à Jour",
-                weekdays: ["D", "L", "M", "M", "J", "V", "S"],
+                homeTitle: "Contrôle de ",
+                install: "Installer l'app",
+                menuEvents: "Événements",
+                menuTasks: "À faire",
+                menuNotes: "Notes fixes",
+                cronograma: "Programme du Jour",
+                calHeader: "Agenda Mensuel",
+                calToday: "Aujourd'hui",
+                calDetail: "Détails de la journée",
+                tasksHeader: "Liste des Activités",
+                notesHeader: "Bloc de Notes",
+                lblLang: "Langue / Language",
+                lblTheme: "Thème de l'interface",
+                optLight: "Clair",
+                optDark: "Sombre",
+                optSystem: "Système par défaut",
+                lblNotifyTitle: "Alertes Système",
+                lblNotifyDesc: "Activer les notifications natives",
+                modalConfigTitle: "Configuration",
+                modalIdTitle: "Identité de l'Espace",
+                modalNoteTitle: "Environnement Enrichi",
+                modalPlanTitle: "Planifier: ",
+                lblCalColor: "Couleur d'identification:",
+                helpTitle: "Manuel de l'Espace",
+                newsTitle: "Historique des Nouveautés",
+                lblClose: "Fermer",
+                lblSave: "Enregistrer",
+                lblDelete: "Supprimer",
+                lblBack: "Retour",
+                lblAssign: "Assigner",
+                lblRemove: "Supprimer",
+                lblCreate: "Créer",
+                lblAdd: "Ajouter",
+                lblFijar: "Fixer l'événement",
+                phTaskName: "Nom de l'activité...",
+                phTaskTime: "Heure (ex. 17:30)",
+                phNoteTitle: "Titre de la note...",
+                phCalInput: "Qu'est-ce qui est prévu aujourd'hui?",
+                lblPrev: "Précédent",
+                lblNext: "Suivant",
+                weekdays: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
                 months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
             },
             de: {
-                homeTitle: "Raumkontrolle: ", install: "App installieren", menuEvents: "Ereignisse", menuTasks: "Aufgaben", menuNotes: "Notizen",
-                cronogramaTitle: "Tagesplan", calHeader: "Monatsagenda", calToday: "Heute", calDetail: "Tagesdetails",
-                tasksHeader: "Aktivitätenliste", notesHeader: "Notizblock", configTitle: "Konfiguration", lblLang: "Sprache / Language",
-                lblTheme: "Schnittstellen-Theme", themeLight: "Hell", themeDark: "Dunkel", themeSystem: "Systemstandard",
-                lblNotifyTitle: "Systemwarnungen", lblNotifyDesc: "Native Benachrichtigungen aktivieren", btnClose: "Schließen", btnSave: "Speichern",
-                btnDelete: "Löschen", idTitle: "Raumidentität", planTitle: "Planen: ", calColor: "Kennfarbe:",
-                calFix: "Ereignis festlegen", placeholderTask: "Name der Aktivität...", placeholderTime: "Zeit (z. B. 17:30)", btnAdd: "Hinzufügen",
-                placeholderNote: "Notiztitel...", btnCreate: "Erstellen", placeholderCalEvt: "Was ist für heute geplant?",
-                noTasks: "Für diesen Zyklus ist nichts geplant.", noTasksBox: "Sauberes Fach im Moment.", noNotes: "Keine konzeptionellen Protokolle hier.",
-                noCalEvt: "Frei von Verpflichtungen.", calAsignar: "Zuweisen", calRemover: "Entfernen", btnVolver: "Zurück", helpTitle: "Benutzerhandbuch",
-                newsTitle: "Update-Verlaufsprotokoll",
-                weekdays: ["S", "M", "D", "M", "D", "F", "S"],
-                months: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "October", "November", "Dezember"]
+                homeTitle: "Raumsteuerung: ",
+                install: "App installieren",
+                menuEvents: "Ereignisse",
+                menuTasks: "Aufgaben",
+                menuNotes: "Notizen",
+                cronograma: "Tagesplan",
+                calHeader: "Monatsagenda",
+                calToday: "Heute",
+                calDetail: "Tagesdetails",
+                tasksHeader: "Aktivitätsliste",
+                notesHeader: "Notizblock",
+                lblLang: "Sprache / Language",
+                lblTheme: "Schnittstellendesign",
+                optLight: "Hell",
+                optDark: "Dunkel",
+                optSystem: "Systemstandard",
+                lblNotifyTitle: "Systembenachrichtigungen",
+                lblNotifyDesc: "Native Benachrichtigungen aktivieren",
+                modalConfigTitle: "Einstellungen",
+                modalIdTitle: "Raumidentität",
+                modalNoteTitle: "Rich-Text-Bereich",
+                modalPlanTitle: "Planen: ",
+                lblCalColor: "Kennfarbe:",
+                helpTitle: "Raum-Benutzerhandbuch",
+                newsTitle: "Changelog-Verlauf",
+                lblClose: "Schließen",
+                lblSave: "Speichern",
+                lblDelete: "Löschen",
+                lblBack: "Zurück",
+                lblAssign: "Zuweisen",
+                lblRemove: "Entfernen",
+                lblCreate: "Erstellen",
+                lblAdd: "Hinzufügen",
+                lblFijar: "Ereignis festlegen",
+                phTaskName: "Name der Aktivität...",
+                phTaskTime: "Uhrzeit (z.B. 17:30)",
+                phNoteTitle: "Notiztitel...",
+                phCalInput: "Was ist für heute geplant?",
+                lblPrev: "Zurück",
+                lblNext: "Weiter",
+                weekdays: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                months: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
             },
             it: {
-                homeTitle: "Controllo di ", install: "Installa app", menuEvents: "Eventi", menuTasks: "Attività", menuNotes: "Note Fisse",
-                cronogramaTitle: "Programma del Giorno", calHeader: "Agenda Mensile", calToday: "Oggi", calDetail: "Dettagli del giorno",
-                tasksHeader: "Elenco Attività", notesHeader: "Blocco Note", configTitle: "Configurazione", lblLang: "Lingua / Language",
-                lblTheme: "Tema dell'interfaccia", themeLight: "Chiaro", themeDark: "Scuro", themeSystem: "Predefinito di sistema",
-                lblNotifyTitle: "Avvisi di Sistema", lblNotifyDesc: "Attiva notifiche native", btnClose: "Chiudi", btnSave: "Salva",
-                btnDelete: "Elimina", idTitle: "Identità dello Spazio", planTitle: "Pianifica: ", calColor: "Colore identificativo:",
-                calFix: "Fissa Evento", placeholderTask: "Nome dell'attività...", placeholderTime: "Ora (es: 17:30)", btnAdd: "Aggiungi",
-                placeholderNote: "Titolo della nota...", btnCreate: "Crea", placeholderCalEvt: "Cosa c'è in programma oggi?",
-                noTasks: "Nulla di pianificato per questo ciclo.", noTasksBox: "Vassoio pulito al momento.", noNotes: "Nessun registro concettuale qui.",
-                noCalEvt: "Libero da impegni.", calAsignar: "Assegna", calRemover: "Rimuovi", btnVolver: "Volter", helpTitle: "Manuale Utente",
-                newsTitle: "Cronologia Aggiornamenti",
-                weekdays: ["D", "L", "M", "M", "G", "V", "S"],
+                homeTitle: "Controllo Spazio: ",
+                install: "Installa App",
+                menuEvents: "Eventi",
+                menuTasks: "Attività",
+                menuNotes: "Note Fisse",
+                cronograma: "Programma del Giorno",
+                calHeader: "Agenda Mensile",
+                calToday: "Oggi",
+                calDetail: "Dettagli del giorno",
+                tasksHeader: "Lista Attività",
+                notesHeader: "Blocco Note",
+                lblLang: "Lingua / Language",
+                lblTheme: "Tema Interfaccia",
+                optLight: "Chiaro",
+                optDark: "Scuro",
+                optSystem: "Predefinito di Sistema",
+                lblNotifyTitle: "Avvisi di Sistema",
+                lblNotifyDesc: "Attiva notifiche native",
+                modalConfigTitle: "Impostazioni",
+                modalIdTitle: "Identità dello Spazio",
+                modalNoteTitle: "Ambiente Ricco",
+                modalPlanTitle: "Pianifica: ",
+                lblCalColor: "Colore identificativo:",
+                helpTitle: "Manuale dello Spazio",
+                newsTitle: "Cronologia Novità",
+                lblClose: "Chiudi",
+                lblSave: "Salva",
+                lblDelete: "Elimina",
+                lblBack: "Indietro",
+                lblAssign: "Assegna",
+                lblRemove: "Rimuovi",
+                lblCreate: "Crea",
+                lblAdd: "Aggiungi",
+                lblFijar: "Fissa Evento",
+                phTaskName: "Nome dell'attività...",
+                phTaskTime: "Ora (es. 17:30)",
+                phNoteTitle: "Titolo della nota...",
+                phCalInput: "Cosa c'è in programma oggi?",
+                lblPrev: "Precedente",
+                lblNext: "Successivo",
+                weekdays: ["Do", "Lu", "Ma", "Me", "Gi", "Ve", "Sa"],
                 months: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"]
             },
             ja: {
-                homeTitle: "空間コントロール: ", install: "アプリをインストール", menuEvents: "イベント", menuTasks: "タスク", menuNotes: "固定メモ",
-                cronogramaTitle: "本日のスケジュール", calHeader: "月間予定表", calToday: "今日", calDetail: "一日の詳細",
-                tasksHeader: "アクティビティリスト", notesHeader: "メモ帳", configTitle: "設定", lblLang: "言語 / Language",
-                lblTheme: "インターフェーステーマ", themeLight: "ライト", themeDark: "ダーク", themeSystem: "システムデフォルト",
-                lblNotifyTitle: "システムアラート", lblNotifyDesc: "ネイティブ通知を有効にする", btnClose: "閉じる", btnSave: "保存",
-                btnDelete: "削除", idTitle: "空間のアイデンティティ", planTitle: "計画する: ", calColor: "識別色:",
-                calFix: "イベントを固定", placeholderTask: "アクティビティ名...", placeholderTime: "時間 (例: 17:30)", btnAdd: "追加",
-                placeholderNote: "メモのタイトル...", btnCreate: "作成", placeholderCalEvt: "今日は何が予定されていますか？",
-                noTasks: "このサイクルには何も計画されていません。", noTasksBox: "現在、トレイは空です。", noNotes: "概念的なログはありません。",
-                noCalEvt: "予定はありません。", calAsignar: "割り当て", calRemover: "削除", btnVolver: "戻る", helpTitle: "ユーザーマニュアル",
-                newsTitle: "更新履歴のログ",
+                homeTitle: "空間管理: ",
+                install: "アプリをインストール",
+                menuEvents: "イベント",
+                menuTasks: "タスク",
+                menuNotes: "固定メモ",
+                cronograma: "本日のスケジュール",
+                calHeader: "月間予定表",
+                calToday: "今日",
+                calDetail: "一日の詳細",
+                tasksHeader: "アクティビティ一覧",
+                notesHeader: "メモブロック",
+                lblLang: "言語 / Language",
+                lblTheme: "インターフェーステーマ",
+                optLight: "ライト",
+                optDark: "ダーク",
+                optSystem: "システムデフォルト",
+                lblNotifyTitle: "システムアラート",
+                lblNotifyDesc: "ネイティブ通知を有効にする",
+                modalConfigTitle: "設定",
+                modalIdTitle: "空間の識別名",
+                modalNoteTitle: "リッチエディタ",
+                modalPlanTitle: "予定を追加: ",
+                lblCalColor: "識別カラー:",
+                helpTitle: "空間取扱説明書",
+                newsTitle: "更新履歴",
+                lblClose: "閉じる",
+                lblSave: "保存",
+                lblDelete: "削除",
+                lblBack: "戻る",
+                lblAssign: "割り当てる",
+                lblRemove: "削除",
+                lblCreate: "作成",
+                lblAdd: "追加",
+                lblFijar: "イベントを確定",
+                phTaskName: "アクティビティ名...",
+                phTaskTime: "時間 (例: 17:30)",
+                phNoteTitle: "メモのタイトル...",
+                phCalInput: "今日の予定は？",
+                lblPrev: "前へ",
+                lblNext: "次へ",
                 weekdays: ["日", "月", "火", "水", "木", "金", "土"],
                 months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
             },
             zh: {
-                homeTitle: "空间控制: ", install: "安装应用", menuEvents: "事件中心", menuTasks: "待办列表", menuNotes: "便签便条",
-                cronogramaTitle: "今日日程安排", calHeader: "月度日程表", calToday: "今天", calDetail: "当日详情",
-                tasksHeader: "活动任务列表", notesHeader: "便签块", configTitle: "系统配置", lblLang: "选择语言 / Language",
-                lblTheme: "界面主题样式", themeLight: "浅色模式", themeDark: "深色模式", themeSystem: "跟随系统默认",
-                lblNotifyTitle: "系统核心通知", lblNotifyDesc: "开启系统原生弹窗通知", btnClose: "关闭销毁", btnSave: "保存更改",
-                btnDelete: "彻底删除", idTitle: "空间核心归属权", planTitle: "排程日期: ", calColor: "色彩视觉标记:",
-                calFix: "确立并固定事件", placeholderTask: "输入活动任务名称...", placeholderTime: "时间点 (例如 17:30)", btnAdd: "添加进表",
-                placeholderNote: "输入便签主题...", btnCreate: "创建新项", placeholderCalEvt: "今天有什么精彩的计划安排？",
-                noTasks: "该周期内无 any 排程任务。", noTasksBox: "当下没有需要处理的任务。", noNotes: "没有任何思想归档记录。",
-                noCalEvt: "日程处于无事轻松状态。", calAsignar: "确立分配", calRemover: "移出表单", btnVolver: "返回主页", helpTitle: "空间交互操作手册",
-                newsTitle: "版本更迭日志",
+                homeTitle: "空间控制：",
+                install: "安装应用",
+                menuEvents: "日常事件",
+                menuTasks: "待办事项",
+                menuNotes: "固定便签",
+                cronograma: "今日日程预览",
+                calHeader: "月度计划日程",
+                calToday: "今天",
+                calDetail: "单日详细内容",
+                tasksHeader: "待办活动列表",
+                notesHeader: "便签汇总面板",
+                lblLang: "语言切换 / Language",
+                lblTheme: "系统界面主题",
+                optLight: "高亮明晰",
+                optDark: "深色极客",
+                optSystem: "跟随系统默认",
+                lblNotifyTitle: "系统核心通知",
+                lblNotifyDesc: "开启本地原生通知推送",
+                modalConfigTitle: "控制台设置",
+                modalIdTitle: "空间所有权属性",
+                modalNoteTitle: "富文本编辑环境",
+                modalPlanTitle: "日程计划: ",
+                lblCalColor: "分类标识色彩:",
+                helpTitle: "空间交互操作手册",
+                newsTitle: "版本更新日志历程",
+                lblClose: "关闭",
+                lblSave: "保存",
+                lblDelete: "删除",
+                lblBack: "返回",
+                lblAssign: "分配",
+                lblRemove: "移除",
+                lblCreate: "创建",
+                lblAdd: "添加",
+                lblFijar: "固定日程",
+                phTaskName: "输入具体的待办活动...",
+                phTaskTime: "设定时间 (如 17:30)",
+                phNoteTitle: "便签标题...",
+                phCalInput: "今天有哪些计划安排？",
+                lblPrev: "上一步",
+                lblNext: "下一步",
                 weekdays: ["日", "一", "二", "三", "四", "五", "六"],
                 months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
             },
             ru: {
-                homeTitle: "Контроль Пространства: ", install: "Установить приложение", menuEvents: "События", menuTasks: "Задачи", menuNotes: "Заметки",
-                cronogramaTitle: "Расписание на день", calHeader: "Ежемесячная повестка", calToday: "Сегодня", calDetail: "Детали дня",
-                tasksHeader: "Список активностей", notesHeader: "Блок заметок", configTitle: "Конфигурация", lblLang: "Язык / Language",
-                lblTheme: "Тема интерфейса", themeLight: "Светлая", themeDark: "Тёмная", themeSystem: "По умолчанию",
-                lblNotifyTitle: "Системные оповещения", lblNotifyDesc: "Включить нативные уведомления", btnClose: "Закрыть", btnSave: "Сохранить",
-                btnDelete: "Удалить", idTitle: "Идентификация", planTitle: "План на: ", calColor: "Идентификационный цвет:",
-                calFix: "Закрепить событие", placeholderTask: "Название активности...", placeholderTime: "Время (например, 17:30)", btnAdd: "Добавить",
-                placeholderNote: "Заголовок заметки...", btnCreate: "Создать", placeholderCalEvt: "Что запланировано на сегодня?",
-                noTasks: "Ничего не запланировано.", noTasksBox: "Чистый лоток на данный момент.", noNotes: "Концептуальных записей нет.",
-                noCalEvt: "Свободно от обязательств.", calAsignar: "Назначить", calRemover: "Удалить", btnVolver: "Назад", helpTitle: "Руководство пользователя",
-                newsTitle: "История логов обновлений",
-                weekdays: ["В", "П", "В", "С", "Ч", "П", "С"],
+                homeTitle: "Управление: ",
+                install: "Установить приложение",
+                menuEvents: "События",
+                menuTasks: "Задачи",
+                menuNotes: "Заметки",
+                cronograma: "Расписание на день",
+                calHeader: "Ежемесячная повестка",
+                calToday: "Сегодня",
+                calDetail: "Детали дня",
+                tasksHeader: "Список активностей",
+                notesHeader: "Блок заметок",
+                lblLang: "Язык / Language",
+                lblTheme: "Тема интерфейса",
+                optLight: "Светлая",
+                optDark: "Тёмная",
+                optSystem: "Системная по умолчанию",
+                lblNotifyTitle: "Системные оповещения",
+                lblNotifyDesc: "Включить нативные уведомления",
+                modalConfigTitle: "Настройки",
+                modalIdTitle: "Идентификация пространства",
+                modalNoteTitle: "Форматированный текст",
+                modalPlanTitle: "Запланировать: ",
+                lblCalColor: "Цвет идентификатора:",
+                helpTitle: "Руководство пользователя",
+                newsTitle: "История изменений",
+                lblClose: "Закрыть",
+                lblSave: "Сохранить",
+                lblDelete: "Удалить",
+                lblBack: "Назад",
+                lblAssign: "Назначить",
+                lblRemove: "Удалить",
+                lblCreate: "Создать",
+                lblAdd: "Добавить",
+                lblFijar: "Закрепить событие",
+                phTaskName: "Название активности...",
+                phTaskTime: "Время (например, 17:30)",
+                phNoteTitle: "Заголовок заметки...",
+                phCalInput: "Что запланировано на сегодня?",
+                lblPrev: "Назад",
+                lblNext: "Вперед",
+                weekdays: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
                 months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
             },
             ko: {
-                homeTitle: "공간 제어: ", install: "앱 설치", menuEvents: "이벤트 관리", menuTasks: "할 일 목록", menuNotes: "고정 메모",
-                cronogramaTitle: "오늘의 일정표", calHeader: "월간 일정", calToday: "오늘", calDetail: "상세 정보",
-                tasksHeader: "활동 관리 목록", notesHeader: "메모 블록", configTitle: "시스템 설정", lblLang: "언어 설정 / Language",
-                lblTheme: "인터페이스 테마", themeLight: "라이트 모드", themeDark: "다크 모드", themeSystem: "시스템 기본 설정",
-                lblNotifyTitle: "시스템 알림 설정", lblNotifyDesc: "기기 자체 네이티브 알림 활성화", btnClose: "창 닫기", btnSave: "변경 저장",
-                btnDelete: "영구 삭제", idTitle: "공간 소유권 신원", planTitle: "일정 계획: ", calColor: "시각적 색상 표기:",
-                calFix: "이벤트 고정 등록", placeholderTask: "활동 내용 입력...", placeholderTime: "시간 지정 (예: 17:30)", btnAdd: "목록 추가",
-                placeholderNote: "메모 제목 입력...", btnCreate: "새로 만들기", placeholderCalEvt: "오늘 어떤 계획이 예정되어 있습니까?",
-                noTasks: "이 사이클에 예정된 일정이 없습니다.", noTasksBox: "현재 정리된 상태입니다.", noNotes: "개념적인 생각 아카이브가 비어 있습니다.",
-                noCalEvt: "일정이 비어 있는 편안한 상태입니다.", calAsignar: "할당 등록", calRemover: "목록 제거", btnVolver: "메인으로", helpTitle: "공간 조작 지침 가이드",
-                newsTitle: "버전 업데이트 로그 기록",
+                homeTitle: "공간 관리: ",
+                install: "앱 설치",
+                menuEvents: "이벤트",
+                menuTasks: "할 일 목록",
+                menuNotes: "고정 메모",
+                cronograma: "오늘의 일정 요약",
+                calHeader: "월간 일정표",
+                calToday: "오늘",
+                calDetail: "상세 일정",
+                tasksHeader: "할 일 리스트",
+                notesHeader: "고정 메모 패널",
+                lblLang: "언어 설정 / Language",
+                lblTheme: "인터페이스 테마",
+                optLight: "라이트 모드",
+                optDark: "다크 모드",
+                optSystem: "시스템 기본 설정",
+                lblNotifyTitle: "시스템 알림",
+                lblNotifyDesc: "기기 기본 알림 활성화",
+                modalConfigTitle: "환경 설정",
+                modalIdTitle: "공간 소유권 설정",
+                modalNoteTitle: "서식 편집기",
+                modalPlanTitle: "일정 계획: ",
+                lblCalColor: "식별 색상:",
+                helpTitle: "공간 가이드 매뉴얼",
+                newsTitle: "업데이트 내역",
+                lblClose: "닫기",
+                lblSave: "저장",
+                lblDelete: "삭제",
+                lblBack: "뒤로가기",
+                lblAssign: "할당",
+                lblRemove: "제거",
+                lblCreate: "생성",
+                lblAdd: "추가",
+                lblFijar: "일정 고정",
+                phTaskName: "할 일 이름을 입력하세요...",
+                phTaskTime: "시간 입력 (예: 17:30)",
+                phNoteTitle: "메모 제목...",
+                phCalInput: "오늘 어떤 계획이 있으신가요?",
+                lblPrev: "이전",
+                lblNext: "다음",
                 weekdays: ["일", "월", "화", "수", "목", "금", "토"],
                 months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
             }
         };
 
-        // VARIABLES DE ESTADO CALENDARIO Y RECORRIDO
-        let currentYear, currentMonth;
-        let daySelectedStr = "";
-        let noteSelectedId = null;
-        let currentGuideStep = 1;
-        const totalGuideSteps = 4;
-        let tareasNotificadas = new Set();
-
-        // PETICIÓN ASÍNCRONA REAL Y MOTOR DE PARSEO DE ARCHIVOS TEXTO (upd.txt)
-        async function fetchAndParseUpdLogs() {
-            const container = document.getElementById('parsed-logs-box');
-            
-            try {
-                // Petición HTTP Fetch real al archivo upd.txt del servidor local o remoto
-                const response = await fetch('./upd.txt');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const textData = await response.text();
-                
-                container.innerHTML = "";
-                const lines = textData.split('\n');
-                let currentBlock = null;
-                let currentUl = null;
-                let blocksCount = 0;
-
-                lines.forEach(line => {
-                    let trimmed = line.trim();
-                    if(!trimmed) return;
-
-                    // Detectar tag de versión (Inicia con V o v seguido de número)
-                    if(/^V\d/i.test(trimmed)) {
-                        if(currentBlock) container.appendChild(currentBlock);
-
-                        currentBlock = document.createElement('div');
-                        currentBlock.className = 'log-version-block';
-                        currentBlock.style.animationDelay = `${blocksCount * 0.05}s`;
-
-                        let versionTag = document.createElement('div');
-                        versionTag.className = 'log-version-tag';
-                        versionTag.innerText = trimmed;
-                        currentBlock.appendChild(versionTag);
-
-                        currentUl = document.createElement('ul');
-                        currentUl.className = 'log-changes-list';
-                        currentBlock.appendChild(currentUl);
-                        blocksCount++;
-                    } 
-                    // Detectar líneas de cambios listados
-                    else if(trimmed.startsWith('-') && currentUl) {
-                        let li = document.createElement('li');
-                        li.innerText = trimmed.substring(1).trim();
-                        currentUl.appendChild(li);
-                    }
-                });
-
-                if(currentBlock) container.appendChild(currentBlock);
-                
-                if(blocksCount === 0) {
-                    container.innerHTML = `<p style="text-align: center; color: var(--text-muted); font-size: 13px;">El archivo upd.txt está vacío o no tiene el formato correcto (ej: V2.6.4).</p>`;
-                }
-
-            } catch (error) {
-                console.error("Error cargando upd.txt de forma asíncrona:", error);
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 14px; border-radius:14px; background: rgba(255,0,0,0.05); border: 1px solid rgba(255,0,0,0.15);">
-                        <p style="color: #C5221F; font-size: 14px; font-weight: 600; margin-bottom:4px;">No se detectó el archivo 'upd.txt'</p>
-                        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.4;">Asegúrate de colocar el archivo <strong>upd.txt</strong> exactamente en la raíz de tu proyecto web al lado del index.html y levantar un servidor HTTP.</p>
-                    </div>
-                `;
-            }
-        }
-
-        // MOTOR DE TRADUCCIÓN GLOBAL
-        function changeLanguage(langCode) {
-            data.lang = langCode;
-            const t = translations[langCode] || translations.es;
-            
-            document.getElementById('txt-home-title').innerHTML = `${t.homeTitle}<span id="username-display" onclick="openModal('username-modal')">${data.username}</span>`;
-            document.getElementById('txt-install').innerText = t.install;
-            document.getElementById('txt-menu-events').innerText = t.menuEvents;
-            document.getElementById('txt-menu-tasks').innerText = t.menuTasks;
-            document.getElementById('txt-menu-notes').innerText = t.menuNotes;
-            document.getElementById('txt-cronograma-title').innerText = t.cronogramaTitle;
-            document.getElementById('txt-cal-header').innerText = t.calHeader;
-            document.getElementById('txt-cal-today').innerText = t.calToday;
-            document.getElementById('txt-cal-detail').innerText = t.calDetail;
-            document.getElementById('txt-tasks-header').innerText = t.tasksHeader;
-            document.getElementById('txt-notes-header').innerText = t.notesHeader;
-            document.getElementById('txt-modal-config-title').innerText = t.configTitle;
-            document.getElementById('lbl-lang').innerText = t.lblLang;
-            document.getElementById('lbl-theme').innerText = t.lblTheme;
-            document.getElementById('opt-theme-light').innerText = t.themeLight;
-            document.getElementById('opt-theme-dark').innerText = t.themeDark;
-            document.getElementById('opt-theme-system').innerText = t.themeSystem;
-            document.getElementById('lbl-notify-title').innerText = t.lblNotifyTitle;
-            document.getElementById('lbl-notify-desc').innerText = t.lblNotifyDesc;
-            document.getElementById('txt-modal-id-title').innerText = t.idTitle;
-            document.getElementById('txt-modal-plan-title').innerHTML = `${t.planTitle}<span id="modal-day-num">${daySelectedStr}</span>`;
-            document.getElementById('lbl-cal-color').innerText = t.calColor;
-            document.getElementById('btn-cal-save-evt').innerText = t.calFix;
-            document.getElementById('task-input').placeholder = t.placeholderTask;
-            document.getElementById('task-time').placeholder = t.placeholderTime;
-            document.getElementById('btn-task-add').innerText = t.btnAdd;
-            document.getElementById('note-title-input').placeholder = t.placeholderNote;
-            document.getElementById('btn-note-create').innerText = t.btnCreate;
-            document.getElementById('cal-input-title').placeholder = t.placeholderCalEvt;
-            document.getElementById('btn-edit-cal').innerText = t.calAsignar;
-            document.getElementById('btn-delete-cal').innerText = t.calRemover;
-            document.getElementById('txt-help-title').innerText = t.helpTitle;
-            document.getElementById('txt-news-title').innerText = t.newsTitle;
-
-            document.querySelectorAll('.btn-lbl-back').forEach(b => b.innerText = t.btnVolver);
-            document.querySelectorAll('.btn-lbl-close').forEach(b => b.innerText = t.btnClose);
-            document.querySelectorAll('.btn-lbl-save').forEach(b => b.innerText = t.btnSave);
-            document.querySelectorAll('.btn-lbl-delete').forEach(b => b.innerText = t.btnDelete);
-
-            renderEverything();
+        function changeLanguage(langKey) {
+            if(!i18n[langKey]) langKey = 'es';
+            data.lang = langKey;
             saveToLocalStorage();
-        }
 
-        // CONTROL DE DRAWERS CON ANIMACIÓN SUAVE
-        function openDrawer(id) {
-            const overlay = document.getElementById('overlay');
-            overlay.style.display = 'block';
-            setTimeout(() => overlay.style.opacity = '1', 10);
-            document.getElementById(id).classList.add('active');
+            const dict = i18n[langKey];
             
-            // Si abren el panel de novedades, ejecutar fetch en tiempo real
-            if(id === 'drawer-news') {
-                fetchAndParseUpdLogs();
-            }
-        }
-
-        function closeDrawer(id) {
-            document.getElementById(id).classList.remove('active');
-            if(!document.querySelector('.modal.active')) {
-                const overlay = document.getElementById('overlay');
-                overlay.style.opacity = '0';
-                setTimeout(() => { if(overlay.style.opacity === '0') overlay.style.display = 'none'; }, 300);
-            }
-        }
-
-        // CONTROL DE MANUAL DE AYUDA INTERACTIVO
-        function moveGuideStep(direction) {
-            currentGuideStep += direction;
-            if(currentGuideStep < 1) currentGuideStep = 1;
-            if(currentGuideStep > totalGuideSteps) currentGuideStep = totalGuideSteps;
-
-            document.querySelectorAll('.guide-step').forEach(step => step.classList.remove('active'));
+            // Reemplazo estructural interactivo
+            document.getElementById('txt-home-title').innerHTML = `${dict.homeTitle}<span id="username-display" onclick="openModal('username-modal')">${data.username}</span>`;
+            document.getElementById('txt-install').innerText = dict.install;
+            document.getElementById('txt-menu-events').innerText = dict.menuEvents;
+            document.getElementById('txt-menu-tasks').innerText = dict.menuTasks;
+            document.getElementById('txt-menu-notes').innerText = dict.menuNotes;
+            document.getElementById('txt-cronograma-title').innerText = dict.cronograma;
             
-            const targetStep = document.querySelector(`.guide-step[data-step="${currentGuideStep}"]`);
-            targetStep.classList.add('active');
+            document.getElementById('txt-cal-header').innerText = dict.calHeader;
+            document.getElementById('txt-cal-today').innerText = dict.calToday;
+            document.getElementById('txt-cal-detail').innerText = dict.calDetail;
+            
+            document.getElementById('txt-tasks-header').innerText = dict.tasksHeader;
+            document.getElementById('btn-task-add').innerText = dict.lblAdd;
+            document.getElementById('task-input').placeholder = dict.phTaskName;
+            document.getElementById('task-time').placeholder = dict.phTaskTime;
+            
+            document.getElementById('txt-notes-header').innerText = dict.notesHeader;
+            document.getElementById('note-title-input').placeholder = dict.phNoteTitle;
+            document.getElementById('btn-note-create').innerText = dict.lblCreate;
+            
+            document.getElementById('lbl-lang').innerText = dict.lblLang;
+            document.getElementById('lbl-theme').innerText = dict.lblTheme;
+            document.getElementById('opt-theme-light').innerText = dict.optLight;
+            document.getElementById('opt-theme-dark').innerText = dict.optDark;
+            document.getElementById('opt-theme-system').innerText = dict.optSystem;
+            document.getElementById('lbl-notify-title').innerText = dict.lblNotifyTitle;
+            document.getElementById('lbl-notify-desc').innerText = dict.lblNotifyDesc;
+            document.getElementById('txt-modal-config-title').innerText = dict.modalConfigTitle;
+            document.getElementById('txt-modal-id-title').innerText = dict.modalIdTitle;
+            
+            document.getElementById('btn-delete-note-trigger').innerText = dict.lblDelete;
+            document.getElementById('lbl-cal-color').innerText = dict.lblCalColor;
+            document.getElementById('cal-input-title').placeholder = dict.phCalInput;
+            document.getElementById('btn-cal-save-evt').innerText = dict.lblFijar;
+            
+            document.getElementById('txt-help-title').innerText = dict.helpTitle;
+            document.getElementById('txt-news-title').innerText = dict.newsTitle;
+            document.getElementById('btn-guide-prev').innerText = dict.lblPrev;
+            document.getElementById('btn-guide-next').innerText = dict.lblNext;
 
-            document.getElementById('btn-guide-prev').disabled = (currentGuideStep === 1);
-            document.getElementById('btn-guide-next').innerText = (currentGuideStep === totalGuideSteps) ? "Finalizar" : "Siguiente";
+            document.querySelectorAll('.btn-lbl-close').forEach(b => b.innerText = dict.lblClose);
+            document.querySelectorAll('.btn-lbl-save').forEach(b => b.innerText = dict.lblSave);
+            document.querySelectorAll('.btn-lbl-back').forEach(b => b.innerText = dict.lblBack);
+
+            // Refrescar vistas dependientes del idioma
+            initCalendar();
+            renderTasks();
+            renderNotes();
+            renderHomeSchedule();
         }
-        
-        document.getElementById('btn-guide-next').addEventListener('click', function() {
-            if(currentGuideStep === totalGuideSteps) {
-                closeDrawer('drawer-help');
-                setTimeout(() => {
-                    currentGuideStep = 1;
-                    moveGuideStep(0);
-                }, 400);
+
+        // MOTOR DE NAVEGACIÓN ENTRE VISTAS MODULARES
+        function changeView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+            const activeView = document.getElementById(viewId);
+            if(activeView) activeView.classList.remove('hidden');
+            
+            // Casos especiales de apertura
+            if(viewId === 'view-home') renderHomeSchedule();
+        }
+
+        // GESTIÓN DE CONFIGURACIÓN DE APARIENCIA (THEME ENGINE)
+        function changeTheme(themeValue) {
+            data.theme = themeValue;
+            saveToLocalStorage();
+
+            let targetTheme = themeValue;
+            if (themeValue === 'system') {
+                targetTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             }
+            document.documentElement.setAttribute('data-theme', targetTheme);
+        }
+
+        // Escuchar cambios del sistema en tiempo real si está en modo automático
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            if(data.theme === 'system') changeTheme('system');
         });
 
-        // NAVEGACIÓN ENTRE VISTAS PRINCIPALES (Suave deslizamiento)
-        function changeView(viewId) {
-            const activeView = document.querySelector('.view:not(.hidden)');
-            if (activeView) {
-                activeView.style.opacity = '0';
-                activeView.style.transform = 'translateY(6px)';
-                setTimeout(() => {
-                    activeView.classList.add('hidden');
-                    const nextView = document.getElementById(viewId);
-                    nextView.classList.remove('hidden');
-                    // Forzar reflow
-                    nextView.offsetHeight;
-                    nextView.style.opacity = '1';
-                    nextView.style.transform = 'translateY(0)';
-                }, 150);
-            } else {
-                document.getElementById(viewId).classList.remove('hidden');
+        // CONTROL DE IDENTIDAD (USERNAME)
+        function saveUsername() {
+            const input = document.getElementById('username-input').value.trim();
+            if(input) {
+                data.username = input;
+                saveToLocalStorage();
+                const dict = i18n[data.lang] || i18n.es;
+                document.getElementById('txt-home-title').innerHTML = `${dict.homeTitle}<span id="username-display" onclick="openModal('username-modal')">${data.username}</span>`;
+                closeModals();
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // MANEJO DE MODALES
+        // CONTROLADORES DE VENTANAS MODALES Y OVERLAYS
         function openModal(modalId) {
-            const overlay = document.getElementById('overlay');
-            overlay.style.display = 'block';
-            setTimeout(() => overlay.style.opacity = '1', 10);
+            document.getElementById('overlay').style.display = 'block';
+            setTimeout(() => document.getElementById('overlay').style.opacity = '1', 10);
             
             const modal = document.getElementById(modalId);
             modal.style.display = 'block';
             setTimeout(() => modal.classList.add('active'), 20);
-
-            if(modalId === 'username-modal') {
-                document.getElementById('username-input').value = data.username;
-            }
         }
 
         function closeModals() {
-            document.querySelectorAll('.modal').forEach(m => {
-                m.classList.remove('active');
-                setTimeout(() => m.style.display = 'none', 300);
-            });
-            document.querySelectorAll('.cajon-drawer').forEach(d => d.classList.remove('active'));
+            document.getElementById('overlay').style.opacity = '0';
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            }, 300);
+        }
+
+        // GESTIÓN DE CAJONES DESPLEGABLES (DRAWERS)
+        function openDrawer(drawerId) {
+            const drawer = document.getElementById(drawerId);
+            if(drawer) {
+                drawer.classList.add('active');
+                if(drawerId === 'drawer-news') loadUpdatesLog();
+            }
+        }
+
+        function closeDrawer(drawerId) {
+            const drawer = document.getElementById(drawerId);
+            if(drawer) drawer.classList.remove('active');
+        }
+
+        // PARSER DEL LOG DE ACTUALIZACIONES (upd.txt estructurado por bloques)
+        async function loadUpdatesLog() {
+            const newsBox = document.getElementById('news-content-box');
+            newsBox.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center;">Cargando registro histórico...</p>`;
             
-            const overlay = document.getElementById('overlay');
-            overlay.style.opacity = '0';
-            setTimeout(() => { if(overlay.style.opacity === '0') overlay.style.display = 'none'; }, 300);
-        }
-
-        // CONFIGURACIÓN DE TEMAS
-        function changeTheme(themeMode) {
-            data.theme = themeMode;
-            let targetTheme = themeMode;
-            if(themeMode === 'system') {
-                targetTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            try {
+                const response = await fetch('./upd.txt');
+                if(!response.ok) throw new Error("Archivo no disponible");
+                const text = await response.text();
+                
+                // Segmentar por bloques usando delimitadores de versión [vX.X.X] o similares
+                const blocks = text.split(/(?=\[v[^\]]+\])/g);
+                newsBox.innerHTML = "";
+                
+                blocks.forEach(block => {
+                    const lines = block.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                    if(lines.length > 0) {
+                        const blockDiv = document.createElement('div');
+                        blockDiv.className = 'log-version-block';
+                        
+                        const tag = document.createElement('div');
+                        tag.className = 'log-version-tag';
+                        tag.innerText = lines[0];
+                        blockDiv.appendChild(tag);
+                        
+                        const list = document.createElement('ul');
+                        list.className = 'log-changes-list';
+                        
+                        for(let i = 1; i < lines.length; i++) {
+                            const li = document.createElement('li');
+                            li.innerText = lines[i].replace(/^-\s*/, ''); // Remover guiones estéticos
+                            list.appendChild(li);
+                        }
+                        
+                        blockDiv.appendChild(list);
+                        newsBox.appendChild(blockDiv);
+                    }
+                });
+            } catch (error) {
+                newsBox.innerHTML = `<p style="font-size:13px; color:var(--text-muted); text-align:center; padding: 20px;">No se encontraron registros de actualizaciones recientes (upd.txt ausente o inaccesible).</p>`;
             }
-            document.documentElement.setAttribute('data-theme', targetTheme);
-            saveToLocalStorage();
         }
 
-        function saveUsername() {
-            let val = document.getElementById('username-input').value.trim();
-            if(val) {
-                data.username = val;
-                changeLanguage(data.lang);
-                closeModals();
+        // GUÍA INTERACTIVA PASO A PASO
+        let currentHelpStep = 1;
+        function moveGuideStep(direction) {
+            const steps = document.querySelectorAll('.guide-step');
+            steps[currentHelpStep - 1].classList.remove('active');
+            
+            currentHelpStep += direction;
+            if(currentHelpStep < 1) currentHelpStep = 1;
+            if(currentHelpStep > steps.length) currentHelpStep = steps.length;
+            
+            steps[currentHelpStep - 1].classList.add('active');
+            
+            // Deshabilitar botones de navegación según extremos
+            document.getElementById('btn-guide-prev').disabled = (currentHelpStep === 1);
+            document.getElementById('btn-guide-next').disabled = (currentHelpStep === steps.length);
+            
+            const dict = i18n[data.lang] || i18n.es;
+            document.getElementById('btn-guide-next').innerText = (currentHelpStep === steps.length) ? dict.lblClose : dict.lblNext;
+            
+            if(direction === 1 && currentHelpStep === steps.length + 1) {
+                closeDrawer('drawer-help');
+                // Resetear para próxima apertura
+                currentHelpStep = 1;
+                steps.forEach(s => s.classList.remove('active'));
+                steps[0].classList.add('active');
+                document.getElementById('btn-guide-prev').disabled = true;
+                document.getElementById('btn-guide-next').innerText = dict.lblNext;
             }
         }
-
-        // COMPONENTE: GESTIÓN DE ACTIVIDADES
-        function addTask() {
-            const txt = document.getElementById('task-input').value.trim();
-            const timeVal = document.getElementById('task-time').value.trim();
-            if(!txt) return;
-
-            data.tasks.push({
-                id: Date.now(),
-                text: txt,
-                time: timeVal || null,
-                completed: false
-            });
-
-            document.getElementById('task-input').value = "";
-            document.getElementById('task-time').value = "";
-            renderEverything();
-            saveToLocalStorage();
-        }
-
-        function toggleTask(id) {
-            data.tasks = data.tasks.map(t => t.id === id ? {...t, completed: !t.completed} : t);
-            renderEverything();
-            saveToLocalStorage();
-        }
-
-        function deleteTask(id) {
-            const element = document.querySelector(`[data-task-id="${id}"]`);
-            if(element) {
-                element.style.opacity = '0';
-                element.style.transform = 'translateX(15px)';
+        
+        // Sobrecarga del botón Siguiente para cerrar en el último paso
+        document.getElementById('btn-guide-next').addEventListener('click', () => {
+            const steps = document.querySelectorAll('.guide-step');
+            if(currentHelpStep === steps.length) {
+                closeDrawer('drawer-help');
                 setTimeout(() => {
-                    data.tasks = data.tasks.filter(t => t.id !== id);
-                    renderEverything();
-                    saveToLocalStorage();
-                }, 250);
-            } else {
-                data.tasks = data.tasks.filter(t => t.id !== id);
-                renderEverything();
-                saveToLocalStorage();
+                    currentHelpStep = 1;
+                    steps.forEach(s => s.classList.remove('active'));
+                    steps[0].classList.add('active');
+                    document.getElementById('btn-guide-prev').disabled = true;
+                    document.getElementById('btn-guide-next').innerText = (i18n[data.lang] || i18n.es).lblNext;
+                }, 400);
             }
+        });
+
+        // SECCIÓN ACTÍVIDADES / PENDIENTES
+        function renderTasks() {
+            const container = document.getElementById('tasks-container');
+            container.innerHTML = "";
+            
+            if(data.tasks.length === 0) {
+                container.innerHTML = `<p style="font-size:14px; color:var(--text-muted); text-align:center; padding:20px 0;">No hay actividades listadas.</p>`;
+                return;
+            }
+
+            data.tasks.forEach((t, index) => {
+                const row = document.createElement('div');
+                row.className = 'task-row';
+                
+                row.innerHTML = `
+                    <div class="task-text ${t.done ? 'completed' : ''}" onclick="toggleTask(${index})">
+                        <input type="checkbox" ${t.done ? 'checked' : ''} onclick="event.stopPropagation(); toggleTask(${index});">
+                        <span>${t.text} ${t.time ? `<b class="time-badge">${t.time}</b>` : ''}</span>
+                    </div>
+                    <button class="btn-delete" onclick="deleteTask(${index})">×</button>
+                `;
+                container.appendChild(row);
+            });
         }
 
-        // COMPONENTE: BLOQUE DE NOTAS
+        function addTask() {
+            const input = document.getElementById('task-input');
+            const timeInput = document.getElementById('task-time');
+            const text = input.value.trim();
+            let time = timeInput.value.trim();
+
+            if(!text) return;
+
+            // Validar formato de hora si se incluye
+            if(time) {
+                const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+                if(!regex.test(time)) {
+                    alert("Formato de hora inválido (Use HH:MM)");
+                    return;
+                }
+                // Normalizar a 2 dígitos
+                const parts = time.split(':');
+                time = `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}`;
+            }
+
+            data.tasks.push({ text, time, done: false });
+            saveToLocalStorage();
+            
+            input.value = "";
+            timeInput.value = "";
+            renderTasks();
+            renderHomeSchedule();
+        }
+
+        function toggleTask(index) {
+            data.tasks[index].done = !data.tasks[index].done;
+            saveToLocalStorage();
+            renderTasks();
+            renderHomeSchedule();
+        }
+
+        function deleteTask(index) {
+            data.tasks.splice(index, 1);
+            saveToLocalStorage();
+            renderTasks();
+            renderHomeSchedule();
+        }
+
+        // PREVIEW AGENDA DEL DÍA (HOME VIEW)
+        function renderHomeSchedule() {
+            const list = document.getElementById('home-tasks-list');
+            list.innerHTML = "";
+
+            // Filtrar las tareas que tienen hora definida y ordenarlas cronológicamente
+            const scheduled = data.tasks.filter(t => t.time && !t.done);
+            scheduled.sort((a,b) => a.time.localeCompare(b.time));
+
+            if(scheduled.length === 0) {
+                list.innerHTML = `<li style="font-size:13px; color:var(--text-muted); text-align:center; justify-content:center; padding:10px 0;">Despejado para el resto del día.</li>`;
+                return;
+            }
+
+            scheduled.forEach(t => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span style="font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:70%;">${t.text}</span>
+                    <span class="time-badge">${t.time}</span>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        // SECCIÓN NOTAS ENRIQUECIDAS WYSIWYG
+        let activeNoteIndex = null;
+
+        function renderNotes() {
+            const container = document.getElementById('notes-container');
+            container.innerHTML = "";
+
+            if(data.notes.length === 0) {
+                container.innerHTML = `<p style="font-size:14px; color:var(--text-muted); text-align:center; padding:20px 0;">No hay notas fijadas.</p>`;
+                return;
+            }
+
+            data.notes.forEach((n, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'note-item-btn';
+                btn.onclick = () => openNoteEditor(index);
+                
+                // Icono decorativo con color dinámico
+                btn.innerHTML = `
+                    <div style="width:10px; height:10px; border-radius:50%; background-color:var(--accent-yellow); flex-shrink:0;"></div>
+                    <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${n.title}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
         function addNote() {
-            const title = document.getElementById('note-title-input').value.trim();
+            const input = document.getElementById('note-title-input');
+            const title = input.value.trim();
             if(!title) return;
 
-            const newNote = {
-                id: Date.now(),
-                title: title,
-                body: "<div>Comienza a escribir tu nota enriquecida...</div>"
-            };
-
-            data.notes.push(newNote);
-            document.getElementById('note-title-input').value = "";
-            renderEverything();
+            data.notes.push({ title, body: "<div>Escribe aquí tu nota...</div>" });
             saveToLocalStorage();
+            input.value = "";
+            renderNotes();
         }
 
-        function openNoteModal(id) {
-            const note = data.notes.find(n => n.id === id);
-            if(!note) return;
-            noteSelectedId = id;
-
-            document.getElementById('modal-note-title').innerText = note.title;
-            document.getElementById('modal-note-body').innerHTML = note.body;
+        function openNoteEditor(index) {
+            activeNoteIndex = index;
+            const note = data.notes[index];
             
-            document.getElementById('btn-delete-note-trigger').onclick = function() {
-                data.notes = data.notes.filter(n => n.id !== noteSelectedId);
-                closeModals();
-                renderEverything();
-                saveToLocalStorage();
+            document.getElementById('modal-note-title').innerText = note.title;
+            const editor = document.getElementById('modal-note-body');
+            editor.innerHTML = note.body;
+            
+            // Vinculación del disparador de eliminación segura
+            document.getElementById('btn-delete-note-trigger').onclick = () => {
+                if(confirm("¿Seguro que deseas eliminar esta nota de forma permanente?")) {
+                    data.notes.splice(activeNoteIndex, 1);
+                    saveToLocalStorage();
+                    closeModals();
+                    renderNotes();
+                }
             };
 
             openModal('note-modal');
@@ -1101,297 +1451,199 @@
         }
 
         function saveNoteBody() {
-            if(noteSelectedId) {
-                const bodyContent = document.getElementById('modal-note-body').innerHTML;
-                data.notes = data.notes.map(n => n.id === noteSelectedId ? {...n, body: bodyContent} : n);
+            if(activeNoteIndex !== null) {
+                data.notes[activeNoteIndex].body = document.getElementById('modal-note-body').innerHTML;
                 saveToLocalStorage();
                 closeModals();
-                renderEverything();
+                renderNotes();
             }
         }
 
-        // COMPONENTE: AGENDA MENSUAL
+        // MOTOR INTEGRAL DEL CALENDARIO MENSUAL INTERACTIVO
+        let currentCalDate = new Date();
+        let selectedDayStr = null; // Llave en formato YYYY-MM-DD
+
         function initCalendar() {
-            const hoy = new Date();
-            currentYear = hoy.getFullYear();
-            currentMonth = hoy.getMonth();
-            renderCalendar();
-        }
-
-        function changeMonth(dir) {
-            currentMonth += dir;
-            if(currentMonth < 0) { currentMonth = 11; currentYear--; }
-            if(currentMonth > 11) { currentMonth = 0; currentYear++; }
-            renderCalendar();
-        }
-
-        function goToCurrentMonth() {
-            const hoy = new Date();
-            currentYear = hoy.getFullYear();
-            currentMonth = hoy.getMonth();
-            renderCalendar();
-        }
-
-        function renderCalendar() {
-            const t = translations[data.lang] || translations.es;
-            document.getElementById('calendar-month-year').innerText = `${t.months[currentMonth]} ${currentYear}`;
-            
+            const grid = document.getElementById('calendar-grid-box');
             const weekdaysBox = document.getElementById('calendar-weekdays');
+            const monthYearTitle = document.getElementById('calendar-month-year');
+            const dict = i18n[data.lang] || i18n.es;
+
+            grid.innerHTML = "";
             weekdaysBox.innerHTML = "";
-            t.weekdays.forEach(wd => {
-                let d = document.createElement('div');
-                d.innerText = wd;
+
+            // Render cabeceras de días
+            dict.weekdays.forEach(w => {
+                const d = document.createElement('div');
+                d.innerText = w;
                 weekdaysBox.appendChild(d);
             });
 
-            const grid = document.getElementById('calendar-grid-box');
-            grid.innerHTML = "";
+            const year = currentCalDate.getFullYear();
+            const month = currentCalDate.getMonth();
 
-            const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
-            const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+            monthYearTitle.innerText = `${dict.months[month]} ${year}`;
 
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Bloques vacíos para alineación del primer día
             for(let i = 0; i < firstDayIndex; i++) {
-                let cell = document.createElement('div');
-                cell.className = 'calendar-day empty';
-                grid.appendChild(cell);
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day empty';
+                grid.appendChild(emptyCell);
             }
 
-            const hoy = new Date();
+            const todayObj = new Date();
 
+            // Render celdas numéricas de días
             for(let day = 1; day <= totalDays; day++) {
-                let cell = document.createElement('div');
-                cell.className = 'calendar-day';
-                cell.innerText = day;
-                cell.style.animation = `fadeIn 0.3s ease backwards`;
-                cell.style.animationDelay = `${(day % 7) * 0.01}s`;
+                const dayBtn = document.createElement('button');
+                dayBtn.className = 'calendar-day';
+                dayBtn.innerText = day;
 
-                let dateKey = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 
-                if(hoy.getFullYear() === currentYear && hoy.getMonth() === currentMonth && hoy.getDate() === day) {
-                    cell.classList.add('current-today');
+                // Inyectar indicador de color si posee evento planificado
+                if(data.calendar[dateStr]) {
+                    dayBtn.style.boxShadow = `inset 0 -4px 0 ${data.calendar[dateStr].color || '#6B1D2F'}`;
                 }
 
-                if(data.calendar[dateKey]) {
-                    cell.style.boxShadow = `inset 0 -4px 0 ${data.calendar[dateKey].color || 'var(--accent-brand)'}`;
+                // Identificar día de hoy absoluto
+                if(day === todayObj.getDate() && month === todayObj.getMonth() && year === todayObj.getFullYear()) {
+                    dayBtn.classList.add('current-today');
                 }
 
-                if(daySelectedStr === dateKey) {
-                    cell.classList.add('selected');
+                if(selectedDayStr === dateStr) {
+                    dayBtn.classList.add('selected');
                 }
 
-                cell.onclick = function() {
-                    document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected'));
-                    cell.classList.add('selected');
-                    selectCalendarDate(dateKey);
-                };
-
-                grid.appendChild(cell);
+                dayBtn.onclick = () => selectCalendarDay(dateStr, dayBtn);
+                grid.appendChild(dayBtn);
             }
         }
 
-        function selectCalendarDate(dateKey) {
-            daySelectedStr = dateKey;
-            const t = translations[data.lang] || translations.es;
-            const detailBox = document.getElementById('calendar-detail-box');
-            
-            document.getElementById('modal-day-num').innerText = dateKey;
-            
-            detailBox.style.opacity = '0';
-            setTimeout(() => {
-                detailBox.style.display = 'block';
-                if(data.calendar[dateKey]) {
-                    document.getElementById('cal-detail-text').innerText = data.calendar[dateKey].title;
-                    document.getElementById('cal-detail-text').style.borderLeft = `4px solid ${data.calendar[dateKey].color}`;
-                } else {
-                    document.getElementById('cal-detail-text').innerText = t.noCalEvt;
-                    document.getElementById('cal-detail-text').style.borderLeft = `4px solid transparent`;
-                }
-                detailBox.style.transition = 'opacity 0.25s ease';
-                detailBox.style.opacity = '1';
-            }, 100);
+        function changeMonth(dir) {
+            currentCalDate.setMonth(currentCalDate.getMonth() + dir);
+            initCalendar();
+            document.getElementById('calendar-detail-box').style.display = 'none';
+        }
 
-            document.getElementById('btn-edit-cal').onclick = function() {
-                document.getElementById('cal-input-title').value = data.calendar[dateKey] ? data.calendar[dateKey].title : "";
+        function goToCurrentMonth() {
+            currentCalDate = new Date();
+            initCalendar();
+            document.getElementById('calendar-detail-box').style.display = 'none';
+        }
+
+        function selectCalendarDay(dateStr, element) {
+            selectedDayStr = dateStr;
+            document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+            element.classList.add('selected');
+
+            const detailBox = document.getElementById('calendar-detail-box');
+            const detailText = document.getElementById('cal-detail-text');
+            
+            const parts = dateStr.split('-');
+            const dict = i18n[data.lang] || i18n.es;
+            const dateLabel = `${parts[2]} de ${dict.months[parseInt(parts[1]) - 1]} (${parts[0]})`;
+
+            detailBox.style.display = 'block';
+
+            if(data.calendar[dateStr]) {
+                detailText.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${data.calendar[dateStr].color}; margin-right:6px;"></span><b>${data.calendar[dateStr].title}</b><br><small style="color:var(--text-muted);">${dateLabel}</small>`;
+            } else {
+                detailText.innerHTML = `<i style="color:var(--text-muted)">Sin eventos planificados.</i><br><small style="color:var(--text-muted);">${dateLabel}</small>`;
+            }
+
+            // Enlazar asignación al modal
+            document.getElementById('btn-edit-cal').onclick = () => {
+                document.getElementById('modal-day-num').innerText = dateLabel;
+                document.getElementById('cal-input-title').value = data.calendar[dateStr] ? data.calendar[dateStr].title : "";
+                
+                // Resetear selectores de color del modal
+                document.querySelectorAll('.color-opt').forEach(opt => {
+                    opt.classList.remove('active');
+                    if(data.calendar[dateStr] && opt.getAttribute('data-color') === data.calendar[dateStr].color) {
+                        opt.classList.add('active');
+                    }
+                });
+                if(!data.calendar[dateStr]) document.querySelector('.color-opt').classList.add('active');
+
                 openModal('calendar-modal');
             };
 
-            document.getElementById('btn-delete-cal').onclick = function() {
-                delete data.calendar[dateKey];
-                selectCalendarDate(dateKey);
-                renderCalendar();
-                saveToLocalStorage();
+            document.getElementById('btn-delete-cal').onclick = () => {
+                if(data.calendar[dateStr]) {
+                    delete data.calendar[dateStr];
+                    saveToLocalStorage();
+                    initCalendar();
+                    selectCalendarDay(dateStr, element);
+                }
             };
         }
 
-        // Manejo de Colores en Configuración del Evento
-        document.querySelectorAll('.color-opt').forEach(opt => {
+        // Configuración de colores del modal de planificación
+        document.querySelectorAll('.color-picker .color-opt').forEach(opt => {
             opt.addEventListener('click', function() {
-                document.querySelectorAll('.color-opt').forEach(o => o.classList.remove('active'));
-                opt.classList.add('active');
+                document.querySelectorAll('.color-picker .color-opt').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
             });
         });
 
         function saveCalendarEvent() {
+            if(!selectedDayStr) return;
             const title = document.getElementById('cal-input-title').value.trim();
-            if(!title || !daySelectedStr) return;
+            if(!title) return;
 
-            const activeColorOpt = document.querySelector('.color-opt.active');
-            const colorSelected = activeColorOpt ? activeColorOpt.getAttribute('data-color') : '#6B1D2F';
+            const activeColorOpt = document.querySelector('.color-picker .color-opt.active');
+            const color = activeColorOpt ? activeColorOpt.getAttribute('data-color') : "#6B1D2F";
 
-            data.calendar[daySelectedStr] = {
-                title: title,
-                color: colorSelected
-            };
-
-            closeModals();
-            selectCalendarDate(daySelectedStr);
-            renderCalendar();
+            data.calendar[selectedDayStr] = { title, color };
             saveToLocalStorage();
-        }
-
-        // CORE RENDERER ENGINE: Sincronización Absoluta de Listas y UI
-        function renderEverything() {
-            const t = translations[data.lang] || translations.es;
+            closeModals();
+            initCalendar();
             
-            // 1. RENDER HOME SCHEDULE
-            const homeList = document.getElementById('home-tasks-list');
-            homeList.innerHTML = "";
-            
-            const timedTasks = data.tasks.filter(t => t.time);
-            
-            if(timedTasks.length === 0) {
-                homeList.innerHTML = `<li style="color:var(--text-muted); font-size:13px; font-style:italic; animation: fadeIn 0.3s ease;">${t.noTasks}</li>`;
-            } else {
-                timedTasks.forEach((task, index) => {
-                    let li = document.createElement('li');
-                    li.style.opacity = task.completed ? '0.5' : '1';
-                    li.style.animationDelay = `${index * 0.04}s`;
-                    li.innerHTML = `
-                        <span style="${task.completed ? 'text-decoration: line-through;' : ''}">${task.text}</span>
-                        <span class="time-badge">${task.time}</span>
-                    `;
-                    homeList.appendChild(li);
-                });
-            }
-
-            // 2. RENDER VISTA PENDIENTES
-            const tasksContainer = document.getElementById('tasks-container');
-            tasksContainer.innerHTML = "";
-            
-            if(data.tasks.length === 0) {
-                tasksContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px 0; font-size:14px; animation: fadeIn 0.3s ease;">${t.noTasksBox}</p>`;
-            } else {
-                data.tasks.forEach((task, index) => {
-                    let div = document.createElement('div');
-                    div.className = 'task-row';
-                    div.setAttribute('data-task-id', task.id);
-                    div.style.animationDelay = `${index * 0.03}s`;
-                    div.innerHTML = `
-                        <div class="task-text ${task.completed ? 'completed' : ''}" onclick="toggleTask(${task.id})">
-                            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="event.stopPropagation(); toggleTask(${task.id});">
-                            <span>${task.text} ${task.time ? `(${task.time})` : ''}</span>
-                        </div>
-                        <button class="btn-delete" onclick="deleteTask(${task.id})">×</button>
-                    `;
-                    tasksContainer.appendChild(div);
-                });
-            }
-
-            // 3. RENDER VISTA NOTAS FIJAS
-            const notesContainer = document.getElementById('notes-container');
-            notesContainer.innerHTML = "";
-            
-            if(data.notes.length === 0) {
-                notesContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px 0; font-size:14px; animation: fadeIn 0.3s ease;">${t.noNotes}</p>`;
-            } else {
-                data.notes.forEach((note, index) => {
-                    let btn = document.createElement('button');
-                    btn.className = 'note-item-btn';
-                    btn.style.animationDelay = `${index * 0.03}s`;
-                    btn.onclick = () => openNoteModal(note.id);
-                    btn.innerHTML = `
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${note.title}</span>
-                    `;
-                    notesContainer.appendChild(btn);
-                });
+            // Refrescar el detalle inferior del día seleccionado
+            const days = document.querySelectorAll('.calendar-day');
+            for(let d of days) {
+                if(d.classList.contains('selected')) {
+                    d.click();
+                    break;
+                }
             }
         }
 
-        // MOTOR DE PERSISTENCIA LOCAL
-        function saveToLocalStorage() {
-            localStorage.setItem('aura_studio_data', JSON.stringify(data));
-        }
-
-        function loadFromLocalStorage() {
-            let raw = localStorage.getItem('aura_studio_data');
-            if(raw) {
-                try {
-                    let parsed = JSON.parse(raw);
-                    if(parsed && typeof parsed === 'object') {
-                        data = Object.assign(data, parsed);
-                    }
-                } catch(e) { console.error("Error regenerando búfer de persistencia."); }
-            }
-        }
-
-        // CORE NOTIFICACIONES NATIVAS
+        // SERVICIO DE NOTIFICACIONES AGENDADAS EN SEGUNDO PLANO
         function toggleNotifications(status) {
             data.notify = status;
-            if(status && Notification.permission !== 'granted') {
+            saveToLocalStorage();
+            if(status && Notification.permission !== "granted") {
                 Notification.requestPermission().then(permission => {
-                    if(permission !== 'granted') {
-                        data.notify = false;
+                    if(permission !== "granted") {
                         document.getElementById('notify-toggle').checked = false;
+                        data.notify = false;
+                        saveToLocalStorage();
                     }
                 });
             }
-            saveToLocalStorage();
         }
 
-        function enviarNotificacion(titulo, cuerpo) {
-            if(data.notify && Notification.permission === 'granted') {
-                navigator.serviceWorker.ready.then(registration => {
-                    registration.showNotification(titulo, {
-                        body: cuerpo,
-                        icon: 'https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png',
-                        vibrate: [200, 100, 200]
-                    });
-                }).catch(() => {
-                    new Notification(titulo, { body: cuerpo, icon: 'https://i.ibb.co/pBwLqf1v/Dise-o-sin-t-tulo.png' });
-                });
-            } else {
-                try {
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const osc = audioContext.createOscillator();
-                    const gain = audioContext.createGain();
-                    
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(880, audioContext.currentTime); 
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.12);
-                    
-                    osc.connect(gain);
-                    gain.connect(audioContext.destination);
-                    
-                    osc.start();
-                    osc.stop(audioContext.currentTime + 0.12);
-                } catch(e) { console.log("Audio contextual listo."); }
-            }
-        }
+        // Pooler asíncrono repetitivo para validación de alarmas (ajustado a ciclo de 25 segundos)
+        const tareasNotificadas = new Set();
 
-        // Bucle de Verificación Cíclica Activa (Intervalo de Precisión cada 25 segundos)
         setInterval(() => {
+            if(!data.notify || Notification.permission !== "granted") return;
+
             const ahora = new Date();
-            const hrs = String(ahora.getHours()).padStart(2, '0');
-            const mins = String(ahora.getMinutes()).padStart(2, '0');
-            const horaActualStr = `${hrs}:${mins}`;
+            const horaActualStr = `${String(ahora.getHours()).padStart(2,'0')}:${String(ahora.getMinutes()).padStart(2,'0')}`;
 
             data.tasks.forEach(t => {
-                if(t.time && !t.completed) {
-                    let taskTimeClean = t.time.trim();
-                    if(taskTimeClean === horaActualStr && !tareasNotificadas.has(t.text + horaActualStr)) {
-                        enviarNotificacion("Alerta de Actividad", `${t.text}`);
+                if(t.time && t.time === horaActualStr && !t.done) {
+                    if(!tareasNotificadas.has(t.text + horaActualStr)) {
+                        new Notification("Recordatorio de Actividad", {
+                            body: `Es hora de: ${t.text}`,
+                            icon: "https://i.ibb.co/5h1j0fr3/Dise-o-sin-t-tulo.png"
+                        });
                         tareasNotificadas.add(t.text + horaActualStr);
                     }
                 }
