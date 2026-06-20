@@ -1,14 +1,4 @@
-[v1.2.0] - Actualización de Rendimiento
-- Se optimizó el sistema de notificaciones nativas en segundo plano.
-- Corrección de errores menores en el renderizado del calendario modular.
-- Ajustes en el consumo de memoria al cargar notas enriquecidas muy extensas.
-
-[v1.1.0] - Soporte Multilingüe Completo
-- Añadidos 10 idiomas interactivos con diccionarios integrados (i18n).
-- Implementación de la protección contra destellos blancos (White Flash Protection).
-- Mejoras visuales en los componentes glassmorphic para dispositivos móviles.
-
-[v1.0.0] - Lanzamiento Oficial
-- Despliegue inicial del Organizador Personal Pro.
-- Sistema WYSIWYG interactivo para el bloque de notas fijas.
-- Cronograma automatizado diario con sincronización en LocalStorage.
+H1>Actualización V2.0<H1
+H2>Nuevas Características<H2
+H3>Se añadió soporte para *diseños avanzados* y velocidad _ultra rápida_.<H3
+H3>Corrección de errores en el *LocalStorage*.<H3
