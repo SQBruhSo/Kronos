@@ -50,6 +50,9 @@
             --fade-bezier: cubic-bezier(0.25, 1, 0.5, 1);
             --dropdown-bg: rgba(255, 255, 255, 0.85);
             --dropdown-blur: blur(20px);
+            /* Colores de barra de scroll personalizados */
+            --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+            --scrollbar-thumb-hover: rgba(0, 0, 0, 0.25);
         }
 
         [data-theme="dark"] {
@@ -61,6 +64,8 @@
             --input-bg: #212327;
             --accent-brand: #9E3A50; 
             --dropdown-bg: rgba(22, 24, 27, 0.85);
+            --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+            --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
         }
 
         * {
@@ -69,6 +74,23 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        /* CONFIGURACIÓN BARRA DE DESPLAZAMIENTO (ESTILO APPLE) */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 100px;
+            transition: background 0.2s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
         }
 
         body {
@@ -309,7 +331,7 @@
         .config-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; text-align: left; position: relative; }
         .config-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
 
-        /* NUEVO COMPONENTE CUSTOM SELECT ESTILO APPLE/GLASSMORPHISM */
+        /* CUSTOM SELECTS INTERFACE APPLE/GLASSMORPHISM */
         .aura-select-box {
             position: relative;
             width: 100%;
@@ -445,7 +467,7 @@
         }
         .btn-re-changelog:hover { opacity: 1; }
 
-        /* NUEVO REDISEÑO PREMIUM DE COMPONENTE DE ACTUALIZACIONES */
+        /* REDISEÑO PREMIUM DE COMPONENTE DE ACTUALIZACIONES */
         .update-prompt-box { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; width: 100%; }
         
         .changelog-premium-card {
@@ -602,7 +624,6 @@
 
     <div class="modal-overlay" id="overlay" onclick="closeModals()"></div>
 
-    <!-- Modal de Tutorial Inicial -->
     <div class="modal" id="tutorial-modal">
         <div class="tutorial-step active" id="step-1">
             <h3 style="font-size: 19px;">¡Te damos la bienvenida!</h3>
@@ -644,7 +665,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE FLUJO DE ACTUALIZACIÓN REDISEÑADO PREMIUM -->
     <div class="modal" id="update-prompt-modal">
         <div class="update-prompt-box" id="update-step-ask">
             <div style="background: rgba(107,29,47,0.1); padding: 16px; border-radius: 50%; color: var(--accent-brand);">
@@ -672,7 +692,6 @@
     <div class="modal" id="config-modal">
         <h3 id="txt-modal-config-title" style="margin-bottom:20px;">Configuración</h3>
         
-        <!-- COMPONENTE CUSTOM SELECT IDIOMA -->
         <div class="config-group">
             <label id="lbl-lang">Idioma / Language</label>
             <div class="aura-select-box" id="select-lang-box">
@@ -692,7 +711,6 @@
             </div>
         </div>
 
-        <!-- COMPONENTE CUSTOM SELECT TEMA -->
         <div class="config-group">
             <label id="lbl-theme">Tema de la interfaz</label>
             <div class="aura-select-box" id="select-theme-box">
@@ -761,7 +779,6 @@
     </div>
 
     <script>
-        // Formateo del Historial con tags de listas estilizadas premium
         const CHANGELOG_DATA = {
             "2.0.0": `<ul class="changelog-premium-list">
                         <li class="changelog-premium-item"><div class="changelog-premium-item-bullet"></div><span>Base del organizador optimizada en rendimiento integral.</span></li>
@@ -817,12 +834,10 @@
         let selectedColor = '#6B1D2F';
         let tareasNotificadas = new Set(); 
 
-        // FUNCIONES ADICIONALES PARA LOS SELECTS PERSONALIZADOS
         function toggleAuraSelect(boxId) {
             const box = document.getElementById(boxId);
             const wasActive = box.classList.contains('active');
             
-            // Cerrar todos los demás primero
             document.querySelectorAll('.aura-select-box').forEach(b => b.classList.remove('active'));
             
             if (!wasActive) {
@@ -845,7 +860,6 @@
             if (callback) callback(val);
         }
 
-        // Cerrar dropdowns si se hace clic fuera de ellos
         window.addEventListener('click', function(e) {
             if (!e.target.closest('.aura-select-box')) {
                 document.querySelectorAll('.aura-select-box').forEach(b => b.classList.remove('active'));
@@ -853,7 +867,6 @@
         });
 
         function syncCustomSelectsVisuals() {
-            // Sincronizar select de idioma
             const currentLang = data.lang || 'es';
             const langBox = document.getElementById('select-lang-box');
             if(langBox) {
@@ -865,7 +878,6 @@
                 }
             }
 
-            // Sincronizar select de tema
             const currentTheme = data.theme || 'light';
             const themeBox = document.getElementById('select-theme-box');
             if(themeBox) {
@@ -909,6 +921,7 @@
         }
 
         function closeModals() {
+            document.getElementById('overlay').style.none = 'none';
             document.getElementById('overlay').style.display = 'none';
             document.querySelectorAll('.modal').forEach(m => {
                 m.classList.remove('active');
