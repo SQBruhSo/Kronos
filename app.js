@@ -1,239 +1,243 @@
-// Almacenamiento local reactivo por defecto vacío
-let tasks = JSON.parse(localStorage.getItem('kronos_tasks')) || [];
-let notes = JSON.parse(localStorage.getItem('kronos_notes')) || [];
-let deferredPrompt; // Guardará el evento de instalación nativo
+// Memoria Persistente Enlazada por JSON (Vacíos nativos por defecto al iniciar por primera vez)
+let tasks = JSON.parse(localStorage.getItem('kronos_tasks_data')) || [];
+let notes = JSON.parse(localStorage.getItem('kronos_notes_data')) || [];
+
+// Variables globales para la navegación fluida del calendario
+let currentCalendarDate = new Date();
+let deferredPrompt; 
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Simulación del Loading Screen
+    // 1. Desvanecimiento controlado del Loading Screen
     setTimeout(() => {
         document.getElementById('screen-loading').classList.remove('active');
         
-        // Comprobar si ya pasó por la pantalla "Primera Vez"
-        if (!localStorage.getItem('kronos_user_initialized')) {
+        // Comprobar la bandera del LocalStorage para la primera experiencia
+        if (!localStorage.getItem('kronos_app_installed_v1')) {
             document.getElementById('screen-welcome').classList.add('active');
         } else {
             navigateTo('home');
         }
-    }, 2000);
+    }, 2400);
 
-    // 2. Controlar Reloj y Fecha del Home de manera Dinámica e Instantánea
-    renderLiveDate();
+    // 2. Ejecutar Motores Críticos
+    syncLiveDate();
+    fetchAndParseUpdates();
+    renderTasksEngine();
+    renderNotesEngine();
+    buildCalendarEngine();
 
-    // 3. Cargar Novedades desde update.txt
-    fetchUpdatesFile();
-
-    // 4. Renderizar contenido inicial (si hay datos guardados)
-    renderTasks();
-    renderNotes();
-    generateCalendarGrid();
-
-    // 5. Capturar el evento nativo de instalación PWA
+    // 3. Capturar Instalador Standalone de Google Chrome / Safari / Edge
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
-        deferredPrompt = e; // Guardamos el evento para activarlo con tu botón personalizado
+        deferredPrompt = e; 
     });
 
-    // Acción del botón personalizado de descargar la APP
     document.getElementById('btn-install-pwa').addEventListener('click', async () => {
         if (deferredPrompt) {
-            deferredPrompt.prompt(); // Muestra el cartel nativo del navegador
+            deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             if (outcome === 'accepted') {
-                console.log('El usuario instaló Kronos con éxito.');
                 skipWelcome();
             }
             deferredPrompt = null;
         } else {
-            // Si la app ya está instalada o el navegador no la soporta directamente
-            alert("¡Para instalarla de forma directa, pulsa en el menú de opciones de tu navegador (los tres puntos o compartir) y selecciona 'Añadir a la pantalla de inicio'!");
+            alert("¡Para emular el link directo sin marcos externos en tu dispositivo actual, ve a la configuración de tu navegador y selecciona 'Añadir a pantalla de inicio' u 'Opciones de Escritorio'!");
             skipWelcome();
         }
     });
 });
 
-// Cambiar de pantalla de manera limpia
+// Enrutador SPA
 function navigateTo(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(`screen-${screenId}`).classList.add('active');
 }
 
 function skipWelcome() {
-    localStorage.setItem('kronos_user_initialized', 'true');
+    localStorage.setItem('kronos_app_installed_v1', 'true');
     navigateTo('home');
 }
 
-// Configuración de Fechas reales
-function renderLiveDate() {
-    const today = new Date();
-    const num = today.getDate();
-    const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+// Sincronizador de Reloj del Inicio
+function syncLiveDate() {
+    const tracker = new Date();
+    const dayNum = tracker.getDate();
+    const listMonths = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
     
-    document.getElementById('current-day-num').innerText = num;
-    document.getElementById('current-month').innerText = `de ${months[today.getMonth()]}`;
+    document.getElementById('current-day-num').innerText = dayNum;
+    document.getElementById('current-month').innerText = `de ${listMonths[tracker.getMonth()]}`;
 }
 
-// Parseador personalizado de update.txt
-async function fetchUpdatesFile() {
-    const container = document.getElementById('update-container');
+// Motor del Archivo de Novedades (update.txt)
+async function fetchAndParseUpdates() {
+    const target = document.getElementById('update-container');
     try {
-        const res = await fetch('update.txt');
-        if (!res.ok) throw new Error();
-        const text = await res.text();
+        const response = await fetch('update.txt');
+        if (!response.ok) throw new Error();
+        const rawContent = await response.text();
         
-        const lines = text.split('\n');
-        let htmlResult = "";
+        const clusterLines = rawContent.split('\n');
+        let HTML_Stack = "";
 
-        lines.forEach(line => {
-            let clean = line.trim();
-            if (clean.startsWith('H1>')) {
-                htmlResult += `<h1 class="upd-h1">${clean.slice(3, -1)}</h1>`;
-            } else if (clean.startsWith('H2>')) {
-                htmlResult += `<h2 class="upd-h2">${clean.slice(3, -1)}</h2>`;
-            } else if (clean.startsWith('H3>')) {
-                let content = clean.slice(3, -1);
-                // Reemplazos de formato enriquecido solicitados
-                content = content.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
-                content = content.replace(/_(.*?)_/g, "<em>$1</em>");
-                htmlResult += `<p class="upd-h3">${content}</p>`;
+        clusterLines.forEach(line => {
+            let processedLine = line.trim();
+            if (processedLine.startsWith('H1>')) {
+                HTML_Stack += `<h1 class="upd-h1">${processedLine.slice(3, -1)}</h1>`;
+            } else if (processedLine.startsWith('H2>')) {
+                HTML_Stack += `<h2 class="upd-h2">${processedLine.slice(3, -1)}</h2>`;
+            } else if (processedLine.startsWith('H3>')) {
+                let text = processedLine.slice(3, -1);
+                // Reemplazo avanzado cruzado de negrita y cursiva solicitado
+                text = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
+                text = text.replace(/_(.*?)_/g, "<em>$1</em>");
+                HTML_Stack += `<p class="upd-h3">${text}</p>`;
             }
         });
-        container.innerHTML = htmlResult;
-    } catch (e) {
-        container.innerHTML = `<p class="empty-msg">No hay actualizaciones registradas en update.txt</p>`;
+        target.innerHTML = HTML_Stack;
+    } catch (err) {
+        target.innerHTML = `<p class="empty-msg">No se encontraron registros activos en update.txt</p>`;
     }
 }
 
-// LÓGICA DE TAREAS (Gestión Completa)
+// MOTOR DE CONTROL: TAREAS
 function toggleTimeInput() {
-    const checkbox = document.getElementById('task-has-time');
-    document.getElementById('task-time-input').style.display = checkbox.checked ? 'block' : 'none';
+    const trigger = document.getElementById('task-has-time').checked;
+    document.getElementById('task-time-input').style.display = trigger ? 'block' : 'none';
 }
 
 function addTask() {
-    const input = document.getElementById('task-input');
-    const hasTime = document.getElementById('task-has-time').checked;
-    const timeInput = document.getElementById('task-time-input').value;
+    const textBuffer = document.getElementById('task-input');
+    const scheduleFlag = document.getElementById('task-has-time').checked;
+    const timeValue = document.getElementById('task-time-input').value;
 
-    if (!input.value.trim()) return;
+    if (!textBuffer.value.trim()) return;
 
-    const newTask = {
-        id: Date.now(),
-        title: input.value.trim(),
-        time: hasTime && timeInput ? timeInput : null
+    const payload = {
+        uid: Date.now(),
+        title: textBuffer.value.trim(),
+        time: scheduleFlag && timeValue ? timeValue : null
     };
 
-    tasks.push(newTask);
-    saveAndRenderTasks();
-
-    // Resetear inputs
-    input.value = "";
+    tasks.push(payload);
+    localStorage.setItem('kronos_tasks_data', JSON.stringify(tasks));
+    
+    textBuffer.value = "";
     document.getElementById('task-has-time').checked = false;
     toggleTimeInput();
-}
-
-function deleteTask(id) {
-    tasks = tasks.filter(t => t.id !== id);
-    saveAndRenderTasks();
-}
-
-function saveAndRenderTasks() {
-    localStorage.setItem('kronos_tasks', JSON.stringify(tasks));
-    renderTasks();
-}
-
-function renderTasks() {
-    const container = document.getElementById('tasks-list');
-    const previewContainer = document.getElementById('home-tasks-preview');
     
+    renderTasksEngine();
+}
+
+function dropTask(uid) {
+    tasks = tasks.filter(item => item.uid !== uid);
+    localStorage.setItem('kronos_tasks_data', JSON.stringify(tasks));
+    renderTasksEngine();
+}
+
+function renderTasksEngine() {
+    const listArea = document.getElementById('tasks-list');
+    const panelPreview = document.getElementById('home-tasks-preview');
+
     if (tasks.length === 0) {
-        container.innerHTML = `<p class="empty-msg">No hay tareas aún.</p>`;
-        previewContainer.innerHTML = `<li class="empty-msg">No tienes tareas para hoy.</li>`;
+        listArea.innerHTML = `<p class="empty-msg">No hay tareas planificadas.</p>`;
+        panelPreview.innerHTML = `<li class="empty-msg">No tienes tareas para hoy.</li>`;
         return;
     }
 
-    // Render en sección Tareas
-    container.innerHTML = tasks.map(t => `
+    listArea.innerHTML = tasks.map(t => `
         <div class="item-card">
             <div class="item-card-left">
                 <span class="item-title">${t.title}</span>
-                ${t.time ? `<span class="item-time-badge"><i class="fa-regular fa-clock"></i> ${t.time}</span>` : ''}
+                ${t.time ? `<span class="item-time-badge"><i class="fa-regular fa-clock"></i> Módulo: ${t.time} hs</span>` : ''}
             </div>
-            <i class="fa-solid fa-trash-can item-delete-btn" onclick="deleteTask(${t.id})"></i>
+            <i class="fa-solid fa-trash-can item-delete-btn" onclick="dropTask(${t.uid})"></i>
         </div>
     `).join('');
 
-    // Render en sección Vista Previa Home
-    previewContainer.innerHTML = tasks.slice(0, 3).map(t => `
-        <li>• ${t.title} ${t.time ? `(${t.time})` : ''}</li>
+    panelPreview.innerHTML = tasks.slice(0, 3).map(t => `
+        <li>• ${t.title} ${t.time ? `[${t.time}]` : ''}</li>
     `).join('');
 }
 
-// LÓGICA DE NOTAS (Gestión Completa)
+// MOTOR DE CONTROL: NOTAS
 function addNote() {
-    const input = document.getElementById('note-input');
-    if (!input.value.trim()) return;
+    const buffer = document.getElementById('note-input');
+    if (!buffer.value.trim()) return;
 
-    const newNote = {
-        id: Date.now(),
-        text: input.value.trim()
+    const payload = {
+        uid: Date.now(),
+        content: buffer.value.trim()
     };
 
-    notes.push(newNote);
-    localStorage.setItem('kronos_notes', JSON.stringify(notes));
-    input.value = "";
-    renderNotes();
+    notes.push(payload);
+    localStorage.setItem('kronos_notes_data', JSON.stringify(notes));
+    buffer.value = "";
+    renderNotesEngine();
 }
 
-function deleteNote(id) {
-    notes = notes.filter(n => n.id !== id);
-    localStorage.setItem('kronos_notes', JSON.stringify(notes));
-    renderNotes();
+function dropNote(uid) {
+    notes = notes.filter(item => item.uid !== uid);
+    localStorage.setItem('kronos_notes_data', JSON.stringify(notes));
+    renderNotesEngine();
 }
 
-function renderNotes() {
-    const container = document.getElementById('notes-list');
+function renderNotesEngine() {
+    const listArea = document.getElementById('notes-list');
     if (notes.length === 0) {
-        container.innerHTML = `<p class="empty-msg">No hay notas aún.</p>`;
+        listArea.innerHTML = `<p class="empty-msg">No hay anotaciones guardadas.</p>`;
         return;
     }
 
-    container.innerHTML = notes.map(n => `
+    listArea.innerHTML = notes.map(n => `
         <div class="item-card">
             <div class="item-card-left">
-                <span class="item-title">${n.text}</span>
+                <span class="item-title">${n.content}</span>
             </div>
-            <i class="fa-solid fa-trash-can item-delete-btn" onclick="deleteNote(${n.id})"></i>
+            <i class="fa-solid fa-trash-can item-delete-btn" onclick="dropNote(${n.uid})"></i>
         </div>
     `).join('');
 }
 
-// GENERADOR AUTOMÁTICO DE CALENDARIO REAL
-function generateCalendarGrid() {
+// MOTOR DE CONTROL: CALENDARIO INTERACTIVO
+function buildCalendarEngine() {
     const grid = document.getElementById('calendar-days-grid');
-    const title = document.getElementById('calendar-month-year');
+    const headerTitle = document.getElementById('calendar-month-year');
     
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth();
-    const todayDate = now.getDate();
+    const realClock = new Date();
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
 
-    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    title.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+    const dictionaryMonths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    headerTitle.innerText = `${dictionaryMonths[month]} de ${year}`;
 
-    // Obtener primer día del mes y total de días
-    const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
-    const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const indexFirstDay = new Date(year, month, 1).getDay();
+    const countDaysTotal = new Date(year, month + 1, 0).getDate();
 
     grid.innerHTML = "";
 
-    // Espacios vacíos para cuadrar el inicio de semana
-    for (let i = 0; i < firstDayIndex; i++) {
+    for (let i = 0; i < indexFirstDay; i++) {
         grid.innerHTML += `<div></div>`;
     }
 
-    // Insertar los días numéricos reales
-    for (let day = 1; day <= totalDays; day++) {
-        const isToday = day === todayDate ? 'class="current-real-day"' : '';
-        grid.innerHTML += `<div ${isToday}>${day}</div>`;
+    for (let day = 1; day <= countDaysTotal; day++) {
+        const checkToday = (day === realClock.getDate() && month === realClock.getMonth() && year === realClock.getFullYear()) ? 'class="current-real-day"' : '';
+        grid.innerHTML += `<div ${checkToday}>${day}</div>`;
+    }
+}
+
+function changeMonth(direction) {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+    buildCalendarEngine();
+}
+
+// COMPONENTES AUXILIARES: ACORDEÓN & RESET DE FÁBRICA
+function toggleAccordion(element) {
+    element.classList.toggle('open');
+}
+
+function resetApp() {
+    if (confirm("¿Estás completamente seguro de restablecer Kronos? Se eliminarán todas las tareas, notas y configuraciones guardadas de forma irreversible.")) {
+        localStorage.clear();
+        window.location.reload();
     }
 }
