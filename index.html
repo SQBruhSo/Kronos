@@ -72,6 +72,36 @@
         font-family: sans-serif;
         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
+
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            transition: transform 0.4s var(--aura-bezier);
+            opacity: 0;
+        }
+
+        #toast-container.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }        
+
+        .toast-icon {
+            width: 18px;
+            height: 18px;
+            background: var(--accent-brand);
+            border-radius: 50%;
+        }
         
         :root {
             --bg-color: #F4F5F6;
@@ -1343,32 +1373,44 @@
             });
         }
         
-        // AQUI: Función personalizada para reemplazar alerts
         function showCustomToast(message) {
-            const toast = document.createElement('div');
-           toast.className = 'custom-toast';
-            toast.innerText = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+            // 1. Crear el contenedor si no existe
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.innerHTML = '<div class="toast-icon"></div><span id="toast-message"></span>';
+                document.body.appendChild(container);
+            }
+
+            // 2. Insertar texto y mostrar
+            document.getElementById('toast-message').innerText = message;
+            container.classList.add('show');
+
+            // 3. Ocultar automáticamente después de 3 segundos
+            setTimeout(() => {
+                container.classList.remove('show');
+            }, 3000);
         }
 
-        // AQUI: Notificación sin usar las del navegador (siempre que sea posible)
+        // 4. Implementación limpia para tus notificaciones
         function toggleNotifications(val) {
             if(val) {
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
                         data.notify = true;
-                        showCustomToast("Notificaciones activadas");
+                        saveToLocalStorage();
+                        showCustomToast("Notificaciones habilitadas con éxito");
                     } else {
                         data.notify = false;
                         document.getElementById('notify-toggle').checked = false;
-                        showCustomToast("Permiso denegado");
+                        showCustomToast("Permiso denegado por el navegador");
                     }
-                    saveToLocalStorage();
                 });
             } else {
                 data.notify = false;
                 saveToLocalStorage();
+                showCustomToast("Notificaciones desactivadas");
             }
         }
 
